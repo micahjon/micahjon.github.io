@@ -14,6 +14,9 @@ google_analytics: 'UA-XXXXXXXX-X'
 disqus: false
 disqus_shortname: 'your-disqus-shortname'
 
+# Prose.io Configuration
+media: assets/images 
+
 # Details for the RSS feed generator
 url:            'http://micahjon.com'
 author:         'Micah Miller-Eshleman'
