@@ -1,18 +1,18 @@
 ---
-published: false
+published: true
 ---
 ## How to deselect radio buttons on web forms
 
 Today I filled out yet another poorly built online survey. This penultimate page asked for my academic major: 
 
 
-![Original Form]({{site.baseurl}}/assets/images/form1.jpg)
+![Original Form]({{site.baseurl}}assets/images/form1.jpg)
 
 Notice the three groupings of radio buttons. One in case you're undecided, one for social science majors, and one for folks (like me) in the hard sciences.
 
 Just for fun, let's select one of each:
 
-![Filling in multiple radio buttons]({{site.baseurl}}/assets/images/form2.jpg)
+![Filling in multiple radio buttons]({{site.baseurl}}assets/images/form2.jpg)
 
 Cool, but now we want to be serious and just select one major. Hmm, we can't deselect radio buttons!
 
@@ -26,14 +26,14 @@ At this point the frustrated user who accidentally clicked on the wrong button d
 
 We'll be using a single line of javascript to identify the radio button and deselect it.
 
-1.  Right click on the radio button and select _Inspect Element_. Google Developer Tools will appear at the bottom of the screen. ![Right click on radio button, Inspect Element]({{site.baseurl}}/assets/images/form3.png)
+1.  Right click on the radio button and select _Inspect Element_. Google Developer Tools will appear at the bottom of the screen. ![Right click on radio button, Inspect Element]({{site.baseurl}}assets/images/form3.png)
 
-2.  Notice the <input> tag that represents this radio button has a unique id of "choice_11_0". ![Highlighted tag refers to this radio button]({{site.baseurl}}/assets/images/form4.jpg)
-Double click to select this id, and copy it. ![Double click id to select the unique id of the radio button]({{site.baseurl}}/assets/images/form5.jpg)
+2.  Notice the <input> tag that represents this radio button has a unique id of "choice_11_0". ![Highlighted tag refers to this radio button]({{site.baseurl}}assets/images/form4.jpg)
+Double click to select this id, and copy it. ![Double click id to select the unique id of the radio button]({{site.baseurl}}assets/images/form5.jpg)
 
-3.  In the Console tab, paste the following code. Replace "choice_11_0" with your radio button's unique id. [js]document.getElementById("choice_11_0").checked = false;[/js] ![In Console tab, paste this javascript snippet]({{site.baseurl}}/assets/images/form6.jpg)
+3.  In the Console tab, paste the following code. Replace "choice_11_0" with your radio button's unique id. [js]document.getElementById("choice_11_0").checked = false;[/js] ![In Console tab, paste this javascript snippet]({{site.baseurl}}assets/images/form6.jpg)
 
-4.  Press enter to run code! This should deselect your radio button. ![Execute code. Radio button should be deselected]({{site.baseurl}}/assets/images/form7.jpg)
+4.  Press enter to run code! This should deselect your radio button. ![Execute code. Radio button should be deselected]({{site.baseurl}}assets/images/form7.jpg)
 
 
 ## What is this code doing?
