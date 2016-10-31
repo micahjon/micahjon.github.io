@@ -13,11 +13,11 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 /* Icons */
 @font-face {
 	font-family: 'icons';
-		src: url('../fonts/icons.eot');
-		src: url('../fonts/icons.eot#iefix') format('embedded-opentype'),
-		url('../fonts/icons.woff') format('woff'),
-		url('../fonts/icons.ttf') format('truetype'),
-		url('../fonts/icons.svg#icons') format('svg');
+	src: url('../fonts/icons.eot');
+	src: url('../fonts/icons.eot#iefix') format('embedded-opentype'),
+	url('../fonts/icons.woff') format('woff'),
+	url('../fonts/icons.ttf') format('truetype'),
+	url('../fonts/icons.svg#icons') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -44,7 +44,7 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 
 /* Spacing */
 .post h1, h3, h4, h5, p, .post-body ul, #post-list li, pre {
-margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 
 /* Base */
@@ -100,11 +100,11 @@ h2 {
 
 .profile h2 {
 	font-size: 20px;
-	  font-weight: 300;
-	  color: #aaa;
-	  margin-top: 10px;
-	  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-	  font-style: normal;
+	font-weight: 300;
+	color: #aaa;
+	margin-top: 10px;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-style: normal;
 
 }
 
@@ -139,9 +139,9 @@ nav.main-nav a.cta {
 }
 
 #wrapper {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 60px 40px 100px 40px;
+	max-width: 600px;
+	margin: 0 auto;
+	padding: 60px 40px 100px 40px;
 }
 
 #wrapper.home {
@@ -189,183 +189,188 @@ li	{ list-style-type:circle; list-style-position:inside; }
 #post-body, p { line-height:1.7; }
 
 b, strong { font-weight: 500;
-  color: #1E2025; }
-em, i { font-style: italic; }
+	color: #1E2025; }
+	em, i { font-style: italic; }
 
-#title {
-	display: inline-block;
-	line-height: 100%;
-	font-weight: 500;
-	font-size: 19px;
-	margin: 0;
-	padding-bottom: 20px;
-}
+	#title {
+		display: inline-block;
+		line-height: 100%;
+		font-weight: 500;
+		font-size: 19px;
+		margin: 0;
+		padding-bottom: 20px;
+	}
 
-.description {
-	float: right;
-	font: italic 14px/1.4em Georgia,serif;
-	color: #aaa;
-}
-
-
-
-.home h1 {
-	font-size: 30px;
-	letter-spacing: -1px;
-	color: #222;
-	font-weight: bold;
-}
-
-.home h2 {
-	font: italic 19px/1.3em Georgia,serif;
-	color: #bbb;
-}
-
-.post header {
-	text-align:center;
-
-}
-
-.post h1 {
-	margin-bottom: 20px;
-	color: #222;
-	font: 300 32px/1.4em "Helvetica Neue", Helvetica,Arial,sans-serif;
-}
-
-.post h2 {
-	margin-bottom: 40px;
-	  font: 300 24px/1.5 "Helvetica Neue",Helvetica,Arial,sans-serif;
-	  color: #111;
-}
+	.description {
+		float: right;
+		font: italic 14px/1.4em Georgia,serif;
+		color: #aaa;
+	}
 
 
-.post h2.headline {
-	/*font: italic 22px/1.3em Georgia,serif;*/
-	font: normal 13px/1.5em "Helvetica Neue",Helvetica,Arial,sans-serif;
-	margin: -5px 0 40px 0;
-	color: #b2b9be;
-	  font-size: 13px;
-	  text-transform: uppercase;
-	  letter-spacing: 2px;
-	  /*margin-top: 15px;*/
-	  display: inline-block;
-}
 
-#post-list h2 {
-	font: normal 17px/1.5em "Helvetica Neue",Helvetica,Arial,sans-serif;
-	color: #aaa;
-	max-width: 400px;
-	margin-top: 2px;
-}
+	.home h1 {
+		font-size: 30px;
+		letter-spacing: -1px;
+		color: #222;
+		font-weight: bold;
+	}
 
-h3, h4, h5 { color:#333; }
+	.home h2 {
+		font: italic 19px/1.3em Georgia,serif;
+		color: #bbb;
+	}
 
-h3 { font-size:20px; font-weight: 400; }
-h4 { font-size:16px; font-weight:bold; }
-h5 { font-size:15px; font-weight: bold; }
+	.post header {
+		text-align:center;
 
-h6 {
-	font-size: 13px;
-	font-weight: bold;
-	color: #666;
-	margin-bottom: 6px;
-}
+	}
 
-p.small {
-	color: #bbb;
-	font-size: 14px;
-	line-height: 1.5;
-	display: block;
-}
+	.post h1 {
+		margin-bottom: 20px;
+		color: #222;
+		font: 300 32px/1.4em "Helvetica Neue", Helvetica,Arial,sans-serif;
+	}
 
-blockquote {
-	padding-left: 15px;
-	border-left: 3px solid #eee;
-}
+	.post h2 {
+		margin-bottom: 40px;
+		font: 300 24px/1.5 "Helvetica Neue",Helvetica,Arial,sans-serif;
+		color: #111;
+	}
 
-hr {
-	display: block;
-	border: none;
-	height: 1px;
-	margin: 40px auto;
-	background: #eee;
-}
 
-span.code { font-family:Menlo, Monaco, Courier; background-color:#EEE; font-size:14px; }
+	.post h2.headline {
+		/*font: italic 22px/1.3em Georgia,serif;*/
+		font: normal 13px/1.5em "Helvetica Neue",Helvetica,Arial,sans-serif;
+		margin: -5px 0 40px 0;
+		color: #b2b9be;
+		font-size: 13px;
+		text-transform: uppercase;
+		letter-spacing: 2px;
+		/*margin-top: 15px;*/
+		display: inline-block;
+	}
 
-pre	{
-	font-family:Menlo, Monaco, Courier;
-	white-space:pre-wrap;
-	/*border: 1px solid #ddd;*/
-	padding:20px;
-	background-color:#fdfdfd;
-	/*font-size:14px;*/
-	overflow:auto;
-	border-radius: 3px;
-	background: #272b2d;
-	  font-family: 'Source Code Pro',Menlo,monospace;
-	  font-size: 13px;
-	  line-height: 1.5em;
-	  font-weight: 500;
-	color: #d0d4d7;
+	#post-list h2 {
+		font: normal 17px/1.5em "Helvetica Neue",Helvetica,Arial,sans-serif;
+		color: #aaa;
+		max-width: 400px;
+		margin-top: 2px;
+	}
 
-}
+	h3, h4, h5 { color:#333; }
 
-table {
-	width: 100%;
-	margin: 40px 0;
-	border-collapse: collapse;
-	font-size: 13px;
-	line-height: 1.5em;
-}
+	h3 { font-size:20px; font-weight: 400; }
+	h4 { font-size:16px; font-weight:bold; }
+	h5 { font-size:15px; font-weight: bold; }
 
-th,td {
-	text-align: left;
-	padding-right: 20px;
-	vertical-align: top;
-}
+	h6 {
+		font-size: 13px;
+		font-weight: bold;
+		color: #666;
+		margin-bottom: 6px;
+	}
 
-table td,td {
-	border-spacing: none;
-	border-style: solid;
-	padding: 10px 15px;
-	border-width: 1px 0 0 0;
-}
+	p.small {
+		color: #bbb;
+		font-size: 14px;
+		line-height: 1.5;
+		display: block;
+	}
 
-tr>td {
-	border-top: 1px solid #eaeaea;
-}
+	blockquote {
+		padding-left: 15px;
+		border-left: 3px solid #eee;
+	}
 
-tr:nth-child(odd)>td {
-	background: #fcfcfc;
-}
+	hr {
+		display: block;
+		border: none;
+		height: 1px;
+		margin: 40px auto;
+		background: #eee;
+	}
 
-thead th,th {
-	text-align: left;
-	padding: 10px 15px;
-	height: 20px;
-	font-size: 13px;
-	font-weight: bold;
-	color: #444;
-	border-bottom: 1px solid #dadadc;
-	cursor: default;
-	white-space: nowrap;
-}
+	span.code { font-family:Menlo, Monaco, Courier; background-color:#EEE; font-size:14px; }
 
-img {
-	width: auto;
-	max-width: 100%;
-	border-radius: 3px;
-}
+	pre	{
+		font-family:Menlo, Monaco, Courier;
+		white-space:pre-wrap;
+		/*border: 1px solid #ddd;*/
+		padding:20px;
+		background-color:#fdfdfd;
+		/*font-size:14px;*/
+		overflow:auto;
+		border-radius: 3px;
+		background: #272b2d;
+		font-family: 'Source Code Pro',Menlo,monospace;
+		font-size: 13px;
+		line-height: 1.5em;
+		font-weight: 500;
+		color: #d0d4d7;
 
-/* Made with Cactus Badge */
-#badge {
-	position: absolute;
-	bottom: 8px;
-	right: 8px;
-	height: 48px;
-	width: 48px;
-}
+	}
+
+	table {
+		width: 100%;
+		margin: 40px 0;
+		border-collapse: collapse;
+		font-size: 13px;
+		line-height: 1.5em;
+	}
+
+	th,td {
+		text-align: left;
+		padding-right: 20px;
+		vertical-align: top;
+	}
+
+	table td,td {
+		border-spacing: none;
+		border-style: solid;
+		padding: 10px 15px;
+		border-width: 1px 0 0 0;
+	}
+
+	tr>td {
+		border-top: 1px solid #eaeaea;
+	}
+
+	tr:nth-child(odd)>td {
+		background: #fcfcfc;
+	}
+
+	thead th,th {
+		text-align: left;
+		padding: 10px 15px;
+		height: 20px;
+		font-size: 13px;
+		font-weight: bold;
+		color: #444;
+		border-bottom: 1px solid #dadadc;
+		cursor: default;
+		white-space: nowrap;
+	}
+
+	img {
+		width: auto;
+		max-width: 100%;
+		border-radius: 0;
+	}
+
+	#post-body img {
+		padding: 1em;
+		border: 1px solid #f0f1f2;
+	}
+
+	/* Made with Cactus Badge */
+	#badge {
+		position: absolute;
+		bottom: 8px;
+		right: 8px;
+		height: 48px;
+		width: 48px;
+	}
 
 /*=========================================
 Post List
@@ -578,19 +583,19 @@ h2.month {
 }
 
 #post-meta img.avatar {
-  height: 36px;
-  width: 36px;
-  float: left;
-  border-radius: 50%;
-  margin-top: 3px;
-  margin-right: 20px;
-  box-shadow: 0 0 0 3px #fff, 0 0 0 4px #eee;
+	height: 36px;
+	width: 36px;
+	float: left;
+	border-radius: 50%;
+	margin-top: 3px;
+	margin-right: 20px;
+	box-shadow: 0 0 0 3px #fff, 0 0 0 4px #eee;
 }
 
 #post-list.archive.readmore h3{
 
-	  font: 400 20px "Helvetica Neue", Helvetica,Arial,sans-serif;
-	  margin-bottom: 30px;
+	font: 400 20px "Helvetica Neue", Helvetica,Arial,sans-serif;
+	margin-bottom: 30px;
 }
 
 #post-list.archive.readmore a{
@@ -606,20 +611,124 @@ h2.month {
 	font: 300 16px/1.6 "Helvetica Neue",helvetica,Arial,sans-serif;
 }
 #sharing a.facebook {
-  background: #4361b3;
+	background: #4361b3;
 }
 #sharing a.twitter {
-  background: #4fafed;
+	background: #4fafed;
 }
 
 #sharing a {
-  font-size: 20px;
-  font-size: 13px;
-  font-weight: bold;
-  color: #fff;
-  padding: 6px 10px;
-  border-radius: 4px;
-  margin-left: 2px;
+	font-size: 20px;
+	font-size: 13px;
+	font-weight: bold;
+	color: #fff;
+	padding: 6px 10px;
+	border-radius: 4px;
+	margin-left: 2px;
+}
+
+/* IR_Black style (c) Vasily Mikhailitchenko <vaskas@programica.ru> */
+.hljs {
+	display: block;
+	overflow-x: auto;
+	/*padding: 0.5em;*/
+	background: #272b2d;
+	color: #d0d0d0;
+	-webkit-text-size-adjust: none;
+}
+
+.hljs-shebang,
+.hljs-comment {
+	color: #777279;
+}
+
+.hljs-keyword,
+.hljs-tag,
+.tex .hljs-command,
+.hljs-request,
+.hljs-status,
+.clojure .hljs-attribute {
+	color: #ebde68;
+}
+
+.hljs-sub .hljs-keyword,
+.method,
+.hljs-list .hljs-title,
+.nginx .hljs-title {
+	color: #ffffb6;
+}
+
+.hljs-string,
+.hljs-tag .hljs-value,
+.hljs-cdata,
+.hljs-filter .hljs-argument,
+.hljs-attr_selector,
+.apache .hljs-cbracket,
+.hljs-date,
+.coffeescript .hljs-attribute {
+	color: #c1ef65;
+}
+
+.hljs-subst {
+	color: #daefa3;
+}
+
+.hljs-regexp {
+	color: #e9c062;
+}
+
+.hljs-title,
+.hljs-sub .hljs-identifier,
+.hljs-pi,
+.hljs-decorator,
+.tex .hljs-special,
+.hljs-type,
+.hljs-constant,
+.smalltalk .hljs-class,
+.hljs-doctag,
+.nginx .hljs-built_in {
+	color: #c1ef65;
+}
+
+.hljs-symbol,
+.ruby .hljs-symbol .hljs-string,
+.hljs-number,
+.hljs-variable,
+.vbscript,
+.hljs-literal,
+.hljs-name {
+	color: #77bcd7;
+}
+
+.css .hljs-tag {
+	color: #96cbfe;
+}
+
+.css .hljs-rule .hljs-property,
+.css .hljs-id {
+	color: #ffffb6;
+}
+
+.css .hljs-class {
+	color: #fff;
+}
+
+.hljs-hexcolor {
+	color: #c6c5fe;
+}
+
+.hljs-number {
+	color:#77bcd7;
+}
+
+.coffeescript .javascript,
+.javascript .xml,
+.tex .hljs-formula,
+.xml .javascript,
+.xml .vbscript,
+.xml .css,
+.xml .hljs-cdata {
+	opacity: 0.7;
 }
 
 /* Media Queries */
