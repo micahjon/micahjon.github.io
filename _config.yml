@@ -15,7 +15,8 @@ disqus: false
 disqus_shortname: 'your-disqus-shortname'
 
 # Prose.io Configuration
-media: "assets/images"
+prose: 
+    media: 'assets/images'
 
 # Details for the RSS feed generator
 url:            'http://micahjon.com'
