@@ -1,5 +1,6 @@
 ---
 published: true
+title: Loading jQuery Immediately before Gravity Forms
 date: 2013-02-18T18:53:00.000Z
 description: Optimizing performance on ajax-enabled Gravity Forms
 ---
