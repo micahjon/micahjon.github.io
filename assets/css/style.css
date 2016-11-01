@@ -43,7 +43,7 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 .icon-facebook-rect:before { content: '\e803'; }
 
 /* Spacing */
-.post h1, h3, h4, h5, p, .post-body ul, #post-list li, pre {
+.post h1, h3, h4, h5, p, .post-body ul, #post-list li, pre, #post-body > ol, #post-body > ul {
 	margin-bottom: 20px;
 }
 
@@ -356,6 +356,41 @@ b, strong { font-weight: 500;
 		width: auto;
 		max-width: 100%;
 		border-radius: 0;
+	}
+
+	/* center images and make them as wide as possible. also applies to code blocks */
+	.img-wrap {
+		text-align: center;
+	}
+	@media (min-width: 700px) {
+		.img-wrap, .highlight {
+			margin-left: -50px;
+			width: 620px;
+		}
+	}
+	@media (min-width: 800px) {
+		.img-wrap, .highlight {
+			margin-left: -100px;
+			width: 720px;
+		}
+	}
+	@media (min-width: 900px) {
+		.img-wrap, .highlight {
+			margin-left: -150px;
+			width: 820px;
+		}
+	}
+	@media (min-width: 1000px) {
+		.img-wrap {
+			margin-left: -200px;
+			width: 920px;
+		}
+	}
+	@media (min-width: 1100px) {
+		.img-wrap {
+			margin-left: -250px;
+			width: 1020px;
+		}
 	}
 
 	#post-body img {
