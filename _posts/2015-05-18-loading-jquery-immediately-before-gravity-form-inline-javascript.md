@@ -2,7 +2,7 @@
 published: true
 title: Loading jQuery Immediately before Gravity Forms
 date: 2015-05-18T22:51:00.000Z
-description: Optimizing performance on ajax-enabled Gravity Forms
+description: A performance optimization for ajax-enabled Gravity Forms
 ---
 Loading jQuery asychronously or in the footer on pages with ajax-enabled Gravity Forms is tricky because the form relies on inlined jQuery-dependent scripts that immediately follow it in the DOM:
 

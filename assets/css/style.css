@@ -315,25 +315,25 @@ img {
 	text-align: center;
 }
 @media (min-width: 700px) {
-	.img-wrap, div.highlighter-rouge:not(.language-bash) {
+	.img-wrap, .gist, div.highlighter-rouge:not(.language-bash) {
 		margin-left: -50px;
 		width: 620px;
 	}
 }
 @media (min-width: 800px) {
-	.img-wrap, div.highlighter-rouge:not(.language-bash) {
+	.img-wrap, .gist, div.highlighter-rouge:not(.language-bash) {
 		margin-left: -100px;
 		width: 720px;
 	}
 }
 @media (min-width: 900px) {
-	.img-wrap, div.highlighter-rouge:not(.language-bash) {
+	.img-wrap, .gist, div.highlighter-rouge:not(.language-bash) {
 		margin-left: -150px;
 		width: 820px;
 	}
 }
 @media (min-width: 1000px) {
-	.img-wrap {
+	.img-wrap, .gist {
 		margin-left: -200px;
 		width: 920px;
 	}
