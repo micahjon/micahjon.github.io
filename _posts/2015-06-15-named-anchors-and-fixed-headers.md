@@ -10,7 +10,7 @@ The solution I’ve found is simply to use an `<a>` tag with a tall pseudo-eleme
 
 For example:
 
-{% highlight css %}
+```css
 .anchor-target:before {
   content:"";
   display:block;
@@ -18,13 +18,13 @@ For example:
   height:$fixed-header-anchor-offset; /* fixed header height*/
   margin:-$fixed-header-anchor-offset 0 0; /* negative fixed header height */
 }
-{% endhighlight %}
+```
 
 If this `<a class=”anchor-target”`> tag is before the relevant section, the browser will jump to it, leaving the appropriate amount of buffer so that the sections begins right underneath the fixed header.
 
 This is also an issue for Gravity Forms confirmation messages. Simply apply the same styles to .gform_anchor:before and make sure to enable the `<a class=”gform_anchor”>` by using the gform_confirmation_anchor filter:
 
-{% highlight php %}
+```php
 // enable confirmation anchor (scrolls to the right place for the confirmation message)
 add_filter( 'gform_confirmation_anchor', '__return_true' );
-{% endhighlight %}
+```

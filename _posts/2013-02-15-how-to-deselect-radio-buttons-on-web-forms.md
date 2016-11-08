@@ -42,9 +42,9 @@ Double click to select this id, and copy it.
 
 3.  In the Console tab, paste the following code. Replace "choice_31_8_0" with your radio button's unique id. 
 
-{% highlight javascript %}
+```javascript
 document.getElementById("choice_31_8_0'").checked = false;
-{% endhighlight %}
+```
 
 ![In Console tab, paste the above javascript snippet]({{site.baseurl}}/assets/images/Screen Shot 2016-10-30 at 9.43.41 PM.png)
 
@@ -57,14 +57,16 @@ document.getElementById("choice_31_8_0'").checked = false;
 
 ### The HTML
 
+```html
 	<input name="input_8" type="radio" value="No, I'm still deciding" id="choice_31_8_0" tabindex="3">
+```
 
 The _\<input\>_ tag is used for user inputs in web forms. This particular tag has _type= "radio"_ (radio button) and _id = "choice_38_8_0"._
 
 ### The Javascript
 
-{% highlight javascript %}
+```javascript
 document.getElementById("choice_31_8_0'").checked = false;
-{% endhighlight %}
+```
 
 This script looks within the _document_ (webpage) for the first element with _id_ equal to _choice_31_8_0_, and sets the _checked_ property of this object to _false_.

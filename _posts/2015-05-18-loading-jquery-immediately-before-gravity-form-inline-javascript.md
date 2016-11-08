@@ -14,8 +14,7 @@ Another solution I've run across uses `gform_cdata_open` and `gform_cdata_close`
 
 Ultimately, the most reliable (and performant) solution I've found is to inject a synchronous jQuery `<script>` _immediately_ before the inline scripts using the `gform_cdata_open` hook once.
 
-{% highlight php %}
-
+```php
 /**
  * Inject synchronous jQuery dependency before the Gravity Form inline scripts
  */
@@ -71,7 +70,6 @@ function enqueue_jquery()
 
 }
 add_action('wp_footer', 'enqueue_jquery', 9);
-
-{% endhighlight %}
+```
 
 Your comments and feedback are welcome!
