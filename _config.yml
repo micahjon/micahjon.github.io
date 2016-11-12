@@ -26,7 +26,7 @@ defaults:
     layout: post
 name: Micah Miller-Eshleman
 description: Blog & Projects
-meta_description: Your New Jekyll Site, Blogging about stuffs
+meta_description: Blog & Projects
 aboutPage: true
 markdown: kramdown
 highlighter: rouge
