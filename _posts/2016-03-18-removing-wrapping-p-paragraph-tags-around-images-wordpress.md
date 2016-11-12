@@ -1,9 +1,10 @@
 ---
-published: true
-title: One Regex to Rule them all&#58; Removing wrapping &lt;p&gt; tags around images in WordPress while preserving links
-date: 2016-03-18T21:40:00.000Z
+title: One Regex to Rule them all&#58; Removing wrapping &lt;p&gt; tags around images
+  in WordPress while preserving links
+date: 2016-03-18 21:40:00 Z
 description: A Wordpress the_content filter that makes styling linked-images sane
 ---
+
 Wordpress has the unfortunate tendency of wrapping nearly everything in `<p>` tags. While this is often helpful for blocks of text in a post, it limits our ability to succinctly and consistently style images regardless of their containing `<a>` tag, `<p>` tag, or both. In other words, you rarely want `<a>` tag styles (e.g. border-bottom & :hover) or `<p>` styles (e.g. margin-bottom & max-width) to affect the styling of their child images. 
 
 The cleanest solution I've found is to write a Regular Expression that filters post_content and removes wrapping `<p>` tags around `<img>`'s while preserving surrounding text and it's styling (e.g. **bold**, _italic_).  For instance, in the Wordpress editor I'll add some bold text, a right-aligned image, and then some more text:

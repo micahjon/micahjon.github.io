@@ -1,9 +1,9 @@
 ---
-published: true
 title: How to Deselect Radio Buttons on Web Forms
-date: 2013-02-18T18:53:00.000Z
+date: 2013-02-18 18:53:00 Z
 description: A quick in-browser fix so you don't loose your progress
 ---
+
 Today I filled out yet another poorly built online survey. This penultimate page asked for my academic major: 
 
 ![Original Form]({{site.baseurl}}/assets/images/Screen Shot 2016-10-30 at 7.34.51 PM.png)

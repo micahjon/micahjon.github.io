@@ -1,9 +1,10 @@
 ---
-published: true
 title: Named Anchors and Fixed Headers
-date: 2015-06-15T13:32:00.000Z
-description: Using pseudoelements to compensate for fixed headers when jumping to anchor targets
+date: 2015-06-15 13:32:00 Z
+description: Using pseudoelements to compensate for fixed headers when jumping to
+  anchor targets
 ---
+
 One of the issues with fixed header navigation, especially when it’s fairly tall (e.g. goshen.edu) is that when you use named anchors to scroll you to a particular page section, the top of the relevant section is covered by the header.
 
 The solution I’ve found is simply to use an `<a>` tag with a tall pseudo-element whose height matches the height of the header but doesn’t actually affect the layout of the page (negative margin prevents it from taking up vertical-space and zero width makes the bottom of the previous section clickable).
