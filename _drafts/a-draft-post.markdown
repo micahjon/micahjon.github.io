@@ -1,6 +1,6 @@
 ---
 title: A Draft Post
-date: 2016-11-12 18:18:00.633000000 Z
+date: 2016-11-12 13:18:00.633000000 -05:00
 description: Work in progress
 ---
 
