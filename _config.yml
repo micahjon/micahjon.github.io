@@ -2,7 +2,7 @@ name: Micah Miller-Eshleman
 description: Blog & Projects
 meta_description: "Your New Jekyll Site, Blogging about stuffs"
 
-aboutPage: true
+enableDisqusComments: true
 
 markdown: kramdown
 highlighter: rouge

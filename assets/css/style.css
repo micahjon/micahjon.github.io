@@ -173,7 +173,7 @@ ul 	{ margin:0; padding:0; }
 /*li	{ list-style-type:circle; list-style-position:inside; }*/
 
 /* Line Height */
-#post-body, p { line-height:1.7; }
+#post-body, p, .page { line-height:1.7; }
 
 b, strong { 
 	font-weight: 500;
