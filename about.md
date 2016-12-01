@@ -12,7 +12,7 @@ Weekdays I work at <a href="https://www.goshen.edu">Goshen College</a> on the co
 <div class="github-card" data-github="pranksinatra" data-width="400" data-height="150" data-theme="default"></div>
 <script src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
 
-[Current resume](https://docs.google.com/document/d/1XRORQT54D9ZZMoY7EH-FTfZkHGav7tSzjPZ_1bNBht8/edit?usp=sharing).
+<!-- [Current resume](https://docs.google.com/document/d/1XRORQT54D9ZZMoY7EH-FTfZkHGav7tSzjPZ_1bNBht8/edit?usp=sharing). -->
 
 ## Articles
 
