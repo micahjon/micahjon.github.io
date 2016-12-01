@@ -32,6 +32,6 @@ If you happen to be in Goshen, be sure to check out:
 - [Goshen Community Contra Dancing](http://godancing.org) - there's dancing the first Saturday of every month
 - [Open Table Mennonite Fellowship](http://www.opentablemennonite.org/) - my house church
 - [Goshen Brewing Company](http://goshenbrewing.com/)
-- And of course, [Goshen College](https://www.goshen.edu) (great website, eh?)
+- And of course, [Goshen College](https://www.goshen.edu)
 
 {% include footer.html %}
