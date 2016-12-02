@@ -5,7 +5,7 @@ date: 2016-12-02 17:12:00 -05:00
 
 Fixed headers that stick to the top of the screen and scroll with you down the page are a staple on many websites. This can be problematic when you have "anchor" links to content further up or down the page. When the browser jumps to a new "target" content, it will stick the top of the content right up against the top of the screen, which means your fixed header now covers up the top of the content you wanted to see!
 
-There are a (wide range of CSS tricks, meticulously documented by Nicolas Gallagher)[http://nicolasgallagher.com/jump-links-and-viewport-positioning/] that can be used to prevent this bug, generally by adding additional spacing above the target with a pseudoelement or padding. 
+There are a [wide range of CSS tricks, meticulously documented by Nicolas Gallagher](http://nicolasgallagher.com/jump-links-and-viewport-positioning/) that can be used to prevent this bug, generally by adding additional spacing above the target with a pseudoelement or padding. 
 
 His pure CSS approach comes highly recommended. However, I do run into cases where my "anchor targets" (content that is linked to with a hash, e.g. #contact) have unpredicatable (or simply complex) CSS: pseudoelements, top padding, etc. Thus, I've written an extremely lightweight Javascript workaround for this issue. It listens for the *hashchange* event and scrolls the user up just enough to compensate for the fixed header if necessary.
 
@@ -78,4 +78,4 @@ His pure CSS approach comes highly recommended. However, I do run into cases whe
 }(window);
 ````
 
-It's currently being used on (goshen.edu)[https://www.goshen.edu] and I'm very much open to bug reports and suggestions!
+It's currently being used on [goshen.edu](https://www.goshen.edu) and I'm very much open to bug reports and suggestions!
