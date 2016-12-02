@@ -1,6 +1,7 @@
 ---
-title: Solving the anchor-targets behind fixed-headers bug with minimal Javascript
+title: Solving the Anchor Link :target behind Fixed Header Bug with JavaScript
 date: 2016-12-02 17:12:00 -05:00
+description: A lightweight JS fix for a common UI bug
 ---
 
 Fixed headers that stick to the top of the screen and scroll with you down the page are a staple on many websites. This can be problematic when you have "anchor" links to content further up or down the page. When the browser jumps to a new "target" content, it will stick the top of the content right up against the top of the screen, which means your fixed header now covers up the top of the content you wanted to see!
@@ -40,7 +41,7 @@ His pure CSS approach comes highly recommended. However, I do run into cases whe
 		}
 	}
 
-	// Run on first scroll (in case the user loaded a page with a hash that automatically scrolls down)
+	// Run on first scroll (in case the user loaded a page with a hash in the url)
 	window.addEventListener('scroll', onScroll);
 	function onScroll()
 	{
@@ -68,8 +69,8 @@ His pure CSS approach comes highly recommended. However, I do run into cases whe
 		target = document.getElementById( hash.slice(1) );
 		if ( target === null ) { return; }
 
-		// Get distance of :target from top of viewport. If it's near zero, we assume that the 
-		// user was just scrolled to the :target.
+		// Get distance of :target from top of viewport. If it's near zero, we assume
+		// that the user was just scrolled to the :target.
 		if ( target.getBoundingClientRect().top < 2 ) {
 			window.scrollBy(0, -fixedHeaderOffset());
 		}
