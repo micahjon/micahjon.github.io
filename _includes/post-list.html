@@ -1,7 +1,22 @@
+{% comment %}
+	Get timestamp of exactly 1 year ago 
+{% endcomment %}
+{% capture yearAgoUnix %}{{ 'now' | date: '%s' | minus: 31557600 }}{% endcapture %}
+
 <ul id="post-list">
+    
+    {% comment %}
+    	Compare post date to a year ago to determine format. Posts over a year old need to display a year as well as month & year 
+    {% endcomment %}
     {% for post in paginator.posts %}
+    	{% capture postDateUnix %}{{ post.date | date: '%s' | plus: 0 }}{% endcapture %}
+    	{% if yearAgoUnix < postDateUnix %}
+    		{% assign formattedDate = post.date | date:"%b %d" %}
+    	{% else %}
+    		{% assign formattedDate = post.date | date:"%b %d, '%y" %}
+    	{% endif %}
         <li>
-            <a href="{{ site.baseurl }}{{ post.url | remove_first: '/' }}"><aside class="dates">{{ post.date | date:"%b %d" }}</aside></a>
+            <a href="{{ site.baseurl }}{{ post.url | remove_first: '/' }}"><aside class="dates">{{ formattedDate }}</aside></a>
             <a href="{{ site.baseurl }}{{ post.url | remove_first: '/' }}">{{ post.title }} <div class="description">{{ post.description }}</div></a>
         </li>
     {% endfor %}

@@ -388,6 +388,7 @@ Post List
 #post-list .dates {
 	float: right;
 	position: relative;
+	padding-left: 8px;
 	top: 1px;
 	font: 300 17px/1.8 "Helvetica Neue",helvetica,Arial,sans-serif;
 	color: #bbb;
