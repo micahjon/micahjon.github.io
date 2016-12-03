@@ -1,7 +1,7 @@
 ---
 title: Setting up Custom Authorization in Ember-CLI using Google oAuth2 for the Initial
   Login
-date: 2015-06-15 13:32:00 Z
+date: 2015-06-15 09:32:00 -04:00
 description: A simple full-stack authorization demo using Ember-CLI, Ember Simple
   Auth, Torii, and Express.
 redirect_from: "/setting-up-custom-authorization-in-ember-cli-using-google-oauth2-for-the-initial-login/"

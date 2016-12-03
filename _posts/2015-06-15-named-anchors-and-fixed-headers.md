@@ -1,6 +1,6 @@
 ---
 title: Named Anchors and Fixed Headers
-date: 2015-06-15 13:32:00 Z
+date: 2015-06-15 09:32:00 -04:00
 description: Using pseudoelements to compensate for fixed headers when jumping to
   anchor targets
 redirect_from: "/named-anchors-and-fixed-headers/"

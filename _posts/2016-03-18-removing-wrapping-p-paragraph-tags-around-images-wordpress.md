@@ -1,7 +1,7 @@
 ---
 title: One Regex to Rule them all&#58; Removing wrapping &lt;p&gt; tags around images
   in WordPress while preserving links
-date: 2016-03-18 21:40:00 Z
+date: 2016-03-18 17:40:00 -04:00
 description: A Wordpress the_content filter that makes styling linked-images sane
 redirect_from: "/removing-wrapping-p-tags-around-images-in-wordpress/"
 ---

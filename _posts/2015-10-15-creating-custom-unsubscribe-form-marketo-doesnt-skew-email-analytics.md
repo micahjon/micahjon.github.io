@@ -1,6 +1,6 @@
 ---
 title: Creating a Custom Unsubscribe Form in Marketo that Doesn’t Skew Email Analytics
-date: 2015-10-15 22:41:00 Z
+date: 2015-10-15 18:41:00 -04:00
 description: How to test a new Marketo unsubscribe form on an external page before
   going live
 redirect_from: "/creating-a-custom-unsubscribe-form-in-marketo-that-doesnt-skew-email-analytics/"

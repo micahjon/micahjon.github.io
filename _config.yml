@@ -40,4 +40,4 @@ author: Micah Miller-Eshleman
 authorTwitter: YourTwitterUsername
 permalink: "/:year/:title/"
 gems:
-  - jekyll-redirect-from
+- jekyll-redirect-from

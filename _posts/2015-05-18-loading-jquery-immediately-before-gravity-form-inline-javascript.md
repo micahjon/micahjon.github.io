@@ -1,6 +1,6 @@
 ---
 title: Loading jQuery Immediately before Gravity Forms
-date: 2015-05-18 22:51:00 Z
+date: 2015-05-18 18:51:00 -04:00
 description: A performance optimization for ajax-enabled Gravity Forms
 redirect_from: "/loading-jquery-in-the-footer-with-gravity-forms/"
 ---
