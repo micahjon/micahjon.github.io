@@ -39,3 +39,5 @@ url: http://micahjon.com
 author: Micah Miller-Eshleman
 authorTwitter: YourTwitterUsername
 permalink: "/:year/:title/"
+gems:
+  - jekyll-redirect-from

@@ -3,6 +3,7 @@ title: Named Anchors and Fixed Headers
 date: 2015-06-15 13:32:00 Z
 description: Using pseudoelements to compensate for fixed headers when jumping to
   anchor targets
+redirect_from: "/named-anchors-and-fixed-headers/"
 ---
 
 One of the issues with fixed header navigation, especially when it’s fairly tall (e.g. goshen.edu) is that when you use named anchors to scroll you to a particular page section, the top of the relevant section is covered by the header.

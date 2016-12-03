@@ -4,6 +4,7 @@ title: Setting up Custom Authorization in Ember-CLI using Google oAuth2 for the 
 date: 2015-06-15 13:32:00 Z
 description: A simple full-stack authorization demo using Ember-CLI, Ember Simple
   Auth, Torii, and Express.
+redirect_from: "/setting-up-custom-authorization-in-ember-cli-using-google-oauth2-for-the-initial-login/"
 ---
 
 I've found it handy in Ember-CLI apps to use Google logins for initial authentication (that way I don't have to store passwords). The question is how to transform a Google login into a session that can be used to query user-specific resources from my own server (not just Google's APIs). Here's a high level view of the process:

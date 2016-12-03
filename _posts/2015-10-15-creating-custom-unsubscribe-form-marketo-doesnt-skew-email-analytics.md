@@ -3,9 +3,8 @@ title: Creating a Custom Unsubscribe Form in Marketo that Doesn’t Skew Email A
 date: 2015-10-15 22:41:00 Z
 description: How to test a new Marketo unsubscribe form on an external page before
   going live
+redirect_from: "/creating-a-custom-unsubscribe-form-in-marketo-that-doesnt-skew-email-analytics/"
 ---
-
-Last week I took on the challenge of migrating our old Forms 1.0 Marketo unsubscribe form from an (ugly) Marketo landing page to our responsive Wordpress site. 
 
 The easy part was creating a new form--with a hidden _Unsubscribed_ field, among others--and embedding it in a Wordpress page. More difficult was _testing the new Unsubscribe link_ in emails. I needed a fully functioning Unsubscribe link that met these requirements:
 
