@@ -7,7 +7,7 @@ redirect_from: "/loading-jquery-in-the-footer-with-gravity-forms/"
 
 Loading jQuery asychronously or in the footer on pages with ajax-enabled Gravity Forms is tricky because the form relies on inlined jQuery-dependent scripts that immediately follow it in the DOM:
 
-![Inline jQuery-dependent Gravity Form scripts]({{site.baseurl}}/assets/images/Screen Shot 2016-10-31 at 12.55.36 AM.png)
+![Inline jQuery-dependent Gravity Form scripts]({{site.baseurl}}assets/images/Screen Shot 2016-10-31 at 12.55.36 AM.png)
 
 In this case, the typical `gform_init_scripts_footer` solution doesn't work, because moving jQuery to the footer would break these inline scripts. 
 

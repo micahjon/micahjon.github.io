@@ -12,16 +12,16 @@ The cleanest solution I've found is to write a Regular Expression that filters 
 
 ### Visual editor:
 
-![visual]({{site.baseurl}}/assets/images/visual.png)
+![visual]({{site.baseurl}}assets/images/visual.png)
 
 ### Text editor:
 
-![Screenshot from 2016-03-20 13-41-50]({{site.baseurl}}/assets/images/Screenshot-from-2016-03-20-13-41-50.png)
+![Screenshot from 2016-03-20 13-41-50]({{site.baseurl}}assets/images/Screenshot-from-2016-03-20-13-41-50.png)
 
 ### On the page:
 
-![Screenshot from 2016-03-20 13-43-36]({{site.baseurl}}/assets/images/Screenshot-from-2016-03-20-13-43-36.png) 
-![Screenshot from 2016-03-20 13-47-04]({{site.baseurl}}/assets/images/Screenshot-from-2016-03-20-13-47-04.png) 
+![Screenshot from 2016-03-20 13-43-36]({{site.baseurl}}assets/images/Screenshot-from-2016-03-20-13-43-36.png) 
+![Screenshot from 2016-03-20 13-47-04]({{site.baseurl}}assets/images/Screenshot-from-2016-03-20-13-47-04.png) 
 
 _You'll notice the above example is contrived: I manually added a nasty 400px max-width to the paragraph in Chrome Dev Tools. The point is that the image, even though it's right-aligned, it subject to the constraints of it's containing paragraph._ 
 
