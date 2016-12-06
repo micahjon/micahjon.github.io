@@ -59,7 +59,7 @@ document.getElementById("choice_31_8_0'").checked = false;
 ### The HTML
 
 ```html
-	<input name="input_8" type="radio" value="No, I'm still deciding" id="choice_31_8_0" tabindex="3">
+<input name="input_8" type="radio" value="No, I'm still deciding" id="choice_31_8_0" tabindex="3">
 ```
 
 The _\<input\>_ tag is used for user inputs in web forms. This particular tag has _type= "radio"_ (radio button) and _id = "choice_38_8_0"._

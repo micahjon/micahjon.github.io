@@ -17,6 +17,16 @@ Ultimately, the most reliable (and performant) solution I've found is to inject 
 
 ```php
 /**
+ * Deregister jQuery in <head>, so it can be loaded in the footer or before the 
+ * first Gravity Form on the page. 
+ */
+function gc_deregister_default_jquery() 
+{
+	wp_deregister_script('jquery');
+}
+add_action( 'wp_enqueue_scripts', 'gc_deregister_default_jquery' );
+
+/**
  * Inject synchronous jQuery dependency before the Gravity Form inline scripts
  */
 function inject_jquery_above_gravity_form( $content = '' ) 
