@@ -27,7 +27,7 @@ His pure CSS approach comes highly recommended. However, I do run into cases whe
 {
 	'use strict';
 
-	// Update this function so it returns the with the height of your fixed headers
+	// Update this function so it returns the height of your fixed headers
 	function fixedHeaderOffset( screenWidth ) 
 	{
 		if ( screenWidth < 525 ) {
