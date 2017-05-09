@@ -15,6 +15,7 @@ You'll want to put your CSS first, your HTML second, and your JavaScript last. T
 
 I generally use a random id for each component too, just to make them easier to reference in JS.
 
+{% raw %}
 ```Twig
 <link href="component.css" rel="stylesheet" />
 
@@ -27,3 +28,4 @@ I generally use a random id for each component too, just to make them easier to 
 document.querySelector('#{{id}}').doSomething();
 </script>
 ```
+{% endraw %}
