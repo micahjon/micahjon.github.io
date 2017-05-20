@@ -261,6 +261,7 @@ pre	{
 	font-size: 13px;
 	line-height: 1.5em;
 	font-weight: 500;
+	tab-size: 4;
 }
 
 table {
@@ -629,17 +630,20 @@ h2.month {
 	background: #546e7a;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-.hljs.php:before {
+.language-php .hljs:before {
 	content: 'PHP';
 }
-.hljs.bash:before {
+.language-bash .hljs:before {
 	content: 'Bash';
 }
-.hljs.handlebars:before {
+.language-handlebars .hljs:before {
 	content: 'Handlebars';
 }
-.hljs.javascript:before {
+.language-javascript .hljs:before {
 	content: 'JS';
+}
+.language-twig .hljs:before {
+	content: 'Twig';
 }
 
 /* not sure why these empty .xml tags are showing up */

@@ -77,6 +77,6 @@ His pure CSS approach comes highly recommended. However, I do run into cases whe
 	}
 
 }(window);
-````
+```
 
 It's currently being used on [goshen.edu](https://www.goshen.edu) and I'm very much open to bug reports and suggestions!
