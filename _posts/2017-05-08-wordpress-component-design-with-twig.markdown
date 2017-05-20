@@ -20,7 +20,7 @@ function my_shortcode($atts)
 {
 	// shortcode logic...
 
-	return Timber::compile('component.twig', [
+	return Timber::compile('my-component.twig', [
 		'content' => '...'
 		'pathToCSS' => '...'
 		'pathToJS' => '...'
@@ -32,8 +32,8 @@ function my_shortcode($atts)
 ```twig
 <link href="{{ pathToCSS }}" rel="stylesheet" />
 
-{% set id = 'component--' ~ random() %}
-<figure id="{{ id }}" class="component">
+{% set id = 'my-component--' ~ random() %}
+<figure id="{{ id }}" class="my-component">
   {{ content }}
 </figure>
 
@@ -52,13 +52,13 @@ One way of keeping track of this is through a custom Twig filter. Let's call it 
 ```php
 $twig->addFilter(new Twig_SimpleFilter('first_on_page', function ( $componentName ) 
 {
-	global $myComponentsOnPage;
+	global $componentsAlreadyInitialized;
 
-	if ( !isset($myComponentsOnPage) ) $myComponentsOnPage = ',';
+	if ( !isset($componentsAlreadyInitialized) ) $componentsAlreadyInitialized = ',';
 
 	// Components is not already on this page. Add it to global var.
-	if ( strpos($myComponentsOnPage, ','. $componentName .',') === false ) {
-		$myComponentsOnPage .= $componentName . ',';
+	if ( strpos($componentsAlreadyInitialized, ','. $componentName .',') === false ) {
+		$componentsAlreadyInitialized .= $componentName . ',';
 		return true;
 	}
 
@@ -73,8 +73,8 @@ There are probably *classier* ways of doing this (how about that pun!), but a gl
 	<link href="{{ pathToCSS }}" rel="stylesheet" />
 {% endif %}
 
-{% set id = 'component--' ~ random() %}
-<figure id="{{ id }}" class="component">
+{% set id = 'my-component--' ~ random() %}
+<figure id="{{ id }}" class="my-component">
   {{ content }}
 </figure>
 
@@ -96,7 +96,7 @@ Critical CSS (inlining a minimal set of above-the-fold styles) can dramatically 
 
 I get it: transitioning from a huge *style.css* file in your <code><head></code> to a bunch of smaller CSS files, each split into critical and non-critical sections can be tricky! There are tools that will automatically generate critical CSS for you (e.g. [Penthouse](https://github.com/pocketjoso/penthouse), [critical](https://github.com/addyosmani/critical)), but I found that generating HTML files for these tools to operate on was error-prone. Ultimately, I went with a DIY solution that split up my CSS based on comments: [postcss-critical-split](https://github.com/mrnocreativity/postcss-critical-split) by [Ronny Welter](https://github.com/mrnocreativity). The silver lining: I got *very* well acquainted with the styles on my site and was able to remove a lot of unused rules.
 
-At the end of the day I we have 3 files. Let's call them:
+At the end of the day we have 3 files. Let's call them:
 
 - Original
 - Critical
@@ -106,55 +106,62 @@ Where Original = Critical + Asynchronous
 
 Then we can inline the Critical CSS in the <code><head></code> and use a JavaScript library called [loadCSS by Filament Group](https://github.com/filamentgroup/loadCSS) to load Asynchronous CSS. Chances are we'll screw something up in the process so it's handy to have the Original CSS available to compare against. 
 
-Here's a Twig template that deals exclusively with stylesheet loading. I'm assuming our 3 files are in the same folder, called *style-original.css*, *style-critical.css*, and *style-async.css*, and we've created a *css_uri* Twig filter that simply converts a filename (e.g. "style-original") into a path (e.g. "/wp-content/themes/your-theme/styles/dist/style-original.css") and a *css_inline* filter which simply outputs the contents of a CSS file.
+Ideally, we could abstract this all away so that injecting CSS is as easy as including a Twig template:
+
+*Critical + Asynchronous CSS in <code><head></code>*
+{% raw %}
+```twig
+{% for styleSheetName in criticalStyleSheets %}
+	{% include 'stylesheet.twig' with { 'name': styleSheetName, 'type:': 'critical+async' } %}
+{% endfor %}
+
+<script> 
+	// Inline the LoadCSS library here 
+</script>
+```
+{% endraw %}
+
+Where you'd define *criticalStyleSheets* in your templates as an array of stylesheet names, e.g. 
+
+```php
+// _init_timber.php
+$context['criticalStyleSheets'] = ['main'];
+
+// archive.php (or any other template)
+$context['criticalStyleSheets'][] = 'archive';
+```
+
+*Synchronous CSS at the beginning of my-component template*
+{% raw %}
+```twig
+{% if 'myComponent'|first_on_page %}
+	{% include 'stylesheet.twig' with { 'name': 'my-component', 'type:': 'sync' } %}
+{% endif %}
+```
+{% endraw %}
+
+*stylesheet.twig*
 
 {% raw %}
 ```twig
-{% spaceless %}
-
-{% set path = name|css_uri %}
+{% set path = '/wp-content/themes/my-theme/styles/dist/' %}
 	
-{# Critical (inline) CSS paired with asynchronous stylesheet #}
-{% if type == 'critical+async' %}
-	{% if not omitCriticalCSS %}
-		{# Load critical (inline) CSS part #}
-		<style>{{(name ~ '-critical')|css_inline}}</style>
-		{# Omit async CSS part if onlyCriticalCSS is specified #}
-		{% if not onlyCriticalCSS %}
-			<link rel="preload" href="{{path}}" as="style" onload="this.rel='stylesheet'">
-			<noscript><link rel="stylesheet" href="{{path}}"></noscript>
-		{% endif %}
-	{% else %}
-		{# Load compelete synchronously (for debugging) if omitCriticalCSS is specified #}
-		<link rel="stylesheet" href="{{(name ~ '-original')|css_uri}}">
-	{% endif %}
-
-{# Typical synchronous CSS #}
-{% elseif type == 'sync' or type == '' %}
-	<link rel="stylesheet" href="{{path}}">
+{% if type == 'sync' %}
 	
-{# Invalid stylesheet type provided. Display error #}
+	<link rel="stylesheet" href="{{path ~ name ~ '-original.css'}}">
+
+{% elseif type == 'critical+async' %}
+	
+	<style>{{name|critical_css_inline}}</style>
+	
+	<link rel="preload" href="{{path ~ name ~ '-async.css'}}" as="style" onload="this.rel='stylesheet'">
+	<noscript><link rel="stylesheet" href="{{path ~ name ~ '-async.css'}}"></noscript>
+	
 {% else %}
 	<!-- Invalid stylesheet type specified: type="{{type}}", name="{{name}}" -->
 
 {% endif %}
-{% endspaceless %}
 ```
 {% endraw %}
 
-
-{% raw %}
-{% include 'components/stylesheet.twig' with { 'name': 'carousel' } only %}
-
-{# Critical and Asynchronous CSS (generated from a single 'original' CSS file) #}
-{% for fileName in criticalCSS %}
-	{% include 'components/stylesheet.twig' with { 'type': 'critical+async', 'name': fileName } %}
-{% endfor %}
-
-{% if isLoggedIn %}
-	{% include 'components/stylesheet.twig' with { 'type': 'async', 'name': 'admin' } %}
-{% endif %}
-
-...
-
-{% endraw %}
+You'll notice a *critical_css_inline* filter which simply returns *file_get_contents()* on a CSS file, but otherwise it's pretty simple. 
