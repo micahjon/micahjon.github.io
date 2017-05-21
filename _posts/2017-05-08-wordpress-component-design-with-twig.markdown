@@ -1,7 +1,7 @@
 ---
 title: WordPress Component Design with Timber & Twig
 date: 2017-05-08 20:21:00 -04:00
-description: "Component initialization & critical CSS strategies"
+description: Component initialization & critical CSS strategies
 ---
 
 At Goshen College, we use the [Timber framework](https://www.upstatement.com/timber/) for Wordpress themes. Timber relies on [Twig](https://twig.sensiolabs.org/) for templating, which is {% raw %}{{&nbsp;similar.in&nbsp;\|&nbsp;syntax&nbsp;}}{% endraw %} to other templating engines like Handlebars (JavaScript) or Jinja (Python).
