@@ -92,23 +92,23 @@ There are probably *classier* ways of doing this (how about that pun!), but a gl
 
 Critical CSS (inlining a minimal set of above-the-fold styles) can dramatically improve perceived performance, especially on high latency connections. 
 
-<em>I've also heard eating salad every day will dramatically improve my perceived healthiness, but that doesn't mean I'm doing it.</em>
+<em>I've also heard jogging a half hour every day will dramatically improve my perceived healthiness, but that doesn't mean I'm doing it.</em>
 
 I get it: transitioning from a huge *style.css* file in your <code><head></code> to a bunch of smaller CSS files, each split into critical and non-critical sections can be tricky! There are tools that will automatically generate critical CSS for you (e.g. [Penthouse](https://github.com/pocketjoso/penthouse), [critical](https://github.com/addyosmani/critical)), but I found that generating HTML files for these tools to operate on was error-prone. Ultimately, I went with a DIY solution that split up my CSS based on comments: [postcss-critical-split](https://github.com/mrnocreativity/postcss-critical-split) by [Ronny Welter](https://github.com/mrnocreativity). The silver lining: I got *very* well acquainted with the styles on my site and was able to remove a lot of unused rules.
 
 At the end of the day we have 3 files. Let's call them:
 
-- Original
-- Critical
-- Asynchronous
+- original
+- critical
+- asynchronous
 
-Where Original = Critical + Asynchronous
+Where original = critical + asynchronous
 
-Then we can inline the Critical CSS in the <code><head></code> and use a JavaScript library called [loadCSS by Filament Group](https://github.com/filamentgroup/loadCSS) to load Asynchronous CSS. Chances are we'll screw something up in the process so it's handy to have the Original CSS available to compare against. 
+Then we can inline the critical CSS in the <code><head></code> and use a JavaScript library called [loadCSS by Filament Group](https://github.com/filamentgroup/loadCSS) to load asynchronous CSS. Chances are we'll screw something up in the process so it's handy to have the original CSS available to compare against. 
 
 Ideally, we could abstract this all away so that injecting CSS is as easy as including a Twig template:
 
-*Critical + Asynchronous CSS in <code><head></code>*
+*Critical + asynchronous CSS in <code><head></code>*
 {% raw %}
 ```twig
 {% for styleSheetName in criticalStyleSheets %}
@@ -125,7 +125,7 @@ Where you'd define *criticalStyleSheets* in your templates as an array of styles
 
 ```php
 // _init_timber.php
-$context['criticalStyleSheets'] = ['main'];
+$context['criticalStyleSheets'] = ['main', 'header'];
 
 // archive.php (or any other template)
 $context['criticalStyleSheets'][] = 'archive';
@@ -165,3 +165,28 @@ $context['criticalStyleSheets'][] = 'archive';
 {% endraw %}
 
 You'll notice a *critical_css_inline* filter which simply returns *file_get_contents()* on a CSS file, but otherwise it's pretty simple. 
+
+I've also found it nifty to omit all non-critical styles when building critical stylesheets to ensure the first paint looks like it should. One easy way to do this on the fly is with the GET parameter, e.g.
+
+```php
+// _init_timber.php
+$context['onlyCriticalCSS'] = isset($_GET['only-critical-css']);
+```
+
+Then in *stylesheet.twig*
+{% raw %}
+```twig
+<!-- ... --> 
+{% elseif type == 'critical+async' %}
+	
+	<style>{{name|critical_css_inline}}</style>
+
+	{% if not onlyCriticalCSS %}
+		<link rel="preload" href="{{path ~ name ~ '-async.css'}}" as="style" onload="this.rel='stylesheet'">
+		<noscript><link rel="stylesheet" href="{{path ~ name ~ '-async.css'}}"></noscript>
+	{% endif %}
+<!-- ... --> 
+```
+{% endraw %}
+
+Using [LiveReload](http://livereload.com/) when tweaking critical + asynchronous stylesheets poses a similar issue: the inline CSS never gets updated. Fixing this is as simple as adding an *omit-sync-css* GET parameter, which can be used to disable inlining (and make everything synchronous) during development.
