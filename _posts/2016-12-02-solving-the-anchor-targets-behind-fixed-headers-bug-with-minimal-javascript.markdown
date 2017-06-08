@@ -28,12 +28,14 @@ His pure CSS approach comes highly recommended. However, I do run into cases whe
 	'use strict';
 
 	// Update this function so it returns the height of your fixed headers
-	function fixedHeaderOffset( screenWidth ) 
+	function fixedHeaderOffset() 
 	{
-		if ( screenWidth < 525 ) {
+		var width = window.innerWidth;
+
+		if ( width < 525 ) {
 			return 120;
 		}
-		else if ( screenWidth < 1024 ) {
+		else if ( width < 1024 ) {
 			return 88;
 		}
 		else {
@@ -56,8 +58,7 @@ His pure CSS approach comes highly recommended. However, I do run into cases whe
 
 	function scrollUpToCompensateForFixedHeader()
 	{
-		var width = window.innerWidth,
-			hash, 
+		var hash, 
 			target, 
 			offset;
 
