@@ -15,9 +15,18 @@
     	{% else %}
     		{% assign formattedDate = post.date | date:"%b %d, '%y" %}
     	{% endif %}
+
+        {% comment %}
+            Get link to post on this blog or an external link
+        {% endcomment %}
+        {% if post.external_url %}
+            {% assign link = post.external_url %}
+        {% else %}
+            {% capture link %}{{ site.baseurl }}{{ post.url | remove_first: '/' }}{% endcapture %}
+        {% endif %}
         <li>
-            <a href="{{ site.baseurl }}{{ post.url | remove_first: '/' }}"><aside class="dates">{{ formattedDate }}</aside></a>
-            <a href="{{ site.baseurl }}{{ post.url | remove_first: '/' }}">{{ post.title }} <div class="description">{{ post.description }}</div></a>
+            <a href="{{ link }}"><aside class="dates">{{ formattedDate }}</aside></a>
+            <a href="{{ link }}">{{ post.title }} <div class="description">{{ post.description }}</div></a>
         </li>
     {% endfor %}
 </ul>
