@@ -22,7 +22,7 @@
         {% if post.external_url %}
             {% assign link = post.external_url %}
         {% else %}
-            {% capture link %}{{ site.baseurl }}{{ post.url | remove_first: '/' }}{% endcapture %}
+            {% capture link %}{{ post.url }}{% endcapture %}
         {% endif %}
         <li>
             <a href="{{ link }}"><aside class="dates">{{ formattedDate }}</aside></a>
