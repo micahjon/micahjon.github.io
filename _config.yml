@@ -30,7 +30,7 @@ enable_disqus: true
 markdown: kramdown
 highlighter: rouge
 paginate: 20
-baseurl: "/"
+baseurl: /
 domain_name: http://micahjon.com
 google_tag_manager: GTM-MZB37F
 prose:
