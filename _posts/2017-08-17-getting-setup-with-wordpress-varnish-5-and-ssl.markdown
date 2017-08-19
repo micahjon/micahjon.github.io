@@ -1,7 +1,7 @@
 ---
 title: Getting setup with WordPress, Varnish&nbsp;5 and SSL
-date: 2017-08-16 21:26:00 -07:00
-description: (under construction)
+date: 2017-08-17 00:26:00 -04:00
+description: "(under construction)"
 ---
 
 *(This post is actively being written and edited. I've decided to release it early b/c there are so few guides on Varnish 5 and it's integration with WordPress. Copy code snippets at your own risk!)*
