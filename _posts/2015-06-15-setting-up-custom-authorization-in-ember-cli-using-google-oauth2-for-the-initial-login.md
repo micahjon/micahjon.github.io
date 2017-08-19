@@ -89,7 +89,7 @@ The idea is that any subroute of s (for "secure") will be protected from public 
 
 Then if you run `ember s` and navigate to _localhost:4200/s/notes_ you should see something like this: 
 
-![Ember notes route](http://micahjon.com/wp-content/uploads/2015/07/Screenshot-from-2015-07-17-221808-300x204.png)
+![Ember notes route]({{site.baseurl}}assets/images/welcome-to-emberjs.png)
 
 ## Step 2: Setup node server to return tokens
 
@@ -149,7 +149,7 @@ app.get('/', function (req, res) {
 
 This time when your run `node server` it should pause (until you hit Ctrl-C) b/c it's listening to port 4500\. Try going to _localhost:4500_ in your browser and you should see "yolo". 
 
-![Node serves up "yolo" at root](http://micahjon.com/wp-content/uploads/2015/07/Screenshot-from-2015-07-17-224142.png) 
+![Node serves up "yolo" at root]({{site.baseurl}}assets/images/yolo.png)
 
 We can use this same syntax to respond to Ember when it requests a json web token with a POST request. Add the following to _server.js_ to serve up a token when a POST request is sent to _localhost:4500/get-token_. 
 
@@ -171,7 +171,7 @@ app.post('/get-token', function (req, res) {
 
 Now, use a browser extension like [Postman for Chrome](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop) to send a POST request to _localhost:4500/get-token_. You'll need to restart the server (ctrl-c, then `node server` again) first to incorporate the new code or you'll get a "Cannot POST /get-token" error. 
 
-![Sending POST request to fetch token w/ Postman](http://micahjon.com/wp-content/uploads/2015/07/Screenshot-from-2015-07-17-225619.png) 
+![Sending POST request to fetch token w/ Postman]({{site.baseurl}}assets/images/get-token-POST.png)
 
 _Just for fun: to get a good grasp of what the token actually stores, paste it into the [jwt.io](http://jwt.io/)._
 
@@ -302,7 +302,7 @@ sessionRequiresAuthentication: function() {
 
 Notice how I pass _googleToken_ to the node server as a _password._ Now, we just need to set up the node server to parse this token, fetch the current user from Google, and return an user-identifying token that can be used for authorizing secure resources. If everything is working, when you click on _Login _you should see a _Request for Permission _popup from Google. 
 
-![Google login](http://micahjon.com/wp-content/uploads/2015/07/Screenshot-from-2015-07-18-001347-300x274.png)
+![Google login]({{site.baseurl}}assets/images/oauth-modal.png)
 
 ## Step 5: Fetching user info from Google
 
@@ -408,7 +408,7 @@ app.post('/refresh-token', bodyParser.json(), function(req, res) {
 
 Just for testing, modify `{ expiresInMinutes: 10 }` in `app.sendToken` so tokens expire every 2 minutes. This way you should see a token refresh every minute in your `node server` terminal and in the Network tab of the Chrome console on _localhost:4200_ once you're logged in. [
 
-![/get-token and /refresh-token](http://micahjon.com/wp-content/uploads/2015/07/Screenshot-from-2015-07-18-112405.png)
+![/get-token and /refresh-token]({{site.baseurl}}assets/images/token-requests.png)
 
 Congrats! If you've gotten this far you're **good to go!** The next step is authorizing resources, which is pretty straightforward. Set up a model in Ember and then handle it's request like so: 
 
