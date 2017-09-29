@@ -33,7 +33,7 @@ We'll be using a single line of javascript to identify the radio button and dese
 
 ![Right click on radio button, Inspect](/assets/images/Screen Shot 2016-10-30 at 7.38.46 PM.png)
 
-2.  Notice the <input> tag that represents this radio button has a unique id of "choice_31_8_0". 
+2.  Notice the ```<input>``` tag that represents this radio button has a unique id of "choice_31_8_0". 
 
 ![Highlighted tag refers to this radio button](/assets/images/Screen Shot 2016-10-30 at 7.46.05 PM.png)
 
