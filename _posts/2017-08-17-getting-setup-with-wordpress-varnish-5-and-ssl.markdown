@@ -1,7 +1,7 @@
 ---
 title: Getting setup with WordPress, Varnish&nbsp;5 (or 6) and SSL
 date: 2017-08-17 00:26:00 -04:00
-description: "Tips from the trenches"
+description: Tips from the trenches
 ---
 
 <aside>
