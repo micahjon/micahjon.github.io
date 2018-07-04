@@ -12,9 +12,8 @@ In October, I started at [BeFunky](https://www.befunky.com/) as a frontend engin
 In my free time, I'm working on a couple different things:
 
 - Reading up on machine learning and computer science in general
-- Building an app w/ [Hoodie](http://hood.ie/) as the backend
 - A Preact-based [WordPress plugin](https://github.com/pranksinatra/network-database-search) for database searches
-- A ridiculous website called [Any Mammal's Milk](http://anymammalsmilk.com)
+- A silly, Svelte-based webapp called [Any Mammal's Milk](http://anymammalsmilk.com)
 
 Just shoot me an email if you'd like to work on something together!
 [GitHub](https://github.com/pranksinatra) \| [Email](mailto:micah.millereshleman@gmail.com)
