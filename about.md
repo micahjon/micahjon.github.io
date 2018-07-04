@@ -7,7 +7,7 @@ isPage: true
 
 Hi, I'm Micah! I'm a 25-year old web developer/designer who recently moved to Portland.
 
-In October, I started at [BeFunky](https://www.befunky.com/) as a frontend engineer on their new WebGL-based photo editing webapp. It's been a good fit: I get to write tons of vanilla ES6 and focus on performance.
+In October, I started at [BeFunky](https://www.befunky.com/) as a frontend engineer on their new WebGL-based photo editing webapp. It's been a great introduction to IndexedDB and WebGL.
 
 In my free time, I'm working on a couple different things:
 
