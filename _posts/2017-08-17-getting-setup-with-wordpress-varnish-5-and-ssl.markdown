@@ -116,9 +116,11 @@ ExpiresByType image/png							"access plus 1 month"
 However, for pages that require server-side, user-specific state, such as password-protected pages or Gravity Form partial form fills (Save &amp; Continue Later), it's best to opt them out of caching altogether:
 
 ```php
-// Ensure browser (and Varnish) do not cache the following pages:
-// - Partial Gravity Form fill ("Save and Continue Later")
-// - Password-protected pages
+/**
+ * Ensure browser (and Varnish) do not cache the following pages:
+ * - Partial Gravity Form fill ("Save and Continue Later")
+ * - Password-protected pages
+ */
 function exclude_pages_from_caching() {
 
 	if ( !empty($_GET['gf_token']) or (!empty($post) and post_password_required($post->ID)) ) {
@@ -134,7 +136,7 @@ function exclude_pages_from_caching() {
 add_action('template_redirect', 'exclude_pages_from_caching');
 ```
 
-On the other extreme, there are pages that should be cached for *far longer than 4 hours*--essentually until your Wordpress theme undergoes a breaking change or the page is updated. For these, I check to ensure that no dynamic content exists and then add a weak ETag that depends on the last modified date and theme version.
+On the other extreme, there are pages that should be cached for *far longer than 4 hours*--essentually until the Wordpress theme undergoes a breaking change or the page is updated. For these, we check to ensure that no dynamic content exists and then add a weak ETag that depends on the last modified date and theme version.
 
 ```php
 /**
@@ -151,7 +153,7 @@ function add_etags_for_longer_caching() {
 	global $post;
 
 	// Ensure it's not a page template with dynamically-generated content
-	if ( is_page_template(['course-listings.php', 'landing.php', 'segmented-ctas.php']) ) return;
+	if ( is_page_template(['course-listings.php', 'events.php', 'news.php']) ) return;
 
 	// Ensure $post is populated
 	if ( empty($post->post_content) || empty($post->post_modified) ) return;
@@ -159,23 +161,34 @@ function add_etags_for_longer_caching() {
 	// Ensure it doesn't have any shortcodes with dynamic content
 	$content = $post->post_content;
 	$shortcodes = [
-		'[gc_events', '[gc_photo_albums', '[gc_display_posts', '[gravityform', '[inquiry_form'
+		'[gc_events', '[gc_photo_albums', '[gc_display_posts', '[gravityform'
 	];
 	foreach ($shortcodes as $shortcode) {
 		if ( strpos($content, $shortcode) !== false ) return;
 	}
 
 	// Generate weak Etag using last modified date, theme name, and theme version
-	// Remember to update theme version whenever you release a breaking change (invalidating all ETags)
+	// Remember to update theme version whenever you release a breaking change
 	$theme = wp_get_theme();
 	$eTag = crc32($post->post_modified . $theme->name . $theme->version);
 	header('Etag: W/"'. $eTag .'"');
+
+	// Varnish should take care of returning 304 Not Modified when ETags match, so we don't need
+	// to handle that within Wordpress.
 
 }
 add_action('template_redirect', 'add_etags_for_longer_caching');
 ```
 
-## WordPress
+## Final thoughts
+
+1. VCLs can be intimidating, but the Varnish documentation is actually very well written, even humorous at times. Don't be afraid to dive in.
+
+2. Don't use HTTP/2 to communicate between the servers in your stack. Only add it at the edge, when communicating with the client. We ran into some knarly bugs due to Apache trying to set HTTP/2 headers when communicating with Nginx.
+
+3. Be sure to tackle the low-hanging fruit performance-wise on your website before worring about Time To First Byte (TTFB). In Wordpress-land, that generally means getting rid of blocking scripts above your content.
+
+Feel free to reach out with questions! I'm a performance nut, and love to chat about this stuff.
 
 
 
