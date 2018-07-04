@@ -1,10 +1,12 @@
 ---
-title: Getting setup with WordPress, Varnish&nbsp;5 and SSL
+title: Getting setup with WordPress, Varnish&nbsp;5 (or 6) and SSL
 date: 2017-08-17 00:26:00 -04:00
-description: "(under construction)"
+description: "Tips from the trenches"
 ---
 
-*(This post is actively being written and edited. I've decided to release it early b/c there are so few guides on Varnish 5 and it's integration with WordPress. Copy code snippets at your own risk!)*
+<aside>
+	<p><em>This post was last updated July 2, 2018.</em></p>
+</aside>
 
 A few months ago we reduced [goshen.edu](https://www.goshen.edu)'s Time To First Byte (TTFB) from 400ms to 150ms! 
 
@@ -74,15 +76,13 @@ if (req.url ~ "^[^?]*\.(7z|avi|bz2|flac|flv|gz|mka|mkv|mov|mp3|mp4|mpeg|mpg|ogg|
 }
 ```
 
-...explain pipe vs pass...
-
 ### URL Normalization
 
 Varnish caches urls independently, so it's essential to convert them into their "canonical" form before passing them on the Apache. Otherwise, you'll end up with the same page content being cached multiple times and associated with slightly different urls.
 
-*Don't worry, tweaking urls in your VCL won't affect your users' browsers, where the original urls will be used and can be parsed and tracked with JavaScript.*
+Tweaking urls in your VCL won't affect your users' browsers, where the original urls will be used and can be parsed and tracked with JavaScript. However, if you strip query parameters and hashes, you can't rely on them for server-side redirects. We got around this by stripping them in *vcl_hash* instead of *vcl_recv* so their still sent to our backend but the canonical URLs are used for hashing (cache matching).
 
-In our VCL, we normalize urls by:
+Common ways of normalizing URLs include:
 
 - Sorting query parameters
 - Stripping all marketing-related query parameters that don't affect page content.
@@ -90,9 +90,90 @@ In our VCL, we normalize urls by:
 
 ## Caching Headers
 
-By default, Varnish will only cache things as long as a browser would cache them given the Expires headers. 
+By default, Varnish will only cache things as long as a browser would cache them, as specified by Expires or Cache-Control headers.
 
-... .htaccess, exceptions, etc..
+Your `.htaccess` file probably already includes `mod_expires`, which adds a `Cache-Control: max age` header to responses based on resource type. 
+
+Varnish will respect this max-age, in our case only caching Wordpress pages up to 4 hours.
+
+```
+<IfModule mod_expires.c>
+# Enable expirations
+ExpiresActive On
+# Default directive
+ExpiresDefault "access plus 1 week"
+# Web pages
+ExpiresByType text/html 						"access plus 4 hours"
+# My favicon
+ExpiresByType image/x-icon 						"access plus 1 year"
+# Images and Icons
+ExpiresByType image/gif							"access plus 1 month"
+ExpiresByType image/png							"access plus 1 month"
+# ...and so forth
+</IfModule>
+```
+
+However, for pages that require server-side, user-specific state, such as password-protected pages or Gravity Form partial form fills (Save &amp; Continue Later), it's best to opt them out of caching altogether:
+
+```php
+// Ensure browser (and Varnish) do not cache the following pages:
+// - Partial Gravity Form fill ("Save and Continue Later")
+// - Password-protected pages
+function exclude_pages_from_caching() {
+
+	if ( !empty($_GET['gf_token']) or (!empty($post) and post_password_required($post->ID)) ) {
+		// The "Expires" header is set as well as "Cache-Control" so that Apache mod_expires
+		// directives in .htaccess are ignored and don't overwrite/append-to these headers.
+		// See http://httpd.apache.org/docs/current/mod/mod_expires.html
+		$seconds = 0;
+		header("Expires: ". gmdate('D, d M Y H:i:s', time() + $seconds). ' GMT');
+		header("Cache-Control: max-age=". $seconds);
+		return;
+	}
+}
+add_action('template_redirect', 'exclude_pages_from_caching');
+```
+
+On the other extreme, there are pages that should be cached for *far longer than 4 hours*--essentually until your Wordpress theme undergoes a breaking change or the page is updated. For these, I check to ensure that no dynamic content exists and then add a weak ETag that depends on the last modified date and theme version.
+
+```php
+/**
+ * Add ETags to pages without dynamic content
+ */
+function add_etags_for_longer_caching() {
+
+	// Ensure user isn't logged in
+	if ( is_user_logged_in() ) return;
+
+	// Ensure it's a single post or page (not an archive, feed, search page, etc.)
+	if ( !is_singular() ) return;
+		
+	global $post;
+
+	// Ensure it's not a page template with dynamically-generated content
+	if ( is_page_template(['course-listings.php', 'landing.php', 'segmented-ctas.php']) ) return;
+
+	// Ensure $post is populated
+	if ( empty($post->post_content) || empty($post->post_modified) ) return;
+
+	// Ensure it doesn't have any shortcodes with dynamic content
+	$content = $post->post_content;
+	$shortcodes = [
+		'[gc_events', '[gc_photo_albums', '[gc_display_posts', '[gravityform', '[inquiry_form'
+	];
+	foreach ($shortcodes as $shortcode) {
+		if ( strpos($content, $shortcode) !== false ) return;
+	}
+
+	// Generate weak Etag using last modified date, theme name, and theme version
+	// Remember to update theme version whenever you release a breaking change (invalidating all ETags)
+	$theme = wp_get_theme();
+	$eTag = crc32($post->post_modified . $theme->name . $theme->version);
+	header('Etag: W/"'. $eTag .'"');
+
+}
+add_action('template_redirect', 'add_etags_for_longer_caching');
+```
 
 ## WordPress
 
