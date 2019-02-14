@@ -1,7 +1,7 @@
 ---
 title: Building My First App in Flutter
-date: 2018-08-31 00:20:00 -07:00
-description: Much 
+date: 2018-08-31 03:20:00 -04:00
+description: Much
 ---
 
 There's only so long you can read [Hacker News](https://news.ycombinator.com/) without signing up for a VPN service. 
