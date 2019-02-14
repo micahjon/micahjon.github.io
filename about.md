@@ -5,15 +5,17 @@ profile: true
 isPage: true
 ---
 
-Hi, I'm Micah! I'm a 25-year old web developer/designer who recently moved to Portland.
+Hi, I'm Micah! I'm a 26-year-old frontend engineer based in Portland.
 
-In October, I started at [BeFunky](https://www.befunky.com/) as a frontend engineer on their new WebGL-based photo editing webapp. It's been a great introduction to IndexedDB and WebGL.
+I'm currently heading up frontend dev at BeFunky, a popular WebGL-based [Photo Editor](https://www.befunky.com/create/) and [Graphic Design tool](https://www.befunky.com/create/designer/) that runs in the browser.
 
 In my free time, I'm working on a couple different things:
 
-- Reading up on machine learning and computer science in general
-- A Preact-based [WordPress plugin](https://github.com/pranksinatra/network-database-search) for database searches
-- A silly, Svelte-based webapp called [Any Mammal's Milk](http://anymammalsmilk.com)
+- <img src="/assets/images/object-recognition-92.jpg" alt="Trying out object recognition" class="object-detection-image">
+    Playing around with [object detection using Tensorflow](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-on-the-Raspberry-Pi) on a the Raspberry Pi B+. 
+- Bootstrapping [Decent Clothes](https://decentclothes.com/), a little Cambodian-based tailoring startup, with a friend. We're currently exploring [Reaction Commerce](https://github.com/reactioncommerce/reaction) for our ecommerce stack.
+- Converting a silly, Svelte webapp called [Any Mammal's Milk](http://anymammalsmilk.com) to React + Firebase.
+- A Preact-based [WordPress plugin](https://github.com/pranksinatra/network-database-search) for cleaner database searches.
 
 Just shoot me an email if you'd like to work on something together!
 [GitHub](https://github.com/pranksinatra) \| [Email](mailto:micah.millereshleman@gmail.com)
@@ -26,7 +28,7 @@ The previous 3½ years I headed up design and development of the [Goshen College
 
 ## The land of milk and honey
 
-Portland's alright (-; *but if you're ever in [Goshen, Indiana](https://goo.gl/maps/7C2mekv84TN2)* be sure to check out:
+Portland's alright (-; _but if you're ever in [Goshen, Indiana](https://goo.gl/maps/7C2mekv84TN2)_ be sure to check out:
 
 - [Goshen Community Contra Dancing](http://godancing.org) - there's dancing the first Saturday of every month
 - [Goshen Brewing Company](http://goshenbrewing.com/) - the local brewery
@@ -34,3 +36,17 @@ Portland's alright (-; *but if you're ever in [Goshen, Indiana](https://goo.gl/m
 - And of course, [Goshen College](https://www.goshen.edu)
 
 {% include footer.html %}
+
+<style>
+    .object-detection-image {
+        display: block;
+        margin: .5em 0;
+    }
+    @media (min-width: 800px) {
+        .object-detection-image {
+            float: right; 
+            width: 280px;
+            margin: 0 -6em .5em 1em;
+        }
+    }
+</style>

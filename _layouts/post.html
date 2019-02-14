@@ -1,6 +1,5 @@
 ---
 layout: default
-archive: true
 ---
 
 <article class="post">
@@ -28,23 +27,8 @@ archive: true
 
 <!-- Disqus comments -->
 {% if site.enable_disqus %}
-    <div class="archive readmore">
-        <h3>Comments are welcome!</h3>
-        {% include disqus.html %}
-    </div>
+    <h3>Comments are welcome!</h3>
+    {% include disqus.html %}
 {% endif %}
-
-<!-- Archive post list -->
-{% if page.archive %}
-    <ul id="post-list" class="archive readmore">
-        <h3>Read more</h3>
-        {% for post in site.posts %}
-            <li>
-                <a href="/{{ post.url | remove_first: '/' }}">{{ post.title }}<aside class="dates">{{ post.date | date:"%b %d" }}</aside></a>
-            </li>
-        {% endfor %}
-    </ul>
-{% endif %}
-
 
 
