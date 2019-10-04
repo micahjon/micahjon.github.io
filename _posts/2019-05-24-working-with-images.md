@@ -1,7 +1,7 @@
 ---
 title: Working with Images
 date: 2019-05-24 00:26:00 -04:00
-description: Slides from JSAdmirers talk
+description: Slides from 30-minute talk at JSAdmirers
 ---
 
 A couple days ago I gave a polyglot talk at [JS Admirers](http://pdxjs.com/) about working with images in the browser.
