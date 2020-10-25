@@ -5,7 +5,7 @@ profile: true
 isPage: true
 ---
 
-Hi, I'm Micah! I'm a 26-year-old frontend engineer based in Portland.
+Hi, I'm Micah! I'm a 28-year-old frontend engineer based in Portland.
 
 I'm currently heading up frontend dev at BeFunky, a popular WebGL-based [Photo Editor](https://www.befunky.com/create/) and [Graphic Design tool](https://www.befunky.com/create/designer/) that runs in the browser.
 
