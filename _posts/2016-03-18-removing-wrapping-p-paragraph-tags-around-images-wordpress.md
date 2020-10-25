@@ -27,7 +27,7 @@ _You'll notice the above example is contrived: I manually added a nasty 400px ma
 
 The goal now is to take the image and move it outside of the wrapping paragraph. We also need to preserve any wrapping link around the image and move it outside as well. Here's the current code: 
 
-<script src="https://gist.github.com/pranksinatra/e47aff47bfa093091563.js"></script>
+<script src="https://gist.github.com/micahjon/e47aff47bfa093091563.js"></script>
 
 ***
 

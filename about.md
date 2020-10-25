@@ -15,10 +15,10 @@ In my free time, I'm working on a couple different things:
     Playing around with [object detection using Tensorflow](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-on-the-Raspberry-Pi) on a the Raspberry Pi B+. 
 - Bootstrapping [Decent Clothes](https://decentclothes.com/), a little Cambodian-based tailoring startup, with a friend. We're currently exploring [Reaction Commerce](https://github.com/reactioncommerce/reaction) for our ecommerce stack.
 - Converting a silly, Svelte webapp called [Any Mammal's Milk](http://anymammalsmilk.com) to React + Firebase.
-- A Preact-based [WordPress plugin](https://github.com/pranksinatra/network-database-search) for cleaner database searches.
+- A Preact-based [WordPress plugin](https://github.com/micahjon/network-database-search) for cleaner database searches.
 
 Just shoot me an email if you'd like to work on something together!
-[GitHub](https://github.com/pranksinatra) \| [Email](mailto:micah.millereshleman@gmail.com)
+[GitHub](https://github.com/micahjon) \| [Email](mailto:micah.millereshleman@gmail.com)
 
 ---
 

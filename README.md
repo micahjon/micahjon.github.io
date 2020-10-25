@@ -1,2 +1,2 @@
-# pranksinatra.github.io
+# micahjon.github.io
 Micah's blog

@@ -13,7 +13,7 @@ I've found it handy in Ember-CLI apps to use Google logins for initial authenti
 *   **App **sends Google token to the node **server** in response for a new token. _The server validates the Google token and then uses it to get user info from Google. It then creates a new custom token containing a user id, which it sends to the app._
 *   **App **uses it's new custom token in all further requests to the **server**. _Right before this token expires, it will be refreshed._
 
-In this process, _token _refers to a JSON web token. We'll be using the following open-source projects to build a basic app (for the finished product, [see my GitHub repo](https://github.com/pranksinatra/basic-auth-demo)).
+In this process, _token _refers to a JSON web token. We'll be using the following open-source projects to build a basic app (for the finished product, [see my GitHub repo](https://github.com/micahjon/basic-auth-demo)).
 
 ### Ember Client:
 
@@ -435,4 +435,4 @@ Here, `validateJWT` (actually the _express-jwt_ library), automatically parses t
 
 * * *
 
-Hey, this is my first Ember tutorial and I'd appreciate your feedback! Authentication & Authorization can be tricky to get right, and I hope this pattern helps you get a better feel for things. If you run into issues, please consult my git repo [github.com/pranksinatra/basic-auth-demo](https://github.com/pranksinatra/basic-auth-demo) or leave a comment. Special thanks to [Martin Genev](https://github.com/mgenev) whose [post on 100PercentJS](http://www.100percentjs.com/authentication-single-page-applications-apis-sane-stack/) got me started.
+Hey, this is my first Ember tutorial and I'd appreciate your feedback! Authentication & Authorization can be tricky to get right, and I hope this pattern helps you get a better feel for things. If you run into issues, please consult my git repo [github.com/micahjon/basic-auth-demo](https://github.com/micahjon/basic-auth-demo) or leave a comment. Special thanks to [Martin Genev](https://github.com/mgenev) whose [post on 100PercentJS](http://www.100percentjs.com/authentication-single-page-applications-apis-sane-stack/) got me started.

@@ -37,7 +37,7 @@ Probably the trickiest part of the new setup is due to Varnish's lack of support
 
 ## Varnish VCL
 
-Our [VCL is on Github](https://github.com/pranksinatra/gc-varnish-config), and is based on Mattias Geniar's [Varnish 5.0 Configuration Templates](https://github.com/mattiasgeniar/varnish-5.0-configuration-templates).
+Our [VCL is on Github](https://github.com/micahjon/gc-varnish-config), and is based on Mattias Geniar's [Varnish 5.0 Configuration Templates](https://github.com/mattiasgeniar/varnish-5.0-configuration-templates).
 
 ### Purging & Banning
 
