@@ -9,6 +9,9 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy('assets/images')
   eleventyConfig.addPassthroughCopy('assets/js')
 
+  // Copy CNAME
+  eleventyConfig.addPassthroughCopy('CNAME')
+
   // Copy compiled CSS to _site/assets/css
   eleventyConfig.addWatchTarget('./_tmp/style.css')
   eleventyConfig.addPassthroughCopy({
