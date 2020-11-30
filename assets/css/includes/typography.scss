@@ -150,9 +150,11 @@ code,
 }
 
 // Lists
-ul,
-ol {
+ul {
   list-style-type: disc;
+}
+ol {
+  list-style-type: numeric;
 }
 li {
   margin-bottom: 0.75rem;
