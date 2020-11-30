@@ -48,6 +48,16 @@ Double click to select this id, and copy it.
 document.getElementById("choice_31_8_0'").checked = false
 ```
 
+<aside style="background: var(--grey-100); border: 1px solid var(--grey-200); border-radius: 4px; padding: 1rem 2rem; margin: 2rem 0">
+
+**Update:** when the `<input>` tag is selected, you can also use the `$0` shortcut to refer to it:
+
+```javascript
+$0.checked = false
+```
+
+</aside>
+
 ![In Console tab, paste the above javascript snippet](/assets/images/Screen-Shot-2016-10-30-at-9.43.41-PM.png)
 
 4.  Press enter to run code! This should deselect your radio button.
