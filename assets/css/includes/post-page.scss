@@ -25,6 +25,10 @@
   &__body {
   }
 
+  &__wide-image {
+    background-color: white;
+  }
+
   &__wide-image,
   &__wide-pre {
     @media (min-height: 600px) and (min-width: 700px) {
