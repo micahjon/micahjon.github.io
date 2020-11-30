@@ -36,7 +36,7 @@ We'll be using a single line of javascript to identify the radio button and dese
 
 2.  Notice the `<input>` tag that represents this radio button has a unique id of "choice_31_8_0".
 
-![Highlighted tag refers to this radio button](/assets/images/Screen-Shot-2016-10-30-at-7.46.0- PM.png)
+![Highlighted tag refers to this radio button](/assets/images/Screen-Shot-2016-10-30-at-7.46.05-PM.png)
 
 Double click to select this id, and copy it.
 
