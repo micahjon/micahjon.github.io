@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>
+      One Regex to Rule them all&amp;#58; Removing wrapping &amp;lt;p&amp;gt; tags around images in WordPress while preserving links | Micah Engle-Eshleman
+    </title>
+    <link rel="shortcut icon" href="/assets/images/favicon.ico" />
+    <link rel="stylesheet" href="/assets/css/style.css?v=1" />
+    
+
+    <!-- Google Tag Manager (script) -->
+    <script>
+      // prettier-ignore
+      ;(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MZB37F');
+    </script>
+  </head>
+
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <!-- prettier-ignore -->
+      <iframe src="https://www.googletagmanager.com/ns.njk?id=GTM-MZB37F" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+
+    <nav class="top-nav">
+	
+		<a href="/"> <span class="arrow">←</span> Home </a>
+	
+
+	
+		<a href="/about">About Me </a>
+	
+	<!-- <a class="cta" href="/feed.xml">Subscribe</a> -->
+</nav> 
+    
+
+    <main class="centered-column post-container">
+      
+<article class="post">
+  <header class="post__header">
+    <h1 class="post__title">One Regex to Rule them all&#58; Removing wrapping &lt;p&gt; tags around images in WordPress while preserving links</h1>
+    <p class="post__date">March 18, 2016</p>  
+  </header>
+  <section class="post__body"><p>Wordpress has the unfortunate tendency of wrapping nearly everything in <code>&lt;p&gt;</code> tags. While this is often helpful for blocks of text in a post, it limits our ability to succinctly and consistently style images regardless of their containing <code>&lt;a&gt;</code> tag, <code>&lt;p&gt;</code> tag, or both. In other words, you rarely want <code>&lt;a&gt;</code> tag styles (e.g. border-bottom &amp; :hover) or <code>&lt;p&gt;</code> styles (e.g. margin-bottom &amp; max-width) to affect the styling of their child images.</p>
+<p>The cleanest solution I've found is to write a Regular Expression that filters post<em>content and removes wrapping <code>&lt;p&gt;</code> tags around <code>&lt;img&gt;</code>'s while preserving surrounding text and it's styling (e.g. <strong>bold</strong>, _italic</em>).  For instance, in the Wordpress editor I'll add some bold text, a right-aligned image, and then some more text:</p>
+<h3>Visual editor:</h3>
+<p><img src="/assets/images/visual.png" alt="visual"></p>
+<h3>Text editor:</h3>
+<p><img src="/assets/images/Screenshot-from-2016-03-20-13-41-50.png" alt="Screenshot from 2016-03-20 13-41-50"></p>
+<h3>On the page:</h3>
+<p><img src="/assets/images/Screenshot-from-2016-03-20-13-43-36.png" alt="Screenshot from 2016-03-20 13-43-36">
+<img src="/assets/images/Screenshot-from-2016-03-20-13-47-04.png" alt="Screenshot from 2016-03-20 13-47-04"></p>
+<p><em>You'll notice the above example is contrived: I manually added a nasty 400px max-width to the paragraph in Chrome Dev Tools. The point is that the image, even though it's right-aligned, it subject to the constraints of it's containing paragraph.</em></p>
+<p>The goal now is to take the image and move it outside of the wrapping paragraph. We also need to preserve any wrapping link around the image and move it outside as well. Here's the current code:</p>
+<script src="https://gist.github.com/micahjon/e47aff47bfa093091563.js"></script>
+<hr>
+<p>I've iterated on this regex quite a few times, but would appreciate your feedback and improvements. In terms of performance, it's clocking in around .5ms for most posts.</p>
+</section>
+  <footer class="post__footer">
+    <img class="post__footer-avatar" src="/assets/images/profile-circle-240-tiny.png" />
+    <p class="post__footer-author">Micah Engle-Eshleman</p>
+    <section class="share">
+  <a class="share__button share__button--twitter" href="https://twitter.com/intent/tweet?text=/2016/removing-wrapping-p-paragraph-tags-around-images-wordpress/ -  by @">
+    <svg viewBox="0 0 128 128">
+      <path d="M128 28.3c-4.7 2.1-9.775 3.5-15.075 4.125 5.425-3.25 9.575-8.4 11.55-14.525-5.075 3-10.7 5.2-16.675 6.375-4.8-5.1-11.625-8.275-19.175-8.275-14.5 0-26.25 11.75-26.25 26.25 0 2.050 0.225 4.050 0.675 5.975-21.825-1.1-41.175-11.55-54.125-27.45-2.25 3.875-3.55 8.4-3.55 13.2 0 9.1 4.625 17.15 11.675 21.85-4.3-0.125-8.35-1.325-11.9-3.275 0 0.1 0 0.225 0 0.325 0 12.725 9.050 23.35 21.075 25.75-2.2 0.6-4.525 0.925-6.925 0.925-1.7 0-3.325-0.175-4.95-0.475 3.35 10.425 13.050 18.025 24.525 18.25-9 7.050-20.3 11.25-32.625 11.25-2.125 0-4.2-0.125-6.275-0.375 11.65 7.475 25.45 11.8 40.275 11.8 48.3 0 74.725-40.025 74.725-74.725 0-1.15-0.025-2.275-0.075-3.4 5.125-3.675 9.575-8.3 13.1-13.575z"></path>
+    </svg>
+    Tweet
+  </a>
+  <a class="share__button share__button--facebook" href="#" onclick="
+      window.open(
+        'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+        'facebook-share-dialog',
+        'width=626,height=436');
+      return false;">
+    <svg viewBox="0 0 128 128">
+      <path d="M76 24h20v-24h-20c-15.439 0-28 12.561-28 28v12h-16v24h16v64h24v-64h20l4-24h-24v-12c0-2.168 1.832-4 4-4z"></path>
+    </svg>
+    Facebook
+  </a>
+</section>
+  </footer>
+</article>
+
+<div class="comments">
+	<h3 class="comments__heading">Comments are welcome!</h3>
+	<div id="disqus_thread"></div>
+	<script>
+	var disqus_config = function () {
+		// Page url without query parameters or hashes
+		this.page.url = window.location.href.split('?')[0].split('#')[0];
+		// Id is just slug of post
+		this.page.identifier = '';
+	};
+	(function() { // DON'T EDIT BELOW THIS LINE
+		var d = document, s = d.createElement('script');
+		s.src = '//micahjon.disqus.com/embed.js';
+		s.setAttribute('data-timestamp', +new Date());
+		(d.head || d.body).appendChild(s);
+	})();
+	</script>
+	<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+    </main>
+
+    <footer class="site-footer">
+    <p>© Copyright <script>document.write(new Date().getFullYear())</script> Micah Engle-Eshleman</p>
+    
+</footer>
+
+    <script async src="/assets/js/main.js?v=0"></script>
+    <link href="/assets/css/prism-material-oceanic.css" rel="stylesheet">
+
+  <style>
+    
+  </style>
+
+
+  </body>
+</html>
