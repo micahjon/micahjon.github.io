@@ -411,6 +411,9 @@ ul:last-child, ol:last-child, p:last-child {
   }
 .post__body {
   }
+.post__wide-image {
+    background-color: white;
+  }
 @media (min-height: 600px) and (min-width: 700px) {
 
   .post__wide-image,
