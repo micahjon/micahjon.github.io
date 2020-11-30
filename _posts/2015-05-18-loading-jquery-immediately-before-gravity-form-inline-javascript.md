@@ -2,25 +2,26 @@
 title: Loading jQuery Immediately before Gravity Forms
 date: 2015-05-18 18:51:00 -04:00
 description: A performance optimization for ajax-enabled Gravity Forms
-redirect_from: "/loading-jquery-in-the-footer-with-gravity-forms/"
+redirect_from: '/loading-jquery-in-the-footer-with-gravity-forms/'
+tags: post
 ---
 
 Loading jQuery asychronously or in the footer on pages with ajax-enabled Gravity Forms is tricky because the form relies on inlined jQuery-dependent scripts that immediately follow it in the DOM:
 
 ![Inline jQuery-dependent Gravity Form scripts](/assets/images/Screen Shot 2016-10-31 at 12.55.36 AM.png)
 
-In this case, the typical `gform_init_scripts_footer` solution doesn't work, because moving jQuery to the footer would break these inline scripts. 
+In this case, the typical `gform_init_scripts_footer` solution doesn't work, because moving jQuery to the footer would break these inline scripts.
 
-Another solution I've run across uses `gform_cdata_open` and `gform_cdata_close` to wrap these inline scripts in a function that's called once jQuery has been loaded. However, this clever technique can generate errors on payment forms (e.g. `Uncaught ReferenceError: gf_global is not defined`) due to the scripts being run after _DOMContentLoaded_ instead of before as Gravity Form expects. 
+Another solution I've run across uses `gform_cdata_open` and `gform_cdata_close` to wrap these inline scripts in a function that's called once jQuery has been loaded. However, this clever technique can generate errors on payment forms (e.g. `Uncaught ReferenceError: gf_global is not defined`) due to the scripts being run after _DOMContentLoaded_ instead of before as Gravity Form expects.
 
 Ultimately, the most reliable (and performant) solution I've found is to inject a synchronous jQuery `<script>` _immediately_ before the inline scripts using the `gform_cdata_open` hook once.
 
 ```php
 /**
- * Deregister jQuery in <head>, so it can be loaded in the footer or before the 
- * first Gravity Form on the page. 
+ * Deregister jQuery in <head>, so it can be loaded in the footer or before the
+ * first Gravity Form on the page.
  */
-function gc_deregister_default_jquery() 
+function gc_deregister_default_jquery()
 {
 	wp_deregister_script('jquery');
 }
@@ -29,20 +30,20 @@ add_action( 'wp_enqueue_scripts', 'gc_deregister_default_jquery' );
 /**
  * Inject synchronous jQuery dependency before the Gravity Form inline scripts
  */
-function inject_jquery_above_gravity_form( $content = '' ) 
+function inject_jquery_above_gravity_form( $content = '' )
 {
 	// keep track of jquery so it's not loaded twice!
 	global $jquery_already_injected;
-	
+
 	if ( !isset($jquery_already_injected) ) {
-		
+
 		$jquery_already_injected = true;
 
 		// End inline script
 		$content .= "</script>\n";
 
 		// Inject jQuery
-		$content .= "<script src='/path/to/jquery.min.js'></script>\n";		
+		$content .= "<script src='/path/to/jquery.min.js'></script>\n";
 
 		// Start inline script again
 		$content .= "<script>";
@@ -67,7 +68,7 @@ function enqueue_jquery()
 	}
 	// jQuery has already been loaded above a Gravity Form
 	else {
-		
+
 		// Enqueue fake script to trigger dependencies
 		wp_enqueue_script( 'jquery', '//fake-jquery-script.js', [], null );
 

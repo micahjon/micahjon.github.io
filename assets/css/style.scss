@@ -1,0 +1,41 @@
+@import 'includes/reset';
+@import 'includes/typography';
+@import 'includes/profile-circle';
+@import 'includes/top-nav';
+@import 'includes/post-list';
+@import 'includes/post-page';
+@import 'includes/normal-page';
+@import 'includes/share';
+@import 'includes/code';
+
+main {
+  background-color: white;
+}
+
+.centered-column {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.site-footer {
+  margin: 2rem auto;
+  padding: 0 1rem;
+  max-width: 600px;
+  color: var(--grey-500);
+  font-size: 14px;
+
+  @media (min-width: 700px) {
+    padding: 0;
+  }
+}
+
+#name-change:target {
+  background-color: yellow;
+}
+
+hr {
+  margin: 2rem 0;
+  border: none;
+  border-bottom: 1px solid var(--grey-100);
+}

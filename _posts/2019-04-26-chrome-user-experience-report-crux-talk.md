@@ -2,6 +2,7 @@
 title: CrUX - Real World Website Performance Data
 date: 2019-04-26 00:26:00 -04:00
 description: Slides from lightning talk at JSAdmirers
+tags: post
 ---
 
 At few days ago I gave a lightning talk on the Chrome User Experience Report (CrUX), based on a longer talk by [Rick Viscomi](https://gist.github.com/rviscomi) at the [#PerfMatters](https://perfmattersconf.com/) conference.

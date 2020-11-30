@@ -1,9 +1,11 @@
 ---
 title: Named Anchors and Fixed Headers
 date: 2015-06-15 09:32:00 -04:00
-description: Using pseudoelements to compensate for fixed headers when jumping to
+description:
+  Using pseudoelements to compensate for fixed headers when jumping to
   anchor targets
-redirect_from: "/named-anchors-and-fixed-headers/"
+redirect_from: '/named-anchors-and-fixed-headers/'
+tags: post
 ---
 
 One of the issues with fixed header navigation, especially when it’s fairly tall (e.g. goshen.edu) is that when you use named anchors to scroll you to a particular page section, the top of the relevant section is covered by the header.
@@ -14,11 +16,11 @@ For example:
 
 ```css
 .anchor-target:before {
-  content:"";
-  display:block;
+  content: '';
+  display: block;
   width: 0;
-  height:$fixed-header-anchor-offset; /* fixed header height*/
-  margin:-$fixed-header-anchor-offset 0 0; /* negative fixed header height */
+  height: $fixed-header-anchor-offset; /* fixed header height*/
+  margin: -$fixed-header-anchor-offset 0 0; /* negative fixed header height */
 }
 ```
 

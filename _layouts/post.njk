@@ -1,0 +1,18 @@
+---
+layout: default
+---
+
+<article class="post">
+  <header class="post__header">
+    <h1 class="post__title">{{ title | removeWidows | safe  }}</h1>
+    <p class="post__date">{% if version %}Version {{version}} | {% endif %}{{ date | toDateString('post-page') }}</p>  
+  </header>
+  <section class="post__body">{{ content | safe }}</section>
+  <footer class="post__footer">
+    <img class="post__footer-avatar" src="/assets/images/profile-circle-240-tiny.png" />
+    <p class="post__footer-author">{{ site.name }}</p>
+    {% include "share.njk" %}
+  </footer>
+</article>
+
+{% include "disqus.njk" %}

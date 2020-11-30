@@ -2,18 +2,19 @@
 title: How to Deselect Radio Buttons on Web Forms
 date: 2013-02-18 13:53:00 -05:00
 description: A quick in-browser fix so you don't loose your progress
-redirect_from: "/how-to-deselect-radio-buttons-on-web-forms/"
+redirect_from: '/how-to-deselect-radio-buttons-on-web-forms/'
+tags: post
 ---
 
 Today I filled out yet another poorly built online survey. This penultimate page asked for my academic major:
 
-![Original Form](/assets/images/Screen Shot 2016-10-30 at 7.34.51 PM.png)
+![Original Form](/assets/images/Screen-Shot-2016-10-30-at-7.34.51-PM.png)
 
 Notice the three groupings of radio buttons. One in case you're undecided, one for social science majors, and one for folks (like me) in the hard sciences.
 
 Just for fun, let's select one of each:
 
-![Filling in multiple radio buttons](/assets/images/Screen Shot 2016-10-30 at 7.37.30 PM.png)
+![Filling in multiple radio buttons](/assets/images/Screen-Shot-2016-10-30-at-7.37.30-PM.png)
 
 Cool, but now we want to be serious and just select one major. Hmm, we can't deselect radio buttons!
 
@@ -29,45 +30,50 @@ _Using another browser? No worries, the steps are nearly identical in Firefox, S
 
 We'll be using a single line of javascript to identify the radio button and deselect it.
 
-1.  Right click on the radio button and select _Inspect_. Google Developer Tools will appear at the bottom of the screen. 
+1.  Right click on the radio button and select *Inspect*. Google Developer Tools will appear at the bottom of the screen.
 
-![Right click on radio button, Inspect](/assets/images/Screen Shot 2016-10-30 at 7.38.46 PM.png)
+![Right click on radio button, Inspect](/assets/images/Screen-Shot-2016-10-30-at-7.38.46-PM.png)
 
-2.  Notice the ```<input>``` tag that represents this radio button has a unique id of "choice_31_8_0". 
+2.  Notice the `<input>` tag that represents this radio button has a unique id of "choice_31_8_0".
 
-![Highlighted tag refers to this radio button](/assets/images/Screen Shot 2016-10-30 at 7.46.05 PM.png)
+![Highlighted tag refers to this radio button](/assets/images/Screen-Shot-2016-10-30-at-7.46.0- PM.png)
 
 Double click to select this id, and copy it.
 
-![Double click id to select the unique id of the radio button](/assets/images/Screen Shot 2016-10-30 at 7.48.01 PM.png)
+![Double click id to select the unique id of the radio button](/assets/images/Screen-Shot-2016-10-30-at-7.48.01-PM.png)
 
-3.  In the Console tab, paste the following code. Replace "choice_31_8_0" with your radio button's unique id. 
+3.  In the Console tab, paste the following code. Replace "choice_31_8_0" with your radio button's unique id.
 
 ```javascript
-document.getElementById("choice_31_8_0'").checked = false;
+document.getElementById("choice_31_8_0'").checked = false
 ```
 
-![In Console tab, paste the above javascript snippet](/assets/images/Screen Shot 2016-10-30 at 9.43.41 PM.png)
+![In Console tab, paste the above javascript snippet](/assets/images/Screen-Shot-2016-10-30-at-9.43.41-PM.png)
 
-4.  Press enter to run code! This should deselect your radio button. 
+4.  Press enter to run code! This should deselect your radio button.
 
-![Press enter to run code. Radio button should be deselected](/assets/images/Screen Shot 2016-10-30 at 9.45.18 PM.png)
-
+![Press enter to run code. Radio button should be deselected](/assets/images/Screen-Shot-2016-10-30-at-9.45.18-PM.png)
 
 ## What is this code doing?
 
 ### The HTML
 
 ```html
-<input name="input_8" type="radio" value="No, I'm still deciding" id="choice_31_8_0" tabindex="3">
+<input
+  name="input_8"
+  type="radio"
+  value="No, I'm still deciding"
+  id="choice_31_8_0"
+  tabindex="3"
+/>
 ```
 
-The _\<input\>_ tag is used for user inputs in web forms. This particular tag has _type= "radio"_ (radio button) and _id = "choice_38_8_0"._
+The *\<input\>* tag is used for user inputs in web forms. This particular tag has *type= "radio"* (radio button) and *id = "choice_38_8_0".*
 
 ### The Javascript
 
 ```javascript
-document.getElementById("choice_31_8_0'").checked = false;
+document.getElementById("choice_31_8_0'").checked = false
 ```
 
-This script looks within the _document_ (webpage) for the first element with _id_ equal to _choice_31_8_0_, and sets the _checked_ property of this object to _false_.
+This script looks within the *document* (webpage) for the first element with *id* equal to _choice_31_8_0_, and sets the *checked* property of this object to *false*.

@@ -1,32 +1,33 @@
-!function()
-{
-	'use strict';
+!(function () {
+  'use strict'
 
-	// Add img-wrap class to <p>'s that contain squished images
-	// so they can be larger
-	var images = document.querySelectorAll('#post-body p > img');
-	for (var i = 0; i < images.length; i++) {
-		// Only apply to wide images
-		if ( images[i].clientWidth >= 518 ) {
-			var wrap = images[i].parentNode;
-			if ( wrap.nodeName === 'P' ) {
-				wrap.classList += ' img-wrap';
-			}
-		}
-	}
+  // Increase width of images on large screens
+  var images = document.querySelectorAll('.post__body p > img')
+  for (var i = 0; i < images.length; i++) {
+    // Only apply to wide images
+    if (images[i].clientWidth >= 518) {
+      var wrap = images[i].parentNode
+      if (wrap.nodeName === 'P') {
+        wrap.classList.add('post__wide-image')
+      }
+    }
+  }
 
-	// Add class containing type of code to <code> so that
-	// highlight.js doesn't have to guess (it guesses wrong on bash)
-	var codes = document.querySelectorAll('.highlighter-rouge > .highlight > code');
-	for (var i = 0; i < codes.length; i++) {
-		var divClass = codes[i].parentElement.parentElement.className;
-		try {
-			var codeType = divClass.split('language-')[1].split(' ')[0]
-			codes[i].className += ' ' + codeType;
-		}
-		catch (e) {
-			continue;
-		}
-	}
-
-}();
+  // Don't cut off long lines of code
+  var codes = document.querySelectorAll('.post__body pre[class^="language-"]')
+  for (var i = 0; i < codes.length; i++) {
+    var maxLineLength = codes[i].innerHTML
+      .split('<br>')
+      .map((line) =>
+        line
+          .replace(/<[^>]+>/g, '') // Remove invisible HTML tags
+          .replace(/&[a-z0-9]{2,4};/g, '$') // Replace HTML entities w/ a single character
+          .trim()
+      )
+      .filter(Boolean)
+      .reduce((maxLength, line) => Math.max(maxLength, line.length), 0)
+    if (maxLineLength > 62) {
+      codes[i].classList.add('post__wide-pre')
+    }
+  }
+})()

@@ -1,0 +1,33 @@
+{
+  "name": "micahjon.com",
+  "version": "1.0.0",
+  "description": "Micah's blog",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx @11ty/eleventy --serve & postcss assets/css/style.scss --o _tmp/style.css --watch",
+    "build": "NODE_ENV=production postcss assets/css/style.scss --o _tmp/style.css & ELEVENTY_PRODUCTION=true npx @11ty/eleventy",
+    "testcss": "postcss --config . assets/css/style.scss --o _tmp/style.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/micahjon/micahjon.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/micahjon/micahjon.github.io/issues"
+  },
+  "homepage": "https://github.com/micahjon/micahjon.github.io#readme",
+  "devDependencies": {
+    "@11ty/eleventy-plugin-syntaxhighlight": "^3.0.4",
+    "postcss": "^8.1.8",
+    "postcss-cli": "^8.2.0",
+    "postcss-comment": "^2.0.0",
+    "precss": "^4.0.0"
+  },
+  "dependencies": {
+    "postcss-scss": "^3.0.4"
+  }
+}

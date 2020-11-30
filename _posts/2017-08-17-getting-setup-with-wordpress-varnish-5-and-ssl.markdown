@@ -2,36 +2,37 @@
 title: Getting setup with WordPress, Varnish&nbsp;5 (or 6) and SSL
 date: 2017-08-17 00:26:00 -04:00
 description: Tips from the trenches
+tags: post
 ---
 
 <aside>
 	<p><em>This post was last updated July 2, 2018.</em></p>
 </aside>
 
-A few months ago we reduced [goshen.edu](https://www.goshen.edu)'s Time To First Byte (TTFB) from 400ms to 150ms! 
+A few months ago we reduced [goshen.edu](https://www.goshen.edu)'s Time To First Byte (TTFB) from 400ms to 150ms!
 
-[Varnish Cache](https://varnish-cache.org/intro/index.html#intro) is a HTTP reverse proxy optimized for caching your most requested resources and serving them up extremely fast. Practically, it means your site will be *faster for most users most of the time* and if you ever get lucky enough to experience a huge spike in traffic, your server won't go down.
+[Varnish Cache](https://varnish-cache.org/intro/index.njk#intro) is a HTTP reverse proxy optimized for caching your most requested resources and serving them up extremely fast. Practically, it means your site will be _faster for most users most of the time_ and if you ever get lucky enough to experience a huge spike in traffic, your server won't go down.
 
-*It goes without saying that there are lots of good WordPress caching plugins. We opted for Varnish b/c it's not a WordPress-only solution and has incredible flexibility. Were we to do it over again, we'd definitely consider NGINX's built-in cache, as it's simpler to implement.*
+_It goes without saying that there are lots of good WordPress caching plugins. We opted for Varnish b/c it's not a WordPress-only solution and has incredible flexibility. Were we to do it over again, we'd definitely consider NGINX's built-in cache, as it's simpler to implement._
 
 ## The stack
 
-### Before 
+### Before
 
 Easy peasy, a single Apache server in charge of everything:
 
-| Server | Details |
-| ------ | ------- |
+| Server | Details                                 |
+| ------ | --------------------------------------- |
 | Apache | Hosts WordPress, handles SSL and HTTP/2 |
 
 ### After
 
 Now, NGINX checks in with Varnish, responding immediately with a cached copy or falling back to Apache.
 
-| Server | Details |
-| ------ | ------- |
-| NGINX | Hosts Varnish, handles SSL and HTTP/2 |
-| Apache | Hosts WordPress |
+| Server | Details                               |
+| ------ | ------------------------------------- |
+| NGINX  | Hosts Varnish, handles SSL and HTTP/2 |
+| Apache | Hosts WordPress                       |
 
 Probably the trickiest part of the new setup is due to Varnish's lack of support for SSL. Hence, NGINX must strip SSL before it sends requests to Varnish and then add SSL back to requests that Varnish passes to Apache. It's complicated.
 
@@ -41,9 +42,9 @@ Our [VCL is on Github](https://github.com/micahjon/gc-varnish-config), and is ba
 
 ### Purging & Banning
 
-I'd recommend [reading the docs](https://varnish-cache.org/docs/5.0/users-guide/purging.html) on this one, but the gist of cache invalidation in Varnish is that you *purge individual urls* (e.g. when a page is updated) and *ban groups of urls* with a regular expression (e.g. when a site's WordPress theme is changed).
+I'd recommend [reading the docs](https://varnish-cache.org/docs/5.0/users-guide/purging.njk) on this one, but the gist of cache invalidation in Varnish is that you _purge individual urls_ (e.g. when a page is updated) and _ban groups of urls_ with a regular expression (e.g. when a site's WordPress theme is changed).
 
-Our VCL restricts BAN and PURGE HTTP requests to the Apache server's IP address (localhost or 127.0.0.1), so only WordPress can send these requests. 
+Our VCL restricts BAN and PURGE HTTP requests to the Apache server's IP address (localhost or 127.0.0.1), so only WordPress can send these requests.
 
 ```
 # ACL for whitelisting PURGE and BAN requests
@@ -62,7 +63,7 @@ if (req.http.Cache-Control == "no-cache") {
 }
 ```
 
-These headers are set by browsers during a *hard refresh* (Ctrl/Cmd + Shift + R), and we use them to allow users to get a fresh copy of a page if they really want one. Of course, this also opens us up to DDOS attacks, but that hasn't been an issue to date.
+These headers are set by browsers during a _hard refresh_ (Ctrl/Cmd + Shift + R), and we use them to allow users to get a fresh copy of a page if they really want one. Of course, this also opens us up to DDOS attacks, but that hasn't been an issue to date.
 
 ### Large Files
 
@@ -80,7 +81,7 @@ if (req.url ~ "^[^?]*\.(7z|avi|bz2|flac|flv|gz|mka|mkv|mov|mp3|mp4|mpeg|mpg|ogg|
 
 Varnish caches urls independently, so it's essential to convert them into their "canonical" form before passing them on the Apache. Otherwise, you'll end up with the same page content being cached multiple times and associated with slightly different urls.
 
-Tweaking urls in your VCL won't affect your users' browsers, where the original urls will be used and can be parsed and tracked with JavaScript. However, if you strip query parameters and hashes, you can't rely on them for server-side redirects. We got around this by stripping them in *vcl_hash* instead of *vcl_recv* so their still sent to our backend but the canonical URLs are used for hashing (cache matching).
+Tweaking urls in your VCL won't affect your users' browsers, where the original urls will be used and can be parsed and tracked with JavaScript. However, if you strip query parameters and hashes, you can't rely on them for server-side redirects. We got around this by stripping them in _vcl_hash_ instead of _vcl_recv_ so their still sent to our backend but the canonical URLs are used for hashing (cache matching).
 
 Common ways of normalizing URLs include:
 
@@ -92,7 +93,7 @@ Common ways of normalizing URLs include:
 
 By default, Varnish will only cache things as long as a browser would cache them, as specified by Expires or Cache-Control headers.
 
-Your `.htaccess` file probably already includes `mod_expires`, which adds a `Cache-Control: max age` header to responses based on resource type. 
+Your `.htaccess` file probably already includes `mod_expires`, which adds a `Cache-Control: max age` header to responses based on resource type.
 
 Varnish will respect this max-age, in our case only caching Wordpress pages up to 4 hours.
 
@@ -126,7 +127,7 @@ function exclude_pages_from_caching() {
 	if ( !empty($_GET['gf_token']) or (!empty($post) and post_password_required($post->ID)) ) {
 		// The "Expires" header is set as well as "Cache-Control" so that Apache mod_expires
 		// directives in .htaccess are ignored and don't overwrite/append-to these headers.
-		// See http://httpd.apache.org/docs/current/mod/mod_expires.html
+		// See http://httpd.apache.org/docs/current/mod/mod_expires.njk
 		$seconds = 0;
 		header("Expires: ". gmdate('D, d M Y H:i:s', time() + $seconds). ' GMT');
 		header("Cache-Control: max-age=". $seconds);
@@ -136,7 +137,7 @@ function exclude_pages_from_caching() {
 add_action('template_redirect', 'exclude_pages_from_caching');
 ```
 
-On the other extreme, there are pages that should be cached for *far longer than 4 hours*--essentually until the Wordpress theme undergoes a breaking change or the page is updated. For these, we check to ensure that no dynamic content exists and then add a weak ETag that depends on the last modified date and theme version.
+On the other extreme, there are pages that should be cached for _far longer than 4 hours_--essentually until the Wordpress theme undergoes a breaking change or the page is updated. For these, we check to ensure that no dynamic content exists and then add a weak ETag that depends on the last modified date and theme version.
 
 ```php
 /**
@@ -149,7 +150,7 @@ function add_etags_for_longer_caching() {
 
 	// Ensure it's a single post or page (not an archive, feed, search page, etc.)
 	if ( !is_singular() ) return;
-		
+
 	global $post;
 
 	// Ensure it's not a page template with dynamically-generated content
@@ -189,6 +190,3 @@ add_action('template_redirect', 'add_etags_for_longer_caching');
 3. Be sure to tackle the low-hanging fruit performance-wise on your website before worring about Time To First Byte (TTFB). In Wordpress-land, that generally means getting rid of blocking scripts above your content.
 
 Feel free to reach out with questions! I'm a performance nut, and love to chat about this stuff.
-
-
-

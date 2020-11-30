@@ -1,0 +1,44 @@
+<section class="post-list">
+    <a class="post-list__anchor" name="posts"></a>
+    <a class="post-list__anchor" name="recipes"></a>
+
+    <nav class="post-list__nav">
+        <a href="#posts" class="post-list__tag">Fullstack Dev</a>
+        <a href="#recipes" class="post-list__tag">Recipes</a>
+    </nav>
+
+    <ul class="post-list__list post-list__list--posts">
+    {%- for post in collections.post | reverse -%}
+        <li class="post-list__item">
+        {% if post.data.external_url %}
+            <a class="post-list__link" href="{{ post.data.external_url }}" target="_blank">
+            {% set titleIcon %}
+                <svg viewBox="0 0 128 128">
+                    <path d="M24 8v96h96v-96h-96zM112 96h-80v-80h80v80zM16 112v-84l-8-8v100h100l-8-8h-84z"></path>
+                    <path d="M44 32l20 20-24 24 12 12 24-24 20 20v-52z"></path>
+                </svg>
+            {% endset%}
+        {% else %}
+            <a class="post-list__link" href="{{ post.url }}">
+            {% set titleIcon = '' %}
+        {% endif %}
+                <aside class="post-list__date">{{ post.date | toDateString }}</aside>
+                <h2 class="h4 post-list__heading">{{ post.data.title | safe }}{{ titleIcon | safe }}</h2>
+                <div class="post-list__description">{{ post.data.description }}</div>
+            </a>
+        </li>
+    {%- endfor -%}
+    </ul>
+
+    <ul class="post-list__list post-list__list--recipes">
+    {%- for post in collections.recipe | reverse -%}
+        <li class="post-list__item">
+            <a class="post-list__link" href="{{ post.url }}">
+                <aside class="post-list__date">{{ post.date | toDateString }}</aside>
+                <h2 class="h4 post-list__heading">{{ post.data.title | safe }} <span class="post-list__version">v{{ post.data.version }}</span></h2>
+                <div class="post-list__description">{{ post.data.description }}</div>
+            </a>
+        </li>
+    {%- endfor -%}
+    </ul>
+</section>

@@ -1,0 +1,38 @@
+pre[class^='language-'] {
+  position: relative;
+  padding: 1rem;
+
+  &:before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.25rem 0.5rem;
+    font-size: 12px;
+  }
+
+  code {
+    font-size: 0.875rem;
+    line-height: 1.2;
+  }
+}
+
+pre.language-php:before {
+  content: 'PHP';
+}
+pre.language-bash:before {
+  content: 'Bash';
+}
+pre.language-handlebars:before {
+  content: 'Handlebars';
+}
+pre.language-javascript:before {
+  content: 'JS';
+}
+pre.language-twig:before {
+  content: 'Twig';
+}
+
+/* not sure why these line breaks showing up */
+.language-handlebars > br:first-child {
+  display: none;
+}

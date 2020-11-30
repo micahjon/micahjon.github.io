@@ -1,9 +1,11 @@
 ---
 title: Creating a Custom Unsubscribe Form in Marketo that Doesn’t Skew Email Analytics
 date: 2015-10-15 18:41:00 -04:00
-description: How to test a new Marketo unsubscribe form on an external page before
+description:
+  How to test a new Marketo unsubscribe form on an external page before
   going live
-redirect_from: "/creating-a-custom-unsubscribe-form-in-marketo-that-doesnt-skew-email-analytics/"
+redirect_from: '/creating-a-custom-unsubscribe-form-in-marketo-that-doesnt-skew-email-analytics/'
+tags: post
 ---
 
 The easy part was creating a new form--with a hidden _Unsubscribed_ field, among others--and embedding it in a Wordpress page. More difficult was _testing the new Unsubscribe link_ in emails. I needed a fully functioning Unsubscribe link that met these requirements:
@@ -13,13 +15,13 @@ The easy part was creating a new form--with a hidden _Unsubscribed_ field, among
 3.  Unsubscribing by clicking on link and using the form on the Wordpress page should increment the email unsubscribe count.
 4.  Email should only contain the new Unsubscribe link defined in the template, not the global Unsubscribe HTML injected by Marketo below it.
 
-**#1** is easy. Just add the link to a new template and test it in a new program. 
+**#1** is easy. Just add the link to a new template and test it in a new program.
 
-**#2** involves adding the _mktNoTrack_ class the the link. This means it will not be routed through your subdomain (e.g. go.goshen.edu) which tracks link clicks and associates them with leads and email campaigns. 
+**#2** involves adding the *mktNoTrack* class the the link. This means it will not be routed through your subdomain (e.g. go.goshen.edu) which tracks link clicks and associates them with leads and email campaigns.
 
-**#3** is tricky, and I couldn't find documentation on it. Add a `mkt_tok=##MKT_TOK##` url parameter to the link. Without this the form will still work, but Marketo needs the mkt_tok parameter to associate the unsubscribe action to the email. 
+**#3** is tricky, and I couldn't find documentation on it. Add a `mkt_tok=##MKT_TOK##` url parameter to the link. Without this the form will still work, but Marketo needs the mkt_tok parameter to associate the unsubscribe action to the email.
 
-**#4** is a hack. The global Unsubscribe HTML will be added to the email unless it contains the \{\{system.unsubscribeLink\}\} token. Create an tiny invisible link with this token, e.g. 
+**#4** is a hack. The global Unsubscribe HTML will be added to the email unless it contains the \{\{system.unsubscribeLink\}\} token. Create an tiny invisible link with this token, e.g.
 
 ```handlebars
 {% raw %}
@@ -28,10 +30,10 @@ The easy part was creating a new form--with a hidden _Unsubscribed_ field, among
 {% endraw %}
 ```
 
-and be sure to comment it! 
+and be sure to comment it!
 
 _**Note:** #4 is not necessary if you choose to replace the global Unsubscribe HTML with your new link. It's super handy for testing the new link ahead of time though._
 
-* * *
+---
 
 I'm new to Marketo development and this is my first post on the topic. I'd love to hear your feedback.

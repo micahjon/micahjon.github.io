@@ -1,0 +1,120 @@
+.post-list {
+  margin: -2rem;
+
+  &__anchor {
+    position: absolute;
+    top: 0;
+  }
+
+  &__nav {
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--grey-100);
+  }
+
+  &__tag {
+    color: inherit;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    &:not(:last-child) {
+      margin-right: 4px;
+    }
+    cursor: pointer;
+    &:hover,
+    &:active {
+      background-color: var(--grey-100);
+    }
+  }
+
+  &__list {
+    list-style-type: none;
+    display: none;
+  }
+
+  &__item {
+    margin: 0;
+  }
+
+  &__link {
+    display: block;
+    color: inherit;
+    background-color: white;
+    padding: 1rem;
+    @media (min-width: 600px) {
+      padding: 1.25rem 1.5rem;
+    }
+    border-left: 1px solid var(--grey-000);
+
+    transition: border-color 0.3s ease, color 0.3s ease;
+
+    &:hover,
+    &:focus {
+      color: #5694f1;
+      border-color: var(--grey-200);
+
+      .post-list__description {
+        color: var(--grey-700);
+      }
+    }
+  }
+
+  &__date {
+    color: var(--grey-500);
+    margin: 0 0 0.25rem;
+  }
+
+  &__heading {
+    margin: 0 0 0.5rem;
+    svg {
+      height: 1rem;
+      @media (min-width: 600px) {
+        height: 1.2rem;
+      }
+      fill: currentColor;
+    }
+  }
+
+  &__description,
+  &__version {
+    color: var(--grey-600);
+  }
+
+  // Default navigation state (no target, show posts)
+  .post-list__list--posts {
+    display: block;
+  }
+  .post-list__tag[href='#posts'] {
+    background-color: var(--grey-200);
+  }
+
+  // Any target (hide everything)
+  .post-list__anchor:target {
+    ~ .post-list__list--posts {
+      display: none;
+    }
+    + .post-list__nav .post-list__tag[href='#posts'] {
+      background-color: initial;
+    }
+  }
+
+  // #posts
+  .post-list__anchor[name='posts']:target {
+    ~ .post-list__list--posts {
+      display: block;
+    }
+    + .post-list__nav .post-list__tag[href='#posts'] {
+      background-color: var(--grey-200);
+    }
+  }
+
+  // #recipes
+  .post-list__anchor[name='recipes']:target {
+    ~ .post-list__list--recipes {
+      display: block;
+    }
+    + .post-list__nav .post-list__tag[href='#recipes'] {
+      background-color: var(--grey-200);
+    }
+  }
+}

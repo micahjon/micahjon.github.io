@@ -1,0 +1,28 @@
+//
+// Profile circle (above my name & blog description)
+//
+
+.profile {
+  max-width: 600px;
+  margin: 0 auto;
+
+  margin-bottom: 40px;
+  text-align: center;
+  position: relative;
+}
+
+.profile__avatar {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.profile__heading {
+  margin: 0 0 0.5rem 0;
+}
+
+.profile__tagline {
+  color: #aaa;
+}

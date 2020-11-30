@@ -1,0 +1,10 @@
+<nav class="top-nav">
+	{% if page.url != "/index.njk" %}
+		<a href="/"> <span class="arrow">←</span> Home </a>
+	{% endif %}
+
+	{% if page.url != "/about/" %}
+		<a href="/about">About Me </a>
+	{% endif %}
+	<!-- <a class="cta" href="/feed.xml">Subscribe</a> -->
+</nav>
