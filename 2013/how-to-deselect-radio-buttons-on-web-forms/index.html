@@ -139,9 +139,11 @@
     </main>
 
     <footer class="site-footer">
-    <p>© Copyright <script>document.write(new Date().getFullYear())</script> Micah Engle-Eshleman</p>
+    <p>© Copyright <span id="currentYear"></span> Micah Engle-Eshleman</p>
+    <script>document.getElementById('currentYear').textContent = new Date().getFullYear()</script>
     
 </footer>
+
 
     <script async src="/assets/js/main.js?v=0"></script>
     <link href="/assets/css/prism-material-oceanic.css" rel="stylesheet">

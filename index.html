@@ -59,6 +59,15 @@
 
     <ul class="post-list__list post-list__list--posts"><li class="post-list__item">
         
+            <a class="post-list__link" href="/2020/simple-depth-first-search-with-object-entries/">
+            
+        
+                <aside class="post-list__date">Dec 17</aside>
+                <h2 class="h4 post-list__heading">Simple Depth-First Search with Object.entries()</h2>
+                <div class="post-list__description">A tiny function for traversing JSON data</div>
+            </a>
+        </li><li class="post-list__item">
+        
             <a class="post-list__link" href="/2019/working-with-images/">
             
         
@@ -157,11 +166,13 @@
     </main>
 
     <footer class="site-footer">
-    <p>© Copyright <script>document.write(new Date().getFullYear())</script> Micah Engle-Eshleman</p>
+    <p>© Copyright <span id="currentYear"></span> Micah Engle-Eshleman</p>
+    <script>document.getElementById('currentYear').textContent = new Date().getFullYear()</script>
     
     <p>* My name changed from <span id="name-change">Micah Miller-Eshleman</span> when I got married a few months ago.</p>
     
 </footer>
+
 
     <script async src="/assets/js/main.js?v=0"></script>
     <link href="/assets/css/prism-material-oceanic.css" rel="stylesheet">
