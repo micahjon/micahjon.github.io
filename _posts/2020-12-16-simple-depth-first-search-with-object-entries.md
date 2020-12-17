@@ -1,6 +1,6 @@
 ---
 title: Simple Depth-First Search with Object.entries()
-date: 2020-12-16 21:30:00 -04:00
+date: 2020-12-16 21:30:00 -08:00
 description: A tiny function for traversing JSON data
 tags: post
 ---
