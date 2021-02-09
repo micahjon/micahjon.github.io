@@ -124,43 +124,40 @@ h1,
 .h1 {
   margin-top: 0;
 }
+/* h2, */
+/* .h2 { */
+/*   @include font-size-h3; */
+/*   @media (min-width: 440px) { */
+/*     @include font-size-h2; */
+/*   } */
+/* } */
 h2,
 .h2 {
-  font-size: 1.728rem
-}
-@media (min-width: 440px) {
-h2,
-.h2 {
-  font-size: 2.074rem
-}
-  }
-h3,
-.h3 {
   font-size: 1.44rem
 }
 @media (min-width: 440px) {
-h3,
-.h3 {
+h2,
+.h2 {
   font-size: 1.728rem
 }
   }
-h4,
-.h4 {
+h3,
+.h3 {
   font-size: 1.2rem
 }
 @media (min-width: 440px) {
-h4,
-.h4 {
+h3,
+.h3 {
   font-size: 1.44rem
 }
   }
-h5,
-.h5 {
+h4,
+.h4 {
   font-size: 1.15rem
 }
 @media (min-width: 440px) {
-h5,
-.h5 {
+h4,
+.h4 {
   font-size: 1.2rem
 }
   }
