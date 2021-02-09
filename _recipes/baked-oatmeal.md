@@ -3,7 +3,7 @@ title: Baked Oatmeal
 date: 2020-11-29 16:15:00 -08:00
 description: Iterations on a recipe from Anna's Bread
 tags: recipe
-version: 14
+version: 15
 ---
 
 _Based on a recipe served at Rachel's Bread (now [Anna's Bread](https://g.page/annasbread?share)), in Goshen, Indiana._
@@ -16,12 +16,12 @@ _Based on a recipe served at Rachel's Bread (now [Anna's Bread](https://g.page/a
 #### Dry ingredients
 
 - 2.5 cup oats (mostly whole)
-- 1.5 tsp cinnamon
-- 1/3 tsp nutmeg
+- 2 tsp cinnamon
+- 1/2 tsp nutmeg
 - 1 tsp salt
 - 2 tsp baking powder
 - 1/2 tsp baking soda
-- 1/2 tsp stevia extract powder
+- 1 tsp stevia extract powder
 
 #### Wet ingredients
 
@@ -36,4 +36,4 @@ _Based on a recipe served at Rachel's Bread (now [Anna's Bread](https://g.page/a
 - 1.25 cup whole milk
 - 1/2 cup chopped walnuts
 
-Bake at 350 for 40 minutes, or until knife comes out relatively clean
+Bake at 350 for 48 minutes, or until knife comes out relatively clean
