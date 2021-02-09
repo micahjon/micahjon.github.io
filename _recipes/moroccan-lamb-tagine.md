@@ -8,7 +8,7 @@ version: 1
 
 _This is my favorite Moroccan dish--"tagine" being the name of the cone-shaped ceramic vessel that it's traditionally cooked in. It can be prepped quick in a dutch oven and then slow cooked._
 
-#### Ingredients
+### Ingredients
 
 - 2 cans of chickpeas
 - 2 tsp grapeseed/olive oil
@@ -32,7 +32,7 @@ Feel free to be a bit extra generous on the spices (heaping teaspoons) for more 
 
 We find it simplest to cook it all in a dutch oven, but you could also use a frying pan and slow cooker.
 
-#### Instructions
+### Instructions
 
 1. Brown lamb and season with pepper and half of the salt. Set aside.
 2. Saute onions until brown.

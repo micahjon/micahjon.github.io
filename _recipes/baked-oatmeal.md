@@ -8,12 +8,12 @@ version: 15
 
 _Based on a recipe served at Rachel's Bread (now [Anna's Bread](https://g.page/annasbread?share)), in Goshen, Indiana._
 
-#### Combine and let sit until absorbed
+### Combine and let sit until absorbed
 
 - 1.5 cup bulgur
 - 3 cup boiling water
 
-#### Dry ingredients
+### Dry ingredients
 
 - 2.5 cup oats (mostly whole)
 - 2 tsp cinnamon
@@ -23,14 +23,14 @@ _Based on a recipe served at Rachel's Bread (now [Anna's Bread](https://g.page/a
 - 1/2 tsp baking soda
 - 1 tsp stevia extract powder
 
-#### Wet ingredients
+### Wet ingredients
 
 - 1/2 cup brown sugar
 - 2 eggs
 - 1/2 cup butter
 - 2 tsp vanilla
 
-#### Combine everything and add
+### Combine everything and add
 
 - 1.5 cup dried cherries
 - 1.25 cup whole milk
