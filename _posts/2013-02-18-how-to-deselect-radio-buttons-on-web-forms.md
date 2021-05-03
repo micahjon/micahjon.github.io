@@ -83,7 +83,7 @@ The *\<input\>* tag is used for user inputs in web forms. This particular tag h
 ### The Javascript
 
 ```javascript
-document.getElementById("choice_31_8_0'").checked = false
+document.getElementById("choice_31_8_0").checked = false
 ```
 
 This script looks within the *document* (webpage) for the first element with *id* equal to _choice_31_8_0_, and sets the *checked* property of this object to *false*.
