@@ -2,14 +2,19 @@
   'use strict'
 
   // Increase width of images on large screens
-  var images = document.querySelectorAll('.post__body p > img')
-  for (var i = 0; i < images.length; i++) {
-    // Only apply to wide images
-    if (images[i].clientWidth >= 518) {
-      var wrap = images[i].parentNode
-      if (wrap.nodeName === 'P') {
-        wrap.classList.add('post__wide-image')
+  Array.from(document.querySelectorAll('.post__body p > img')).forEach(
+    (image) => {
+      if (image.naturalWidth) {
+        testImage(image)
+      } else {
+        image.onload = () => testImage(image)
       }
+    }
+  )
+
+  function testImage(image) {
+    if (image.naturalWidth >= 760) {
+      image.parentNode.classList.add('post__wide-image')
     }
   }
 
