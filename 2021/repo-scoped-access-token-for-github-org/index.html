@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>
+      How to Create a Repo-scoped Github Access Token in an Organization Account | Micah Engle-Eshleman
+    </title>
+    <link rel="shortcut icon" href="/assets/images/favicon.ico" />
+    <link rel="stylesheet" href="/assets/css/style.css?v=1" />
+    
+
+    <!-- Google Tag Manager (script) -->
+    <script>
+      // prettier-ignore
+      ;(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MZB37F');
+    </script>
+  </head>
+
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <!-- prettier-ignore -->
+      <iframe src="https://www.googletagmanager.com/ns.njk?id=GTM-MZB37F" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+
+    <nav class="top-nav">
+	
+		<a href="/"> <span class="arrow">←</span> Home </a>
+	
+
+	
+		<a href="/about">About Me </a>
+	
+	<!-- <a class="cta" href="/feed.xml">Subscribe</a> -->
+</nav> 
+    
+
+    <main class="centered-column post-container">
+      
+<article class="post">
+  <header class="post__header">
+    <h1 class="post__title">How to Create a Repo-scoped Github Access Token in an Organization Account</h1>
+    <p class="post__date">July 9, 2021</p>  
+  </header>
+  <section class="post__body"><p>Evidently, the only way to trigger a Github Action from a third-party (e.g. headless CMS) is via a <a href="https://docs.github.com/en/rest/reference/repos#create-a-repository-dispatch-event">repository_dispatch event</a>. The only tricky part is that the request must be authenticated by an Access Token.</p>
+<pre class="language-shell"><code class="language-shell"><span class="token function">curl</span> <span class="token punctuation">\</span><br>  -X POST <span class="token punctuation">\</span><br>  -H <span class="token string">"Authorization: token {ACCESS TOKEN}"</span><br>  -H <span class="token string">"Accept: application/vnd.github.v3+json"</span> <span class="token punctuation">\</span><br>  https://api.github.com/repos/<span class="token punctuation">{</span>org<span class="token punctuation">}</span>/<span class="token punctuation">{</span>repo<span class="token punctuation">}</span>/dispatches <span class="token punctuation">\</span><br>  -d <span class="token string">'{"event_type":"rebuild_static_site","client_payload":{"post_id":54}}}'</span></code></pre>
+<p>The problem with personal Access Tokens is that, by default, they give access to <em>every repo you have access to</em>. When working on private repos in organizational accounts at work, this is a non-starter!</p>
+<p>Unfortunately, the only way to generate an Access Token scoped to a repository (public or private) in your organization is via a Github App. Hopefully this won't always be the case, but for now you can follow these steps to set one up in a few minutes:</p>
+<h2>Step 1: Create a new Github App</h2>
+<p><a href="https://github.com/settings/apps/new">github.com/settings/apps/new</a></p>
+<p>Give it a short unique name (max length is 34 characters).</p>
+<p>Uncheck &quot;Expire user authorization tokens&quot; and leave &quot;Callback URL&quot; blank</p>
+<p><img src="/assets/images/github-app-expire.png" alt="Screenshot of token expiration checkbox"></p>
+<p>Uncheck &quot;Active&quot; checkbox under &quot;Webhook&quot; and leave &quot;Webhook URL&quot; blank</p>
+<p><img src="/assets/images/github-app-webhook.png" alt="Screenshot of active webhook checkbox"></p>
+<p>Under &quot;Repository Permissions&quot; find &quot;Contents&quot; and enable Read &amp; Write access.</p>
+<p><img src="/assets/images/github-app-contents.png" alt="Screenshot of contents permissions toggle"></p>
+<p>Since this Github action is for an Organization Account, you'll need to allow it to be installed on &quot;Any Account&quot;. That makes the app Public, but it will not compromise your Access Token, since that's generated when you install it.</p>
+<p><img src="/assets/images/github-app-any-account.png" alt="Screenshot of any account radio button"></p>
+<p>Click &quot;Create Github App&quot;.</p>
+<h2>Step 2: Jot down the App ID and download the Private Key file (PEM)</h2>
+<p>You'll need these for step #4.</p>
+<p>The App ID should be near the top of the page.</p>
+<p><img src="/assets/images/github-app-id.png" alt="Screenshot of app ID on page"></p>
+<p>Download the PEM (private key) file.</p>
+<p><img src="/assets/images/github-app-private-key.png" alt="Screenshot of link to download PEM file"></p>
+<h2>Step 3: Install the App on your Organization Account</h2>
+<p>The link to install it should show up in the left-hand menu</p>
+<img alt="Screenshot of app installation" width="300" src="/assets/images/github-app-install.png">
+<p><img src="/assets/images/github-app-install-screen.png" alt="Screenshot of installation screen"></p>
+<p>Jot down the Installation ID from the App Installation page that shows up after installing. You'll need this in the next step.</p>
+<p><img src="/assets/images/github-app-installation-id.png" alt="Screenshot of post-installation page"></p>
+<h2>Step 4: Extract Access Token using Node library</h2>
+<p>Install <a href="https://www.npmjs.com/package/github-app-installation-token">github-app-installation-token</a> and use it to extract the repo-specific Access Token from your new Github App.</p>
+<p>You'll need the following data:</p>
+<ul>
+<li>App ID (from step #2)</li>
+<li>Installation ID (from step #3)</li>
+<li>Private Key (PEM file in step #2)</li>
+</ul>
+<p>There are detailed instructions for using this library in the <a href="https://github.com/gagoar/github-app-installation-token#installation-and-use">README</a>.</p>
+<p>After running the script it should give you an Access Token, e.g.</p>
+<pre class="language-js"><code class="language-js"><span class="token punctuation">{</span> token<span class="token operator">:</span> <span class="token string">'ghs_jksGSQQkmtXSthnGnCsb9AY9yTWU58jhytm6'</span> <span class="token punctuation">}</span></code></pre>
+<h2>Step 5: You're done!</h2>
+<p>You can now use this Access Token to trigger a <code>repository_dispatch</code> event and fire a Github Action in your organization's private repo.</p>
+<pre class="language-shell"><code class="language-shell"><span class="token function">curl</span> <span class="token punctuation">\</span><br>  -X POST <span class="token punctuation">\</span><br>  -H <span class="token string">"Authorization: token ghs_jksGSQQkmtXSthnGnCsb9AY9yTWU58jhytm6"</span><br>  -H <span class="token string">"Accept: application/vnd.github.v3+json"</span> <span class="token punctuation">\</span><br>  https://api.github.com/repos/test-inc/test-repo/dispatches <span class="token punctuation">\</span><br>  -d <span class="token string">'{"event_type":"rebuild_static_site","client_payload":{"post_id":54}}'</span></code></pre>
+</section>
+  <footer class="post__footer">
+    <img class="post__footer-avatar" src="/assets/images/profile-circle-240-tiny.png" />
+    <p class="post__footer-author">Micah Engle-Eshleman</p>
+    <section class="share">
+  <a class="share__button share__button--twitter" href="https://twitter.com/intent/tweet?text=/2021/repo-scoped-access-token-for-github-org/ -  by @">
+    <svg viewBox="0 0 128 128">
+      <path d="M128 28.3c-4.7 2.1-9.775 3.5-15.075 4.125 5.425-3.25 9.575-8.4 11.55-14.525-5.075 3-10.7 5.2-16.675 6.375-4.8-5.1-11.625-8.275-19.175-8.275-14.5 0-26.25 11.75-26.25 26.25 0 2.050 0.225 4.050 0.675 5.975-21.825-1.1-41.175-11.55-54.125-27.45-2.25 3.875-3.55 8.4-3.55 13.2 0 9.1 4.625 17.15 11.675 21.85-4.3-0.125-8.35-1.325-11.9-3.275 0 0.1 0 0.225 0 0.325 0 12.725 9.050 23.35 21.075 25.75-2.2 0.6-4.525 0.925-6.925 0.925-1.7 0-3.325-0.175-4.95-0.475 3.35 10.425 13.050 18.025 24.525 18.25-9 7.050-20.3 11.25-32.625 11.25-2.125 0-4.2-0.125-6.275-0.375 11.65 7.475 25.45 11.8 40.275 11.8 48.3 0 74.725-40.025 74.725-74.725 0-1.15-0.025-2.275-0.075-3.4 5.125-3.675 9.575-8.3 13.1-13.575z"></path>
+    </svg>
+    Tweet
+  </a>
+  <a class="share__button share__button--facebook" href="#" onclick="
+      window.open(
+        'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+        'facebook-share-dialog',
+        'width=626,height=436');
+      return false;">
+    <svg viewBox="0 0 128 128">
+      <path d="M76 24h20v-24h-20c-15.439 0-28 12.561-28 28v12h-16v24h16v64h24v-64h20l4-24h-24v-12c0-2.168 1.832-4 4-4z"></path>
+    </svg>
+    Facebook
+  </a>
+</section>
+  </footer>
+</article>
+
+<div class="comments">
+	<h3 class="comments__heading">Comments are welcome!</h3>
+	<div id="disqus_thread"></div>
+	<script>
+	var disqus_config = function () {
+		// Page url without query parameters or hashes
+		this.page.url = window.location.href.split('?')[0].split('#')[0];
+		// Id is just slug of post
+		this.page.identifier = '';
+	};
+	(function() { // DON'T EDIT BELOW THIS LINE
+		var d = document, s = d.createElement('script');
+		s.src = '//micahjon.disqus.com/embed.js';
+		s.setAttribute('data-timestamp', +new Date());
+		(d.head || d.body).appendChild(s);
+	})();
+	</script>
+	<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+    </main>
+
+    <footer class="site-footer">
+    <p>© Copyright <span id="currentYear"></span> Micah Engle-Eshleman</p>
+    <script>document.getElementById('currentYear').textContent = new Date().getFullYear()</script>
+    
+</footer>
+
+
+    <script async src="/assets/js/main.js?v=0"></script>
+    <link href="/assets/css/prism-material-oceanic.css" rel="stylesheet">
+
+  <style>
+    
+  </style>
+
+
+  </body>
+</html>
