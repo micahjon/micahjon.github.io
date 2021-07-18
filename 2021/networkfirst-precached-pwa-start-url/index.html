@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>
+      Network-first Pre-cached PWA Start URLs with Workbox | Micah Engle-Eshleman
+    </title>
+    <link rel="shortcut icon" href="/assets/images/favicon.ico" />
+    <link rel="stylesheet" href="/assets/css/style.css?v=1" />
+    
+
+    <!-- Google Tag Manager (script) -->
+    <script>
+      // prettier-ignore
+      ;(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MZB37F');
+    </script>
+  </head>
+
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <!-- prettier-ignore -->
+      <iframe src="https://www.googletagmanager.com/ns.njk?id=GTM-MZB37F" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+
+    <nav class="top-nav">
+	
+		<a href="/"> <span class="arrow">←</span> Home </a>
+	
+
+	
+		<a href="/about">About Me </a>
+	
+	<!-- <a class="cta" href="/feed.xml">Subscribe</a> -->
+</nav> 
+    
+
+    <main class="centered-column post-container">
+      
+<article class="post">
+  <header class="post__header">
+    <h1 class="post__title">Network-first Pre-cached PWA Start URLs with Workbox</h1>
+    <p class="post__date">July 18, 2021</p>  
+  </header>
+  <section class="post__body"><p>When deploying <a href="https://www.befunky.com/">BeFunky</a> as a PWA, the trickiest problem I ran into was how to pre-cache the Start URL using a <em>Network-First Strategy</em>. In other words, how to meet these simple requirements:</p>
+<h3>#1. If the user is online, fetch the latest Start URL page from the network</h3>
+<p>This is important for a variety of reasons:</p>
+<ul>
+<li>Hashed asset URLs may be hard-coded in the page's HTML. Serving a stale page means serving an outdated release.</li>
+<li>The Start URL page may contain dynamic server-rendered content.</li>
+</ul>
+<h3>#2. If the user is offline, serve a pre-cached Start URL from the cache.</h3>
+<ul>
+<li>Offline support makes your PWA feel like any other app on the user's device. It should at least open when offline.</li>
+<li>An offline Start URL is now a <a href="https://web.dev/works-offline/">requirement for Chrome to show the native PWA install prompt</a>.</li>
+</ul>
+<br>
+<p>This is called a &quot;Network-first&quot; caching strategy. It ensures your users are only served stale content when necessary, instead of by default while the service worker checks for and caches new assets.</p>
+<p>Pre-caching assets is very easy with Workbox's <code>precacheAndRoute</code> method, but it uses a Cache-first strategy.</p>
+<p>To pre-cache a PWA Start URL with a Network-First strategy, we must do the following:</p>
+<ol>
+<li>
+<p>Setup a Network-First caching strategy</p>
+</li>
+<li>
+<p>Match Navigation routes (used when navigating to new pages), not standard subresource requests (used for fetching assets).</p>
+</li>
+<li>
+<p>Limit the cache to only the PWA Start URL, so each time you have a new release, the old entry is replaced</p>
+</li>
+</ol>
+<pre class="language-js"><code class="language-js"><span class="token comment">// service-worker.js</span><br><br><span class="token comment">// Load Workbox</span><br><span class="token function">importScripts</span><span class="token punctuation">(</span><span class="token string">'https://storage.googleapis.com/workbox-cdn/releases/6.1.2/workbox-sw.js'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>workbox<span class="token punctuation">.</span><span class="token function">setConfig</span><span class="token punctuation">(</span><span class="token punctuation">{</span> debug<span class="token operator">:</span> <span class="token boolean">false</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Load Expiration plugin (optional)</span><br>workbox<span class="token punctuation">.</span><span class="token function">loadModule</span><span class="token punctuation">(</span><span class="token string">'workbox-expiration'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Setup logging &amp; versioning (used for debugging a particular service-worker version)</span><br><span class="token keyword">const</span> version <span class="token operator">=</span> <span class="token string">'3508937123'</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> <span class="token function-variable function">log</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token operator">...</span>args</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">SW </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>version<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> -</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span> <span class="token operator">...</span>args<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span><br><br><span class="token comment">// Pre-cache assets</span><br>workbox<span class="token punctuation">.</span>precaching<span class="token punctuation">.</span><span class="token function">precacheAndRoute</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token operator">...</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Setup Network-First caching strategy</span><br>workbox<span class="token punctuation">.</span>routing<span class="token punctuation">.</span><span class="token function">registerRoute</span><span class="token punctuation">(</span><br>  <span class="token comment">// Match Navigation Routes</span><br>  <span class="token keyword">new</span> <span class="token class-name">workbox<span class="token punctuation">.</span>routing<span class="token punctuation">.</span>NavigationRoute</span><span class="token punctuation">(</span><br>    <span class="token keyword">new</span> <span class="token class-name">workbox<span class="token punctuation">.</span>strategies<span class="token punctuation">.</span>NetworkFirst</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>      cacheName<span class="token operator">:</span> <span class="token string">'pwa-start-url'</span><span class="token punctuation">,</span><br>      plugins<span class="token operator">:</span> <span class="token punctuation">[</span><br>        <span class="token keyword">new</span> <span class="token class-name">workbox<span class="token punctuation">.</span>expiration<span class="token punctuation">.</span>ExpirationPlugin</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>          maxEntries<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span><br>          maxAgeSeconds<span class="token operator">:</span> <span class="token constant">YEAR_IN_SECONDS</span><span class="token punctuation">,</span><br>        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>      <span class="token punctuation">]</span><span class="token punctuation">,</span><br>      matchOptions<span class="token operator">:</span> <span class="token punctuation">{</span><span class="token comment">/* Optional, see note below */</span><span class="token punctuation">}</span><span class="token punctuation">,</span><br>    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>    <span class="token comment">// Limit cache to only PWA Start URL</span><br>    <span class="token punctuation">{</span> allowlist<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">^\/start-url\/$</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token punctuation">)</span><span class="token punctuation">,</span><br><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token comment">// Cache Start URL during installation</span><br>self<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'install'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">event</span><span class="token punctuation">)</span> <span class="token operator">=></span> event<span class="token punctuation">.</span><span class="token function">waitUntil</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> startUrl <span class="token operator">=</span> <span class="token string">'https://www.your-domain.com/start-url/'</span><span class="token punctuation">;</span><br>  <span class="token keyword">return</span> caches<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">'pwa-start-url'</span><span class="token punctuation">)</span><br>      <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">cache</span> <span class="token operator">=></span> cache<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>startUrl<span class="token punctuation">)</span><span class="token punctuation">)</span><br>      <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>        <span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Pre-cached NetworkFirst Start url:'</span><span class="token punctuation">,</span> startUrl<span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token punctuation">}</span><span class="token punctuation">)</span><br>      <span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">error</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>        <span class="token comment">// If pre-caching fails, continue with installation &amp; activation </span><br>        <span class="token comment">// since it's a nice to have, not a hard requirement</span><br>        <span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Failed to pre-cache NetworkFirst Start url:'</span><span class="token punctuation">,</span> startUrl<span class="token punctuation">,</span> error<span class="token punctuation">)</span><span class="token punctuation">;</span><br>      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h3>matchOptions</h3>
+<p>In some cases, the pre-cached Start URL will still fail to match the requested Start URL when the PWA user is offline, and Chrome will give you a warning about the Start URL not being available offline.</p>
+<p>In these scenarios, <a href="https://w3c.github.io/ServiceWorker/#dictdef-cachequeryoptions">CacheQueryOptions</a> can be helpful. It's not particularly well documented, but you can pass flags to <code>matchOptions</code> that tell the service worker to use the pre-cached page even if...</p>
+<ul>
+<li><code>ignoreSearch</code>: it has different query params (e.g. <code>?utm_medium=pwa</code>) than the requested page</li>
+<li><code>ignoreMethod</code>: the method (e.g. GET/POST) differs between requests (probably irrelevant for PWA Start URLs)</li>
+<li><code>ignoreVary</code>: the cached page has a <code>Vary</code> header</li>
+</ul>
+<p>I had to use <code>ignoreVary</code> b/c we set <code>Vary</code> headers to differentiate between browsers for polyfilling purposes.</p>
+<h2>Good luck!</h2>
+<p>If this technique works for you, or if I missed something, I'd love to hear about it in the comments.</p>
+</section>
+  <footer class="post__footer">
+    <img class="post__footer-avatar" src="/assets/images/profile-circle-240-tiny.png" />
+    <p class="post__footer-author">Micah Engle-Eshleman</p>
+    <section class="share">
+  <a class="share__button share__button--twitter" href="https://twitter.com/intent/tweet?text=/2021/networkfirst-precached-pwa-start-url/ -  by @">
+    <svg viewBox="0 0 128 128">
+      <path d="M128 28.3c-4.7 2.1-9.775 3.5-15.075 4.125 5.425-3.25 9.575-8.4 11.55-14.525-5.075 3-10.7 5.2-16.675 6.375-4.8-5.1-11.625-8.275-19.175-8.275-14.5 0-26.25 11.75-26.25 26.25 0 2.050 0.225 4.050 0.675 5.975-21.825-1.1-41.175-11.55-54.125-27.45-2.25 3.875-3.55 8.4-3.55 13.2 0 9.1 4.625 17.15 11.675 21.85-4.3-0.125-8.35-1.325-11.9-3.275 0 0.1 0 0.225 0 0.325 0 12.725 9.050 23.35 21.075 25.75-2.2 0.6-4.525 0.925-6.925 0.925-1.7 0-3.325-0.175-4.95-0.475 3.35 10.425 13.050 18.025 24.525 18.25-9 7.050-20.3 11.25-32.625 11.25-2.125 0-4.2-0.125-6.275-0.375 11.65 7.475 25.45 11.8 40.275 11.8 48.3 0 74.725-40.025 74.725-74.725 0-1.15-0.025-2.275-0.075-3.4 5.125-3.675 9.575-8.3 13.1-13.575z"></path>
+    </svg>
+    Tweet
+  </a>
+  <a class="share__button share__button--facebook" href="#" onclick="
+      window.open(
+        'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+        'facebook-share-dialog',
+        'width=626,height=436');
+      return false;">
+    <svg viewBox="0 0 128 128">
+      <path d="M76 24h20v-24h-20c-15.439 0-28 12.561-28 28v12h-16v24h16v64h24v-64h20l4-24h-24v-12c0-2.168 1.832-4 4-4z"></path>
+    </svg>
+    Facebook
+  </a>
+</section>
+  </footer>
+</article>
+
+<div class="comments">
+	<h3 class="comments__heading">Comments are welcome!</h3>
+	<div id="disqus_thread"></div>
+	<script>
+	var disqus_config = function () {
+		// Page url without query parameters or hashes
+		this.page.url = window.location.href.split('?')[0].split('#')[0];
+		// Id is just slug of post
+		this.page.identifier = '';
+	};
+	(function() { // DON'T EDIT BELOW THIS LINE
+		var d = document, s = d.createElement('script');
+		s.src = '//micahjon.disqus.com/embed.js';
+		s.setAttribute('data-timestamp', +new Date());
+		(d.head || d.body).appendChild(s);
+	})();
+	</script>
+	<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+    </main>
+
+    <footer class="site-footer">
+    <p>© Copyright <span id="currentYear"></span> Micah Engle-Eshleman</p>
+    <script>document.getElementById('currentYear').textContent = new Date().getFullYear()</script>
+    
+</footer>
+
+
+    <script async src="/assets/js/main.js?v=1"></script>
+    <link href="/assets/css/prism-material-oceanic.css" rel="stylesheet">
+
+  <style>
+    
+  </style>
+
+
+  </body>
+</html>
