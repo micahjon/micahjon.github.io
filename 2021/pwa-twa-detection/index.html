@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>
+      Bulletproof PWA and TWA Detection | Micah Engle-Eshleman
+    </title>
+    <link rel="shortcut icon" href="/assets/images/favicon.ico" />
+    <link rel="stylesheet" href="/assets/css/style.css?v=1" />
+    
+
+    <!-- Google Tag Manager (script) -->
+    <script>
+      // prettier-ignore
+      ;(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MZB37F');
+    </script>
+  </head>
+
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <!-- prettier-ignore -->
+      <iframe src="https://www.googletagmanager.com/ns.njk?id=GTM-MZB37F" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+
+    <nav class="top-nav">
+	
+		<a href="/"> <span class="arrow">←</span> Home </a>
+	
+
+	
+		<a href="/about">About Me </a>
+	
+	<!-- <a class="cta" href="/feed.xml">Subscribe</a> -->
+</nav> 
+    
+
+    <main class="centered-column post-container">
+      
+<article class="post">
+  <header class="post__header">
+    <h1 class="post__title">Bulletproof PWA and TWA Detection</h1>
+    <p class="post__date">July 18, 2021</p>  
+  </header>
+  <section class="post__body"><h2>Detecting an Installed PWA</h2>
+<p>The simplest way to tell between a standard browser session and an installed PWA session is by checking <code>display-mode</code>. Assuming your PWA runs in &quot;standalone&quot; mode (defined in your web app manifest file, <a href="https://web.dev/display-override/">learn more about display modes here</a>), you can simply check the <code>display-mode</code> property.</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">/**<br> * Is the page currently in standalone display mode (used by PWA)?<br> * @return {boolean}<br> */</span><br><span class="token keyword">function</span> <span class="token function">isInStandaloneMode</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">return</span> <span class="token function">Boolean</span><span class="token punctuation">(</span><br>    <span class="token punctuation">(</span>window<span class="token punctuation">.</span>matchMedia <span class="token operator">&amp;&amp;</span> window<span class="token punctuation">.</span><span class="token function">matchMedia</span><span class="token punctuation">(</span><span class="token string">'(display-mode: standalone)'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>matches<span class="token punctuation">)</span><br>    <span class="token operator">||</span> window<span class="token punctuation">.</span>navigator<span class="token punctuation">.</span>standalone<span class="token punctuation">,</span> <span class="token comment">// Fallback for iOS</span><br>  <span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+<p>There is one gotcha: users can change the display mode of your PWA by making it fullscreen. In this case, your best bet is to <em>detect standalone mode initially</em>, store a flag in SessionStorage, and then check that flag for every page view in your session.</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">// Run this code as soon as possible (before user has a chance to change display mode)</span><br><span class="token keyword">let</span> hasBeenInStandaloneMode<span class="token punctuation">;</span><br><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isInStandaloneMode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  hasBeenInStandaloneMode <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span><br>  sessionStorage<span class="token punctuation">.</span><span class="token function">setItem</span><span class="token punctuation">(</span><span class="token string">'is_standalone_mode'</span><span class="token punctuation">,</span> <span class="token string">'yes'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span><br>  hasBeenInStandaloneMode <span class="token operator">=</span> sessionStorage<span class="token punctuation">.</span><span class="token function">getItem</span><span class="token punctuation">(</span><span class="token string">'is_standalone_mode'</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token string">'yes'</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token comment">/**<br> * Is this an installed PWA?<br> * @return {boolean}<br> */</span><br><span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">isInstalledPwaSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">return</span> hasBeenInStandaloneMode<span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+<p><strong>Note:</strong> It's important to use SessionStorage instead of LocalStorage b/c LocalStorage is shared with the browser, and you don't want to mark tabs in the browser as part of a PWA session just because at some point in the past a user opened your PWA.</p>
+<h2>Detecting a TWA (Trusted Web Activity)</h2>
+<p>Packaging your PWA as a TWA is required for listing it in the Play Store. Essentially, you generate tiny Android app that references your PWA start URL, key asset URLs, and a version number.</p>
+<p>Most of this data should already be in your web app manifest, so the process is relatively painless using a tool like the Bubblewrap CLI.</p>
+<p>When a TWA is opened on Android, the TWA app ID is exposed to the start URL page via the referrer. We can use a similar technique to detect the Android TWA as we did the PWA above:</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">// Read more about this solution here: https://stackoverflow.com/a/54580415/1546808</span><br><span class="token keyword">let</span> isAndroidTwaSession<span class="token punctuation">;</span><br><span class="token keyword">if</span> <span class="token punctuation">(</span>document<span class="token punctuation">.</span>referrer<span class="token punctuation">.</span><span class="token function">includes</span><span class="token punctuation">(</span><span class="token string">'android-app://&lt;your.twa.package.name>'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  isAndroidTwaSession <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span><br>  sessionStorage<span class="token punctuation">.</span><span class="token function">setItem</span><span class="token punctuation">(</span><span class="token string">'has_android_twa_referrer'</span><span class="token punctuation">,</span> <span class="token string">'yes'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span><br>  isAndroidTwaSession <span class="token operator">=</span> sessionStorage<span class="token punctuation">.</span><span class="token function">getItem</span><span class="token punctuation">(</span><span class="token string">'has_android_twa_referrer'</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token string">'yes'</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+<p>Unfortunately, this doesn't work on ChromeOS (<code>document.referrer</code> is empty). Hopefully it does at some point in the future, but for the time being, if you're releasing a TWA on Chromebook, you'll need to customize the start URL in the <code>twa-manifest.json</code> file created by Bubblewrap. In my case, I kept using the same start URL as the PWA, but added a <code>#play-store-twa</code> hash:</p>
+<pre class="language-json"><code class="language-json"><span class="token comment">// manifest.json (for PWA)</span><br><span class="token property">"startUrl"</span><span class="token operator">:</span> <span class="token string">"/pwa-start-url/"</span><br><br><span class="token comment">// twa-manifest.json (just for TWA, used by Bubblewrap CLI)</span><br><span class="token property">"startUrl"</span><span class="token operator">:</span> <span class="token string">"/pwa-start-url/#play-store-twa"</span></code></pre>
+<p>Then check for this hash as soon as possible on the start URL page:</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">// Check for #play-store-twa hash in start URL to identify TWA</span><br><span class="token keyword">let</span> hasPlayStoreTwaHash<span class="token punctuation">;</span><br><span class="token keyword">if</span> <span class="token punctuation">(</span>window<span class="token punctuation">.</span>location<span class="token punctuation">.</span>pathname <span class="token operator">===</span> <span class="token string">'/pwa-start-url/'</span> <span class="token operator">&amp;&amp;</span> window<span class="token punctuation">.</span>location<span class="token punctuation">.</span>hash <span class="token operator">===</span> <span class="token string">'#play-store-twa'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    hasPlayStoreTwaHash <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span><br>    sessionStorage<span class="token punctuation">.</span><span class="token function">setItem</span><span class="token punctuation">(</span><span class="token string">'is_play_store_twa'</span><span class="token punctuation">,</span> <span class="token string">'yes'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span><br>    hasPlayStoreTwaHash <span class="token operator">=</span> sessionStorage<span class="token punctuation">.</span><span class="token function">getItem</span><span class="token punctuation">(</span><span class="token string">'is_play_store_twa'</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token string">'yes'</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span><br><br><span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">isTwaSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">return</span> hasPlayStoreTwaHash <span class="token operator">&amp;&amp;</span> <span class="token function">isInstalledPwaSession</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+</section>
+  <footer class="post__footer">
+    <img class="post__footer-avatar" src="/assets/images/profile-circle-240-tiny.png" />
+    <p class="post__footer-author">Micah Engle-Eshleman</p>
+    <section class="share">
+  <a class="share__button share__button--twitter" href="https://twitter.com/intent/tweet?text=/2021/pwa-twa-detection/ -  by @">
+    <svg viewBox="0 0 128 128">
+      <path d="M128 28.3c-4.7 2.1-9.775 3.5-15.075 4.125 5.425-3.25 9.575-8.4 11.55-14.525-5.075 3-10.7 5.2-16.675 6.375-4.8-5.1-11.625-8.275-19.175-8.275-14.5 0-26.25 11.75-26.25 26.25 0 2.050 0.225 4.050 0.675 5.975-21.825-1.1-41.175-11.55-54.125-27.45-2.25 3.875-3.55 8.4-3.55 13.2 0 9.1 4.625 17.15 11.675 21.85-4.3-0.125-8.35-1.325-11.9-3.275 0 0.1 0 0.225 0 0.325 0 12.725 9.050 23.35 21.075 25.75-2.2 0.6-4.525 0.925-6.925 0.925-1.7 0-3.325-0.175-4.95-0.475 3.35 10.425 13.050 18.025 24.525 18.25-9 7.050-20.3 11.25-32.625 11.25-2.125 0-4.2-0.125-6.275-0.375 11.65 7.475 25.45 11.8 40.275 11.8 48.3 0 74.725-40.025 74.725-74.725 0-1.15-0.025-2.275-0.075-3.4 5.125-3.675 9.575-8.3 13.1-13.575z"></path>
+    </svg>
+    Tweet
+  </a>
+  <a class="share__button share__button--facebook" href="#" onclick="
+      window.open(
+        'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+        'facebook-share-dialog',
+        'width=626,height=436');
+      return false;">
+    <svg viewBox="0 0 128 128">
+      <path d="M76 24h20v-24h-20c-15.439 0-28 12.561-28 28v12h-16v24h16v64h24v-64h20l4-24h-24v-12c0-2.168 1.832-4 4-4z"></path>
+    </svg>
+    Facebook
+  </a>
+</section>
+  </footer>
+</article>
+
+<div class="comments">
+	<h3 class="comments__heading">Comments are welcome!</h3>
+	<div id="disqus_thread"></div>
+	<script>
+	var disqus_config = function () {
+		// Page url without query parameters or hashes
+		this.page.url = window.location.href.split('?')[0].split('#')[0];
+		// Id is just slug of post
+		this.page.identifier = '';
+	};
+	(function() { // DON'T EDIT BELOW THIS LINE
+		var d = document, s = d.createElement('script');
+		s.src = '//micahjon.disqus.com/embed.js';
+		s.setAttribute('data-timestamp', +new Date());
+		(d.head || d.body).appendChild(s);
+	})();
+	</script>
+	<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+    </main>
+
+    <footer class="site-footer">
+    <p>© Copyright <span id="currentYear"></span> Micah Engle-Eshleman</p>
+    <script>document.getElementById('currentYear').textContent = new Date().getFullYear()</script>
+    
+</footer>
+
+
+    <script async src="/assets/js/main.js?v=1"></script>
+    <link href="/assets/css/prism-material-oceanic.css" rel="stylesheet">
+
+  <style>
+    
+  </style>
+
+
+  </body>
+</html>
