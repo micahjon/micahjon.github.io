@@ -21,7 +21,7 @@ _Based on a recipe served at Rachel's Bread (now [Anna's Bread](https://g.page/a
 - 1 tsp salt
 - 2 tsp baking powder
 - 1/2 tsp baking soda
-- 1 tsp stevia extract powder
+- 3/4 tsp stevia extract powder
 
 ### Wet ingredients
 
