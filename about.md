@@ -9,16 +9,24 @@ isPage: true
 
 Hi, I'm Micah! I'm a full-stack engineer based in Portland, OR.
 
-I'm currently leading the front-end team at BeFunky, a popular WebGL-based [Photo Editor](https://www.befunky.com/create/) and [Graphic Design tool](https://www.befunky.com/create/designer/) that runs in the browser.
+I'm currently leading the front-end team at BeFunky, a popular WebGL-based [Photo Editing](https://www.befunky.com/create/) and [Graphic Design](https://www.befunky.com/create/designer/) platform that runs in the browser. A lot of my work entails adding new features without sacrificing our core performance metrics.
+
+<caption>
+<img src="/assets/images/web-vitals.png" alt="BeFunky web vitals"/>
+<small>befunky.com - Desktop - Sept 25, 2021</small>
+</caption>
 
 ## Current Projects
 
-In my free time, I'm working on a couple different things:
+<img src="/assets/images/squid.jpg" alt="One of my cats" class="page__image-align-right">
 
-- Remodeling my basement
-- Training a LSTM Neural Network to identify ads in podcasts
+When I'm not taking my cats for a walk, I'm often coding or thinking about one of these things:
 
-Just shoot me an email if you'd like to work on something together!
+- Experimenting with various machine-learning solutions to identifying ads in podcasts
+- Evaluating state machines (e.g. [Robot](https://github.com/matthewp/robot)) and minimalist UI frameworks (e.g. [Preact](https://preactjs.com/), [Haunted](https://github.com/matthewp/haunted)) for use at work and various side projects
+- Speaking at the [PWA Summit](https://pwasummit.org/) on October 7th. It's all online and free to attend!
+
+Feel free to shoot me an email if you'd like to work on something together!<br>
 [GitHub](https://github.com/micahjon) \| [Email](mailto:micah.millereshleman@gmail.com)
 
 ## Past Projects
@@ -26,8 +34,8 @@ Just shoot me an email if you'd like to work on something together!
 <img src="/assets/images/object-recognition-92.jpg" alt="Trying out object recognition" class="page__image-align-right">
 
 - Playing around with [object detection using Tensorflow](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-on-the-Raspberry-Pi) on a the Raspberry Pi B+.
-- A silly, social webapp called [Any Mammal's Milk](http://anymammalsmilk.com) first written in Svelte then migrated to React + Firebase.
 - A Preact-based [WordPress plugin](https://github.com/micahjon/network-database-search) for cleaner database searches.
+- A silly, social webapp called [Any Mammal's Milk](http://anymammalsmilk.com) first written in Svelte then migrated to React + Firebase.
 
 ## Goshen College
 
