@@ -12,7 +12,7 @@ Hi, I'm Micah! I'm a full-stack engineer based in Portland, OR.
 I'm currently leading the front-end team at BeFunky, a popular WebGL-based [Photo Editing](https://www.befunky.com/create/) and [Graphic Design](https://www.befunky.com/create/designer/) platform that runs in the browser. A lot of my work entails adding new features without sacrificing our core performance metrics.
 
 <caption>
-<img src="/assets/images/web-vitals.png" alt="BeFunky web vitals"/>
+<img src="/assets/images/befunky-perf.png" alt="BeFunky web vitals"/>
 <small>befunky.com - Desktop - Sept 25, 2021</small>
 </caption>
 
