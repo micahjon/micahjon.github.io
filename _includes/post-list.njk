@@ -35,7 +35,7 @@
         <li class="post-list__item">
             <a class="post-list__link" href="{{ post.url }}">
                 <aside class="post-list__date">{{ post.date | toDateString }}</aside>
-                <h2 class="h3 post-list__heading">{{ post.data.title }} <span class="post-list__version">v{{ post.data.version }}</span></h2>
+                <h2 class="h3 post-list__heading">{{ post.data.title }}{% if post.data.version > 1 %} <span class="post-list__version">v{{ post.data.version }}</span>{% endif %}</h2>
                 <div class="post-list__description">{{ post.data.description }}</div>
             </a>
         </li>

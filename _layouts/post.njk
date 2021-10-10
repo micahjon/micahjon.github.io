@@ -5,7 +5,7 @@ layout: default
 <article class="post">
   <header class="post__header">
     <h1 class="post__title">{{ title | removeWidows }}</h1>
-    <p class="post__date">{% if version %}Version {{version}} | {% endif %}{{ date | toDateString('post-page') }}</p>  
+    <p class="post__date">{% if version > 1 %}Version {{version}} | {% endif %}{{ date | toDateString('post-page') }}</p>  
   </header>
   <section class="post__body">{{ content | safe }}</section>
   <footer class="post__footer">
