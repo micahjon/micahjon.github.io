@@ -1,7 +1,7 @@
 ---
 title: Oatmeal Pancakes
-date: 2020-11-29 16:15:00 -08:00
-description: Lightweight, not too heavy
+date: 2021-10-10 14:17:00 -08:00
+description: Lightweight but hearty
 tags: recipe
 version: 1
 ---
