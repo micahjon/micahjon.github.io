@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>
+      Detecting a PWA on the Microsoft Store | Micah Engle-Eshleman
+    </title>
+    <link rel="shortcut icon" href="/assets/images/favicon.ico" />
+    <link rel="stylesheet" href="/assets/css/style.css?v=1" />
+    
+
+    <!-- Google Tag Manager (script) -->
+    <script>
+      // prettier-ignore
+      ;(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MZB37F');
+    </script>
+  </head>
+
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <!-- prettier-ignore -->
+      <iframe src="https://www.googletagmanager.com/ns.njk?id=GTM-MZB37F" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+
+    <nav class="top-nav">
+	
+		<a href="/"> <span class="arrow">←</span> Home </a>
+	
+
+	
+		<a href="/about">About Me </a>
+	
+	<!-- <a class="cta" href="/feed.xml">Subscribe</a> -->
+</nav> 
+    
+
+    <main class="centered-column post-container">
+      
+<article class="post">
+  <header class="post__header">
+    <h1 class="post__title">Detecting a PWA on the Microsoft Store</h1>
+    <p class="post__date">October 26, 2021</p>  
+  </header>
+  <section class="post__body"><p>A few weeks ago we submitted the <a href="https://www.microsoft.com/en-us/p/photo-editor-by-befunky/9pjtxn8csrck?cid=msft_web_chart#activetab=pivot:overviewtab">BeFunky PWA on the Microsoft Store</a>, after packaging it up with <a href="https://www.pwabuilder.com/">pwabuilder.com</a>.</p>
+<p>After launching, we realized we had no way of distinguishing it from our PWA that users could install from their Edge or Chrome browser on Windows.</p>
+<p>It turns out that Edge Chromium sets a special <code>document.referrer</code> when first opening your Microsoft Store PWA's start URL:</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">// Microsoft Store PWA (first page load only)</span><br>document<span class="token punctuation">.</span>referrer <span class="token operator">===</span> <span class="token string">'app-info://platform/microsoft-store'</span><span class="token punctuation">;</span></code></pre>
+<p>However, when users navigate to subsequent pages (or refresh the start URL), this special referrer will no longer be set. To accurately track additional page views, you'll need to use SessionStorage.</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">/**<br> * If the PWA's referrer is "app-info://platform/microsoft-store", we know that it <br> * was installed from the Microsoft Store<br> * Save flag in SessionStorage for tracking future page views<br> * @return {boolean}<br> */</span><br><span class="token keyword">function</span> <span class="token function">isMicrosoftStorePWA</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token comment">// Check referrer when PWA is first opened</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>document<span class="token punctuation">.</span>referrer <span class="token operator">===</span> <span class="token string">'app-info://platform/microsoft-store'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    sessionStorage<span class="token punctuation">.</span><span class="token function">setItem</span><span class="token punctuation">(</span><span class="token string">'is_ms_store_pwa'</span><span class="token punctuation">,</span> <span class="token string">'yes'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token comment">// Subsequent navigations</span><br>  <span class="token keyword">return</span> sessionStorage<span class="token punctuation">.</span><span class="token function">getItem</span><span class="token punctuation">(</span><span class="token string">'is_ms_store_pwa'</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token string">'yes'</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+<p>A couple minor notes:</p>
+<ul>
+<li>
+<p><code>sessionStorage</code> is used instead of <code>localStorage</code> so tracking is limited to the installed PWA session. <code>localStorage</code> is shared between all installed PWAs and website tabs in a given browser engine (in this case Edge Chromium).</p>
+</li>
+<li>
+<p>For simplicity I'm using <code>sessionStorage</code> directly, but keep in mind that in some rare instances it is not available due to privacy settings. At BeFunky, we wrap <code>sessionStorage</code> and <code>localStorage</code> calls in helper functions with <code>try-catch</code>, e.g.</p>
+</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token comment">/**<br> * Attempt to get value from SessionStorage<br> * @return {string|null|undefined}<br> */</span><br><span class="token keyword">function</span> <span class="token function">getSessionStorageValue</span><span class="token punctuation">(</span><span class="token parameter">key</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">try</span> <span class="token punctuation">{</span><br>    <span class="token keyword">return</span> sessionStorage<span class="token punctuation">.</span><span class="token function">getItem</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><br><span class="token punctuation">}</span><br><br><span class="token comment">/**<br> * Attempt to set value to SessionStorage<br> * @return {boolean}<br> */</span><br><span class="token keyword">function</span> <span class="token function">setSessionStorageValue</span><span class="token punctuation">(</span><span class="token parameter">key<span class="token punctuation">,</span> value</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>  <span class="token keyword">try</span> <span class="token punctuation">{</span><br>    sessionStorage<span class="token punctuation">.</span><span class="token function">setItem</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span><br>    <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
+<p>This has worked for us thus far, but if you have any feedback or other ideas for improving this code, please leave a comment below.</p>
+</section>
+  <footer class="post__footer">
+    <img class="post__footer-avatar" src="/assets/images/profile-circle-240-tiny.png" />
+    <p class="post__footer-author">Micah Engle-Eshleman</p>
+    <section class="share">
+  <a class="share__button share__button--twitter" href="https://twitter.com/intent/tweet?text=/2021/detect-microsoft-store-pwa/ -  by @">
+    <svg viewBox="0 0 128 128">
+      <path d="M128 28.3c-4.7 2.1-9.775 3.5-15.075 4.125 5.425-3.25 9.575-8.4 11.55-14.525-5.075 3-10.7 5.2-16.675 6.375-4.8-5.1-11.625-8.275-19.175-8.275-14.5 0-26.25 11.75-26.25 26.25 0 2.050 0.225 4.050 0.675 5.975-21.825-1.1-41.175-11.55-54.125-27.45-2.25 3.875-3.55 8.4-3.55 13.2 0 9.1 4.625 17.15 11.675 21.85-4.3-0.125-8.35-1.325-11.9-3.275 0 0.1 0 0.225 0 0.325 0 12.725 9.050 23.35 21.075 25.75-2.2 0.6-4.525 0.925-6.925 0.925-1.7 0-3.325-0.175-4.95-0.475 3.35 10.425 13.050 18.025 24.525 18.25-9 7.050-20.3 11.25-32.625 11.25-2.125 0-4.2-0.125-6.275-0.375 11.65 7.475 25.45 11.8 40.275 11.8 48.3 0 74.725-40.025 74.725-74.725 0-1.15-0.025-2.275-0.075-3.4 5.125-3.675 9.575-8.3 13.1-13.575z"></path>
+    </svg>
+    Tweet
+  </a>
+  <a class="share__button share__button--facebook" href="#" onclick="
+      window.open(
+        'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+        'facebook-share-dialog',
+        'width=626,height=436');
+      return false;">
+    <svg viewBox="0 0 128 128">
+      <path d="M76 24h20v-24h-20c-15.439 0-28 12.561-28 28v12h-16v24h16v64h24v-64h20l4-24h-24v-12c0-2.168 1.832-4 4-4z"></path>
+    </svg>
+    Facebook
+  </a>
+</section>
+  </footer>
+</article>
+
+<div class="comments">
+	<h3 class="comments__heading">Comments are welcome!</h3>
+	<div id="disqus_thread"></div>
+	<script>
+	var disqus_config = function () {
+		// Page url without query parameters or hashes
+		this.page.url = window.location.href.split('?')[0].split('#')[0];
+		// Id is just slug of post
+		this.page.identifier = '';
+	};
+	(function() { // DON'T EDIT BELOW THIS LINE
+		var d = document, s = d.createElement('script');
+		s.src = '//micahjon.disqus.com/embed.js';
+		s.setAttribute('data-timestamp', +new Date());
+		(d.head || d.body).appendChild(s);
+	})();
+	</script>
+	<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+    </main>
+
+    <footer class="site-footer">
+    <p>© Copyright <span id="currentYear"></span> Micah Engle-Eshleman</p>
+    <script>document.getElementById('currentYear').textContent = new Date().getFullYear()</script>
+    
+</footer>
+
+
+    <script async src="/assets/js/main.js?v=1"></script>
+    <link href="/assets/css/prism-material-oceanic.css" rel="stylesheet">
+
+  <style>
+    
+  </style>
+
+
+  </body>
+</html>
