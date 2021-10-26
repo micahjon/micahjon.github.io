@@ -1,7 +1,7 @@
 ---
 title: Detecting a PWA on the Microsoft Store
 date: 2021-10-25 21:40:00 -08:00
-description: How to track a  installed from the Microsoft Store
+description: How to track a PWA installed from the Microsoft Store
 tags: post
 ---
 
