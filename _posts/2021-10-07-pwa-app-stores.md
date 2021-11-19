@@ -9,4 +9,4 @@ I just gave a talk on the pros/cons and implementation details of packaging your
 
 [View the slides here](https://docs.google.com/presentation/d/1wEdMa1aFqtpJVJHWm8Gc5X-6xLHDY1i4Dx5JaaZ_89k/edit#slide=id.p1)
 
-[Watch the talk here](https://youtu.be/qbh_u2hvIjg?t=15601)
+[Watch the talk here](https://youtu.be/XBStJqajO9M)
