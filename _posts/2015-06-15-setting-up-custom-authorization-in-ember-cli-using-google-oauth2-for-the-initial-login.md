@@ -16,7 +16,7 @@ I've found it handy in Ember-CLI apps to use Google logins for initial authentic
 - **App** sends Google token to the node **server** in response for a new token. _The server validates the Google token and then uses it to get user info from Google. It then creates a new custom token containing a user id, which it sends to the app._
 - **App** uses it's new custom token in all further requests to the **server**. _Right before this token expires, it will be refreshed._
 
-In this process, _token _refers to a JSON web token. We'll be using the following open-source projects to build a basic app (for the finished product, [see my GitHub repo](https://github.com/micahjon/basic-auth-demo)).
+In this process, _token_ refers to a JSON web token. We'll be using the following open-source projects to build a basic app (for the finished product, [see my GitHub repo](https://github.com/micahjon/basic-auth-demo)).
 
 ### Ember Client:
 
@@ -270,7 +270,7 @@ It may be tempting at this point to use a the Google oAuth2 Torii provider bundl
 ember install torii
 ```
 
-You can setup the Google oAuth2 Bearer provider by adding a *torii _property to \_ENV* in _environment.js_.
+You can setup the Google oAuth2 Bearer provider by adding a _torii_ property to _ENV_ in _environment.js_.
 
 ```javascript
 torii: {
@@ -283,7 +283,7 @@ torii: {
     }
 ```
 
-To get an *apiKey*, go to the [Google Developer Console](https://console.developers.google.com/project) and create a new project. Click on *Credentials _under _APIs & auth _in the left side nav and select _Create new Client ID* under _OAuth_, choosing *Web Application* in the popup. (You may need to _Configure the consent screen_ first--just enter the _Product Name_ and click _Save_). Now, in the popup, enter *http://localhost:4200* in both fields (_authorized javascript origins_ and *authorized redirect uri*). The first requires an actual domain and the second doesn’t need to redirect to any particular Ember route since Ember will handle this on it’s own. Copy the *Client ID _string, and past it into _environment.js* as (you guessed it) the *apiKey*. At this point, we just need to set up the Application route to log in with Google first and then send the Google token to the node server for custom authentication. Making a few minor edits to *sessionRequiresAuthentication*:
+To get an *apiKey*, go to the [Google Developer Console](https://console.developers.google.com/project) and create a new project. Click on _Credentials_ under _APIs & auth_ in the left side nav and select _Create new Client ID_ under _OAuth_, choosing *Web Application* in the popup. (You may need to _Configure the consent screen_ first--just enter the _Product Name_ and click _Save_). Now, in the popup, enter *http://localhost:4200* in both fields (_authorized javascript origins_ and *authorized redirect uri*). The first requires an actual domain and the second doesn’t need to redirect to any particular Ember route since Ember will handle this on it’s own. Copy the _Client ID_ string, and paste it into _environment.js_ as (you guessed it) the *apiKey*. At this point, we just need to set up the Application route to log in with Google first and then send the Google token to the node server for custom authentication. Making a few minor edits to *sessionRequiresAuthentication*:
 
 ```javascript
 sessionRequiresAuthentication: function() {
@@ -308,7 +308,7 @@ sessionRequiresAuthentication: function() {
 }
 ```
 
-Notice how I pass *googleToken* to the node server as a *password.* Now, we just need to set up the node server to parse this token, fetch the current user from Google, and return an user-identifying token that can be used for authorizing secure resources. If everything is working, when you click on \_Login _you should see a _Request for Permission _popup from Google.
+Notice how I pass *googleToken* to the node server as a *password.* Now, we just need to set up the node server to parse this token, fetch the current user from Google, and return an user-identifying token that can be used for authorizing secure resources. If everything is working, when you click on _Login_ you should see a _Request for Permission_ popup from Google.
 
 ![Google login](/assets/images/oauth-modal.png)
 
