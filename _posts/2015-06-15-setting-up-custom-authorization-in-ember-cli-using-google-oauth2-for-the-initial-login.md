@@ -10,30 +10,30 @@ redirect_from: '/setting-up-custom-authorization-in-ember-cli-using-google-oauth
 tags: post
 ---
 
-I've found it handy in Ember-CLI apps to use Google logins for initial authentication (that way I don't have to store passwords). The question is how to transform a Google login into a session that can be used to query user-specific resources from my own server (not just Google's APIs). Here's a high level view of the process:
+I've found it handy in Ember-CLI apps to use Google logins for initial authentication (that way I don't have to store passwords). The question is how to transform a Google login into a session that can be used to query user-specific resources from my own server (not just Google's APIs). Here's a high level view of the process:
 
-- **User** logs in to their Google account, and authorizes Ember **app**. _In this process the app receives a Google token._
-- **App **sends Google token to the node **server** in response for a new token. _The server validates the Google token and then uses it to get user info from Google. It then creates a new custom token containing a user id, which it sends to the app._
-- **App **uses it's new custom token in all further requests to the **server**. _Right before this token expires, it will be refreshed._
+- **User** logs in to their Google account, and authorizes Ember **app**. _In this process the app receives a Google token._
+- **App** sends Google token to the node **server** in response for a new token. _The server validates the Google token and then uses it to get user info from Google. It then creates a new custom token containing a user id, which it sends to the app._
+- **App** uses it's new custom token in all further requests to the **server**. _Right before this token expires, it will be refreshed._
 
-In this process, _token _refers to a JSON web token. We'll be using the following open-source projects to build a basic app (for the finished product, [see my GitHub repo](https://github.com/micahjon/basic-auth-demo)).
+In this process, _token _refers to a JSON web token. We'll be using the following open-source projects to build a basic app (for the finished product, [see my GitHub repo](https://github.com/micahjon/basic-auth-demo)).
 
 ### Ember Client:
 
 1.  [Ember-Cli](http://www.ember-cli.com/)
-2.  [Ember Simple Auth](http://ember-simple-auth.com/) and [Ember CLI Simple Auth Token](https://github.com/jpadilla/ember-cli-simple-auth-token) extension
+2.  [Ember Simple Auth](http://ember-simple-auth.com/) and [Ember CLI Simple Auth Token](https://github.com/jpadilla/ember-cli-simple-auth-token) extension
 3.  [Torii](http://vestorly.github.io/torii/) Google Oauth2 Bearer provider
 
 ### Node Server:
 
 1.  [Express](http://expressjs.com/) for creating REST API routes
-2.  [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) and [express-jwt](https://github.com/auth0/express-jwt) for encoding and decoding JSON web tokens
-3.  [request](https://github.com/request/request) for talking with Google's APIs
-4.  [bodyParser](https://github.com/expressjs/body-parser) for extracting the body (data) from the app's requests.
+2.  [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) and [express-jwt](https://github.com/auth0/express-jwt) for encoding and decoding JSON web tokens
+3.  [request](https://github.com/request/request) for talking with Google's APIs
+4.  [bodyParser](https://github.com/expressjs/body-parser) for extracting the body (data) from the app's requests.
 
-## Step 1: Setup Ember-CLI app structure
+## Step 1: Setup Ember-CLI app structure
 
-Create a simple folder structure:
+Create a simple folder structure:
 
 <pre>
 basic-auth-demo
@@ -90,13 +90,13 @@ The idea is that any subroute of s (for "secure") will be protected from public 
 {% endraw %}
 ```
 
-Then if you run `ember s` and navigate to _localhost:4200/s/notes_ you should see something like this:
+Then if you run `ember s` and navigate to _localhost:4200/s/notes_ you should see something like this:
 
 ![Ember notes route](/assets/images/welcome-to-emberjs.png)
 
 ## Step 2: Setup node server to return tokens
 
-In the *node-server* folder, create a *server.js* file.
+In the *node-server* folder, create a *server.js* file.
 
 ```javascript
 // express framework for routing
@@ -183,7 +183,7 @@ _Just for fun: to get a good grasp of what the token actually stores, paste it i
 
 ## Step 3: Hook up Ember Simple Auth with node server
 
-Install [Ember Simple Auth](http://ember-simple-auth.com/) and [its token-based extension](https://github.com/jpadilla/ember-cli-simple-auth-token).
+Install [Ember Simple Auth](http://ember-simple-auth.com/) and [its token-based extension](https://github.com/jpadilla/ember-cli-simple-auth-token).
 
 ```bash
 cd ../ember-client
@@ -262,15 +262,15 @@ export default Ember.Route.extend(ApplicationRouteMixin, {
 
 Assuming that both `ember s` and `node server` are running, you should now be able to log in and out of your Ember application and only access /s/ routes when logged in. At this point there is still no real security. Anonymous users are handed tokens willy-nilly, but it's a good start.
 
-## Step 4: Setting up Google Account logins
+## Step 4: Setting up Google Account logins
 
-It may be tempting at this point to use a the Google oAuth2 Torii provider bundled into the [Ember Simple Auth Torii](https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-torii) extension, and simply authenticate with Google and right before authenticating w/ our node server. The problem is that upon authentication, Ember Simple Auth lets the user access secure routes. In other words, /s/notes can be transitioned to *before* the second authentication with our node server happens and an authorizer is actually set up. I imagine there is a workaround to this problem but I found it simpler to just use Torri providers directly w/out the authenticator wrapper.
+It may be tempting at this point to use a the Google oAuth2 Torii provider bundled into the [Ember Simple Auth Torii](https://github.com/simplabs/ember-simple-auth/tree/master/packages/ember-simple-auth-torii) extension, and simply authenticate with Google and right before authenticating w/ our node server. The problem is that upon authentication, Ember Simple Auth lets the user access secure routes. In other words, /s/notes can be transitioned to *before* the second authentication with our node server happens and an authorizer is actually set up. I imagine there is a workaround to this problem but I found it simpler to just use Torri providers directly w/out the authenticator wrapper.
 
 ```bash
 ember install torii
 ```
 
-You can setup the Google oAuth2 Bearer provider by adding a *torii _property to \_ENV* in _environment.js_.
+You can setup the Google oAuth2 Bearer provider by adding a *torii _property to \_ENV* in _environment.js_.
 
 ```javascript
 torii: {
@@ -283,7 +283,7 @@ torii: {
     }
 ```
 
-To get an *apiKey*, go to the [Google Developer Console](https://console.developers.google.com/project) and create a new project. Click on *Credentials _under _APIs & auth _in the left side nav and select _Create new Client ID* under _OAuth_, choosing *Web Application* in the popup. (You may need to _Configure the consent screen_ first--just enter the _Product Name_ and click _Save_). Now, in the popup, enter *http://localhost:4200* in both fields (_authorized javascript origins_ and *authorized redirect uri*). The first requires an actual domain and the second doesn’t need to redirect to any particular Ember route since Ember will handle this on it’s own. Copy the *Client ID _string, and past it into _environment.js* as (you guessed it) the *apiKey*. At this point, we just need to set up the Application route to log in with Google first and then send the Google token to the node server for custom authentication. Making a few minor edits to *sessionRequiresAuthentication*:
+To get an *apiKey*, go to the [Google Developer Console](https://console.developers.google.com/project) and create a new project. Click on *Credentials _under _APIs & auth _in the left side nav and select _Create new Client ID* under _OAuth_, choosing *Web Application* in the popup. (You may need to _Configure the consent screen_ first--just enter the _Product Name_ and click _Save_). Now, in the popup, enter *http://localhost:4200* in both fields (_authorized javascript origins_ and *authorized redirect uri*). The first requires an actual domain and the second doesn’t need to redirect to any particular Ember route since Ember will handle this on it’s own. Copy the *Client ID _string, and past it into _environment.js* as (you guessed it) the *apiKey*. At this point, we just need to set up the Application route to log in with Google first and then send the Google token to the node server for custom authentication. Making a few minor edits to *sessionRequiresAuthentication*:
 
 ```javascript
 sessionRequiresAuthentication: function() {
@@ -308,13 +308,13 @@ sessionRequiresAuthentication: function() {
 }
 ```
 
-Notice how I pass *googleToken* to the node server as a *password.* Now, we just need to set up the node server to parse this token, fetch the current user from Google, and return an user-identifying token that can be used for authorizing secure resources. If everything is working, when you click on \_Login _you should see a _Request for Permission _popup from Google.
+Notice how I pass *googleToken* to the node server as a *password.* Now, we just need to set up the node server to parse this token, fetch the current user from Google, and return an user-identifying token that can be used for authorizing secure resources. If everything is working, when you click on \_Login _you should see a _Request for Permission _popup from Google.
 
 ![Google login](/assets/images/oauth-modal.png)
 
 ## Step 5: Fetching user info from Google
 
-In _server.js_, instead of just returning a token, we must first [validate the Google token](https://developers.google.com/identity/protocols/OAuth2UserAgent#validatetoken) against Google's API. In this process, Google will send back a unique user id and an email address. We can also call the Google+ People API to get additional data, such as the displayName and image. All of this information can then be used to create/update/find the current user in our backend database and return a unique token, which contains a valid user id, to Ember. The `{password: googleToken}` object is passed to the server as JSON in the body of the POST request. To get it, we'll need to install the [body-parser middleware](https://github.com/expressjs/body-parser). We'll also install the [request](https://github.com/request/request) library to make a server-side request to Google.
+In _server.js_, instead of just returning a token, we must first [validate the Google token](https://developers.google.com/identity/protocols/OAuth2UserAgent#validatetoken) against Google's API. In this process, Google will send back a unique user id and an email address. We can also call the Google+ People API to get additional data, such as the displayName and image. All of this information can then be used to create/update/find the current user in our backend database and return a unique token, which contains a valid user id, to Ember. The `{password: googleToken}` object is passed to the server as JSON in the body of the POST request. To get it, we'll need to install the [body-parser middleware](https://github.com/expressjs/body-parser). We'll also install the [request](https://github.com/request/request) library to make a server-side request to Google.
 
 ```bash
 cd ../node-server
