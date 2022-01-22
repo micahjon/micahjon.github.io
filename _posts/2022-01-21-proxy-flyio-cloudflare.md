@@ -31,18 +31,22 @@ I'm no expert on DNS entries or SSL certificates, but I was able to find my way 
 
 4. Navigate to "Certificates" and click "Add Certificate".
 
-5. Enter a hostname for the certificate. This is a "single-name" certificate and you can [read more about it here](https://support.dnsimple.com/articles/ssl-certificate-names/). In my case, I just wanted to proxy a subdomain to Fly.io, so I entered my subdomain, e.g.
+5. Enter a hostname for the certificate. This is a "single-name" certificate and you can [read more about it here](https://support.dnsimple.com/articles/ssl-certificate-names/). 
+
+In my case, I just wanted to proxy a subdomain to Fly.io, so I entered my subdomain, e.g.
 `yesiam.crazyaboutcats.com`
 
-6. Follow the Fly.io instructions to add a CNAME record to your DNS settings in Cloudflare. 
+For more flexibility, you could use a wilcard certificate, e.g. `*.crazyaboutcats.com`. 
+
+6. Follow the Fly.io instructions to add one or more CNAME records to your DNS settings in Cloudflare. 
 
 ![Add CNAME DNS entry](/assets/images/cloudflare-dns.png)
 
 Make sure the "Proxy status" option is set to "DNS only": grey, not orange!
 
-*BTW, I've tried this several times, sometimes verifying the domain with the `_acme-challenge` CNAME, sometimes not, but it hasn't seemed to make a difference.*
+*The `_acme-challenge` CNAME is required for wildcard certificates but optional for simple subdomain ones.*
 
-7. Back in Fly.io dashboard, try clicking "Check Again" every few minutes until you see the certificates show up:
+7. Back in Fly.io dashboard, try clicking "Check Again" every few minutes until you see the certificates show up. This can take a while, especially if you're using a wildcard certificate. Be patient and go grab a cup of coffee! (could take 20 minutes)
 
 ![Fly.io DNS interface](/assets/images/flyio-dns.png)
 
