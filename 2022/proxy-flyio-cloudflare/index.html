@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>
+      Caching Fly.io Apps with Cloudflare | Micah Engle-Eshleman
+    </title>
+    <link rel="shortcut icon" href="/assets/images/favicon.ico" />
+    <link rel="stylesheet" href="/assets/css/style.css?v=1" />
+    
+
+    <!-- Google Tag Manager (script) -->
+    <script>
+      // prettier-ignore
+      ;(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MZB37F');
+    </script>
+  </head>
+
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <!-- prettier-ignore -->
+      <iframe src="https://www.googletagmanager.com/ns.njk?id=GTM-MZB37F" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+
+    <nav class="top-nav">
+	
+		<a href="/"> <span class="arrow">←</span> Home </a>
+	
+
+	
+		<a href="/about">About Me </a>
+	
+	<!-- <a class="cta" href="/feed.xml">Subscribe</a> -->
+</nav> 
+    
+
+    <main class="centered-column post-container">
+      
+<article class="post">
+  <header class="post__header">
+    <h1 class="post__title">Caching Fly.io Apps with Cloudflare</h1>
+    <p class="post__date">January 22, 2022</p>  
+  </header>
+  <section class="post__body"><p>Services like <a href="https://fly.io/">Fly.io</a> and <a href="https://render.com/">Render</a> have generous free tiers for compute and bandwidth, but if you're trying to scale a side project for free, sticking Cloudflare in front of your API can dramatically reduce billable usage and improve performance.</p>
+<p>Keep in mind that the free tier of Cloudflare doesn't offer a lot of flexibility as far as caching goes. The <a href="https://developers.cloudflare.com/cache/about/edge-browser-cache-ttl">smallest TTL is 2 hours</a>. That means that unless you want to pay for Cloudflare, you'll need to divvy up your API endpoints (w/ Page Rules) into those that can be cached for 2+ hours and those that shouldn't be cached at all.</p>
+<p><em>Alternatively, you could cache everything for 2+ hours and then set up a background process (e.g. cron job, Github Action) to purge certain APIs every X minutes. That's probably what I'll end up doing.</em></p>
+<h2>Setup Node API on Fly.io</h2>
+<p>First step is simple -- just follow the <a href="https://fly.io/docs/getting-started/node/">Fly.io tutorial to deploy a Node application</a>.</p>
+<p>You'll end up with a URL that looks something like this: <br>
+<code>https://crazy-cats-4499.fly.dev/</code></p>
+<h2>Setup DNS to Route Subdomain to Fly.io</h2>
+<p>I'm no expert on DNS entries or SSL certificates, but I was able to find my way by reading through the forums. <a href="https://community.fly.io/t/can-i-use-cloudflare-proxying-with-fly-certificates/1578/6?u=micah_engle-eshleman">This post in particular</a> was really helpful.</p>
+<ol>
+<li>
+<p>Add your domain to Cloudflare. This will take a while since you'll need to wait for your domain's nameservers to propagate. <a href="https://community.cloudflare.com/t/step-1-adding-your-domain-to-cloudflare/64309">Full tutorial here</a></p>
+</li>
+<li>
+<p>Set Cloudflare SSL/TLS encryption mode to &quot;Full&quot;. This means it will encrypt traffic between itself and the origin/backend (in this case Fly.io).</p>
+</li>
+<li>
+<p>Go to the Fly.io dashboard and find your app, e.g. <br>
+<code>https://fly.io/apps/crazy-cats-4499</code></p>
+</li>
+<li>
+<p>Navigate to &quot;Certificates&quot; and click &quot;Add Certificate&quot;.</p>
+</li>
+<li>
+<p>Enter a hostname for the certificate. This is a &quot;single-name&quot; certificate and you can <a href="https://support.dnsimple.com/articles/ssl-certificate-names/">read more about it here</a>. In my case, I just wanted to proxy a subdomain to Fly.io, so I entered my subdomain, e.g.
+<code>yesiam.crazyaboutcats.com</code></p>
+</li>
+<li>
+<p>Follow the Fly.io instructions to add a CNAME record to your DNS settings in Cloudflare.</p>
+</li>
+</ol>
+<p><img src="/assets/images/cloudflare-dns.png" alt="Add CNAME DNS entry"></p>
+<p>Make sure the &quot;Proxy status&quot; option is set to &quot;DNS only&quot;: grey, not orange!</p>
+<p><em>BTW, I've tried this several times, sometimes verifying the domain with the <code>_acme-challenge</code> CNAME, sometimes not, but it hasn't seemed to make a difference.</em></p>
+<ol start="7">
+<li>Back in Fly.io dashboard, try clicking &quot;Check Again&quot; every few minutes until you see the certificates show up:</li>
+</ol>
+<p><img src="/assets/images/flyio-dns.png" alt="Fly.io DNS interface"></p>
+<ol start="8">
+<li>Once these certificates show up, you should be able to visit your subdomain and see the response from Fly.io.</li>
+</ol>
+<p><img src="/assets/images/never-trust-cat.png" alt="Screenshot of proxied fly.io app"></p>
+<ol start="9">
+<li>Once you've verified it's working, go back to the DNS entry in Cloudflare and turn on proxying (grey -&gt; orange).</li>
+</ol>
+<p>At this point, Cloudflare is now proxying requests from clients to Fly.io, and you can do all sorts of things, e.g.</p>
+<ul>
+<li>Automatically compress responses with <code>gzip</code></li>
+<li>Cache content for 2+ hours by setting up Page Rules</li>
+</ul>
+<hr>
+<p>Hope you found this helpful! If I missed anything, don't hesitate to let me know in the comments.</p>
+</section>
+  <footer class="post__footer">
+    <img class="post__footer-avatar" src="/assets/images/profile-circle-240-tiny.png" />
+    <p class="post__footer-author">Micah Engle-Eshleman</p>
+    <section class="share">
+  <a class="share__button share__button--twitter" href="https://twitter.com/intent/tweet?text=/2022/proxy-flyio-cloudflare/ -  by @">
+    <svg viewBox="0 0 128 128">
+      <path d="M128 28.3c-4.7 2.1-9.775 3.5-15.075 4.125 5.425-3.25 9.575-8.4 11.55-14.525-5.075 3-10.7 5.2-16.675 6.375-4.8-5.1-11.625-8.275-19.175-8.275-14.5 0-26.25 11.75-26.25 26.25 0 2.050 0.225 4.050 0.675 5.975-21.825-1.1-41.175-11.55-54.125-27.45-2.25 3.875-3.55 8.4-3.55 13.2 0 9.1 4.625 17.15 11.675 21.85-4.3-0.125-8.35-1.325-11.9-3.275 0 0.1 0 0.225 0 0.325 0 12.725 9.050 23.35 21.075 25.75-2.2 0.6-4.525 0.925-6.925 0.925-1.7 0-3.325-0.175-4.95-0.475 3.35 10.425 13.050 18.025 24.525 18.25-9 7.050-20.3 11.25-32.625 11.25-2.125 0-4.2-0.125-6.275-0.375 11.65 7.475 25.45 11.8 40.275 11.8 48.3 0 74.725-40.025 74.725-74.725 0-1.15-0.025-2.275-0.075-3.4 5.125-3.675 9.575-8.3 13.1-13.575z"></path>
+    </svg>
+    Tweet
+  </a>
+  <a class="share__button share__button--facebook" href="#" onclick="
+      window.open(
+        'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+        'facebook-share-dialog',
+        'width=626,height=436');
+      return false;">
+    <svg viewBox="0 0 128 128">
+      <path d="M76 24h20v-24h-20c-15.439 0-28 12.561-28 28v12h-16v24h16v64h24v-64h20l4-24h-24v-12c0-2.168 1.832-4 4-4z"></path>
+    </svg>
+    Facebook
+  </a>
+</section>
+  </footer>
+</article>
+
+<div class="comments">
+	<h3 class="comments__heading">Comments are welcome!</h3>
+	<div id="disqus_thread"></div>
+	<script>
+	var disqus_config = function () {
+		// Page url without query parameters or hashes
+		this.page.url = window.location.href.split('?')[0].split('#')[0];
+		// Id is just slug of post
+		this.page.identifier = '';
+	};
+	(function() { // DON'T EDIT BELOW THIS LINE
+		var d = document, s = d.createElement('script');
+		s.src = '//micahjon.disqus.com/embed.js';
+		s.setAttribute('data-timestamp', +new Date());
+		(d.head || d.body).appendChild(s);
+	})();
+	</script>
+	<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+    </main>
+
+    <footer class="site-footer">
+    <p>© Copyright <span id="currentYear"></span> Micah Engle-Eshleman</p>
+    <script>document.getElementById('currentYear').textContent = new Date().getFullYear()</script>
+    
+</footer>
+
+
+    <script async src="/assets/js/main.js?v=1"></script>
+    <link href="/assets/css/prism-material-oceanic.css" rel="stylesheet">
+
+  <style>
+    
+  </style>
+
+
+  </body>
+</html>
