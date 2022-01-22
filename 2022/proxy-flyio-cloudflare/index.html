@@ -69,18 +69,20 @@
 <p>Navigate to &quot;Certificates&quot; and click &quot;Add Certificate&quot;.</p>
 </li>
 <li>
-<p>Enter a hostname for the certificate. This is a &quot;single-name&quot; certificate and you can <a href="https://support.dnsimple.com/articles/ssl-certificate-names/">read more about it here</a>. In my case, I just wanted to proxy a subdomain to Fly.io, so I entered my subdomain, e.g.
+<p>Enter a hostname for the certificate. This is a &quot;single-name&quot; certificate and you can <a href="https://support.dnsimple.com/articles/ssl-certificate-names/">read more about it here</a>.</p>
+</li>
+</ol>
+<p>In my case, I just wanted to proxy a subdomain to Fly.io, so I entered my subdomain, e.g.
 <code>yesiam.crazyaboutcats.com</code></p>
-</li>
-<li>
-<p>Follow the Fly.io instructions to add a CNAME record to your DNS settings in Cloudflare.</p>
-</li>
+<p>For more flexibility, you could use a wilcard certificate, e.g. <code>*.crazyaboutcats.com</code>.</p>
+<ol start="6">
+<li>Follow the Fly.io instructions to add one or more CNAME records to your DNS settings in Cloudflare.</li>
 </ol>
 <p><img src="/assets/images/cloudflare-dns.png" alt="Add CNAME DNS entry"></p>
 <p>Make sure the &quot;Proxy status&quot; option is set to &quot;DNS only&quot;: grey, not orange!</p>
-<p><em>BTW, I've tried this several times, sometimes verifying the domain with the <code>_acme-challenge</code> CNAME, sometimes not, but it hasn't seemed to make a difference.</em></p>
+<p><em>The <code>_acme-challenge</code> CNAME is required for wildcard certificates but optional for simple subdomain ones.</em></p>
 <ol start="7">
-<li>Back in Fly.io dashboard, try clicking &quot;Check Again&quot; every few minutes until you see the certificates show up:</li>
+<li>Back in Fly.io dashboard, try clicking &quot;Check Again&quot; every few minutes until you see the certificates show up. This can take a while, especially if you're using a wildcard certificate. Be patient and go grab a cup of coffee! (could take 20 minutes)</li>
 </ol>
 <p><img src="/assets/images/flyio-dns.png" alt="Fly.io DNS interface"></p>
 <ol start="8">
