@@ -7,9 +7,8 @@ tags: post
 
 Services like [Fly.io](https://fly.io/) and [Render](https://render.com/) have generous free tiers for compute and bandwidth, but if you're trying to scale a side project for free, sticking Cloudflare in front of your API can dramatically reduce billable usage and improve performance.
 
-Keep in mind that the free tier of Cloudflare doesn't offer a lot of flexibility as far as caching goes. The [smallest TTL is 2 hours](https://developers.cloudflare.com/cache/about/edge-browser-cache-ttl). That means that unless you want to pay for Cloudflare, you'll need to divvy up your API endpoints (w/ Page Rules) into those that can be cached for 2+ hours and those that shouldn't be cached at all.
+I'll go over proxying your Fly.io application through Cloudflare, and then some gotchas regarding caching headers & Cloudflare settings.
 
-*Alternatively, you could cache everything for 2+ hours and then set up a background process (e.g. cron job, Github Action) to purge certain APIs every X minutes. That's probably what I'll end up doing.*
 
 ## Setup Node API on Fly.io
 
@@ -56,9 +55,18 @@ Make sure the "Proxy status" option is set to "DNS only": grey, not orange!
 
 9. Once you've verified it's working, go back to the DNS entry in Cloudflare and turn on proxying (grey -> orange). 
 
-At this point, Cloudflare is now proxying requests from clients to Fly.io, and you can do all sorts of things, e.g.
-- Automatically compress responses with `gzip`
-- Cache content for 2+ hours by setting up Page Rules
+You can verify that Cloudflare is proxying your application by checking the `server` response header. It should be set to `"cloudflare"`, not `"Fly/..."`.
+
+## Cloudflare Caching
+
+Once Cloudflare is proxying your application, you can set HTTP headers and/or Page Rules to configure caching. A couple gotchas that I've had to wrap my head around:
+
+- By default, Cloudflare only caches URLs with [certain file extensions](https://developers.cloudflare.com/cache/about/default-cache-behavior#default-cached-file-extensions) (e.g. `.css`) AND the `Cache-Control: public, max-age={integer}` header [must be set](https://developers.cloudflare.com/cache/about/default-cache-behavior). If you want your `/rest/api/endpoint` to be cached, you'll need to add a Page Rule with `Cache Level = Cache Everything`, since it's missing a file extension.
+
+- Cloudflare will cache your content for a minimum of 14400s (4 hours) by default (or longer if a larger value is set in `max-age`). You can reduce this to 2 hours in the free tier by setting an "Edge Cache TTL" Page Rule. But you're better off just setting a caching header that specifically targets the CDN (not the browser). Here's some example headers that tell Cloudflare to only cache your endpoint for 1 minute:
+    * `Cache-Control: s-maxage=60`
+    * `CDN-Cache-Control: max-age=60`
+    * `Cloudflare-CDN-Cache-Control: max-age=60`
 
 ---
 
