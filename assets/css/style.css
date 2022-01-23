@@ -218,6 +218,9 @@ p {
 ul:last-child, ol:last-child, p:last-child {
     margin-bottom: 0;
   }
+ul ul {
+  margin-left: 1.2rem;
+}
 /* */
 /* Profile circle (above my name & blog description) */
 /* */

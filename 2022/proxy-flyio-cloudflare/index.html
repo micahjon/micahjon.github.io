@@ -46,8 +46,7 @@
     <p class="post__date">January 22, 2022</p>  
   </header>
   <section class="post__body"><p>Services like <a href="https://fly.io/">Fly.io</a> and <a href="https://render.com/">Render</a> have generous free tiers for compute and bandwidth, but if you're trying to scale a side project for free, sticking Cloudflare in front of your API can dramatically reduce billable usage and improve performance.</p>
-<p>Keep in mind that the free tier of Cloudflare doesn't offer a lot of flexibility as far as caching goes. The <a href="https://developers.cloudflare.com/cache/about/edge-browser-cache-ttl">smallest TTL is 2 hours</a>. That means that unless you want to pay for Cloudflare, you'll need to divvy up your API endpoints (w/ Page Rules) into those that can be cached for 2+ hours and those that shouldn't be cached at all.</p>
-<p><em>Alternatively, you could cache everything for 2+ hours and then set up a background process (e.g. cron job, Github Action) to purge certain APIs every X minutes. That's probably what I'll end up doing.</em></p>
+<p>I'll go over proxying your Fly.io application through Cloudflare, and then some gotchas regarding caching headers &amp; Cloudflare settings.</p>
 <h2>Setup Node API on Fly.io</h2>
 <p>First step is simple -- just follow the <a href="https://fly.io/docs/getting-started/node/">Fly.io tutorial to deploy a Node application</a>.</p>
 <p>You'll end up with a URL that looks something like this: <br>
@@ -92,10 +91,21 @@
 <ol start="9">
 <li>Once you've verified it's working, go back to the DNS entry in Cloudflare and turn on proxying (grey -&gt; orange).</li>
 </ol>
-<p>At this point, Cloudflare is now proxying requests from clients to Fly.io, and you can do all sorts of things, e.g.</p>
+<p>You can verify that Cloudflare is proxying your application by checking the <code>server</code> response header. It should be set to <code>&quot;cloudflare&quot;</code>, not <code>&quot;Fly/...&quot;</code>.</p>
+<h2>Cloudflare Caching</h2>
+<p>Once Cloudflare is proxying your application, you can set HTTP headers and/or Page Rules to configure caching. A couple gotchas that I've had to wrap my head around:</p>
 <ul>
-<li>Automatically compress responses with <code>gzip</code></li>
-<li>Cache content for 2+ hours by setting up Page Rules</li>
+<li>
+<p>By default, Cloudflare only caches URLs with <a href="https://developers.cloudflare.com/cache/about/default-cache-behavior#default-cached-file-extensions">certain file extensions</a> (e.g. <code>.css</code>) AND the <code>Cache-Control: public, max-age={integer}</code> header <a href="https://developers.cloudflare.com/cache/about/default-cache-behavior">must be set</a>. If you want your <code>/rest/api/endpoint</code> to be cached, you'll need to add a Page Rule with <code>Cache Level = Cache Everything</code>, since it's missing a file extension.</p>
+</li>
+<li>
+<p>Cloudflare will cache your content for a minimum of 14400s (4 hours) by default (or longer if a larger value is set in <code>max-age</code>). You can reduce this to 2 hours in the free tier by setting an &quot;Edge Cache TTL&quot; Page Rule. But you're better off just setting a caching header that specifically targets the CDN (not the browser). Here's some example headers that tell Cloudflare to only cache your endpoint for 1 minute:</p>
+<ul>
+<li><code>Cache-Control: s-maxage=60</code></li>
+<li><code>CDN-Cache-Control: max-age=60</code></li>
+<li><code>Cloudflare-CDN-Cache-Control: max-age=60</code></li>
+</ul>
+</li>
 </ul>
 <hr>
 <p>Hope you found this helpful! If I missed anything, don't hesitate to let me know in the comments.</p>
