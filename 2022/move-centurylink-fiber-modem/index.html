@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>
+      How to Move a CenturyLink Fiber Modem &amp; ONT | Micah Engle-Eshleman
+    </title>
+    <link rel="shortcut icon" href="/assets/images/favicon.ico" />
+    <link rel="stylesheet" href="/assets/css/style.css?v=1" />
+    
+
+    <!-- Google Tag Manager (script) -->
+    <script>
+      // prettier-ignore
+      ;(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MZB37F');
+    </script>
+  </head>
+
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <!-- prettier-ignore -->
+      <iframe src="https://www.googletagmanager.com/ns.njk?id=GTM-MZB37F" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+
+    <nav class="top-nav">
+	
+		<a href="/"> <span class="arrow">←</span> Home </a>
+	
+
+	
+		<a href="/about">About Me </a>
+	
+	<!-- <a class="cta" href="/feed.xml">Subscribe</a> -->
+</nav> 
+    
+
+    <main class="centered-column post-container">
+      
+<article class="post">
+  <header class="post__header">
+    <h1 class="post__title">How to Move a CenturyLink Fiber Modem &amp; ONT</h1>
+    <p class="post__date">February 10, 2022</p>  
+  </header>
+  <section class="post__body"><p>Last week I switched from Comcast to CenturyLink. 200 mbps upload and download for $50/month feels like a good deal, and the service has been great so far.</p>
+<p>I've ran a good bit of ethernet and coax cable wire over the years, but fiber was new to me. Evidently, it's much more finicky:</p>
+<ul>
+<li>You can't bend it as much</li>
+<li>You're not supposed to look into the end of the cable (lasers?)</li>
+<li>You can't get the end of the cable dirty</li>
+</ul>
+<h2>Moving the Fiber, Modem &amp; ONT downstairs</h2>
+<p>Just to recap, the ONT is the box that sits between your fiber cable and your modem/router combo.</p>
+<p><code>Fiber cable &lt;-&gt; ONT box &lt;-&gt; Ethernet cable &lt;-&gt; Modem/Router box</code></p>
+<h3>1. Unplug Ethernet from ONT</h3>
+<p>Before unplugging the Ethernet cable from your ONT, <strong>make note of which Ethernet port is being used</strong>.</p>
+<p>Evidently, the ONT Ethernet port matters (it's not like a switch). CenturyLink can use a single ONT to service multiple customer modems. You'll need to plug your modem back into the same Ethernet port on the ONT after moving it, or your internet won't work.</p>
+<p>I learned this the hard way... thought I screwed up the fiber cable only to have a CenturyLink guy fix my internet in 3 seconds by plugging the modem into the chosen Ethernet port on the ONT.</p>
+<h3>2. Unplug Fiber from ONT and protect the end of the cable</h3>
+<p>Here's a <a href="https://www.reddit.com/r/centurylink/comments/ko12be/how_do_you_unplug_the_fiber_cable_on_the_ont_box/">Reddit thread</a> on unplugging the fiber cable from your ONT.</p>
+<p>Before you unplug the cable, have a plan for how to protect the end of it while you're moving it to the new location. In my case, I did several things:</p>
+<ul>
+<li>Used a sticky note and some tape to wrap a paper tube around the end of the cable, extending past the end to protect the tip. This way nothing is touching the tip if you set it down.</li>
+<li>Later when running the wire through the wall, this paper tube got in the way, so I took it off and replaced it with a tape tube make of painter's tape that tapered to a cone at the end. This was much less sturdy, but kept the cord thin enough it went through the hole in the wall easily.</li>
+<li>Stick the end of the cord in a ziplock bag when you're setting it down so it doesn't get dirty (especially if you're outside). Of course, you still need to protect the end of the cord first.</li>
+</ul>
+<p>Unplugging the cable is actually pretty easy. Just pull on the squarish green cable terminator, not on the cable itself. Pull it straight out with a steady hand -- don't bump it against the ONT! Then protect the tiny exposed fiber end w/out touching it or looking into the end of the cable.</p>
+<h3>3. Run Fiber to new location</h3>
+<p>This part will depend a lot on the job, but in my case the steps were:</p>
+<ul>
+<li>Pry silicon caulk off the hole where fiber enters house</li>
+<li>Pull fiber outside of house (put a bag on the end to keep it from getting dirty)</li>
+<li>Drill hole into different part of the house (e.g. my basement)</li>
+<li>Very carefully push protected cable end into that hole, then pull it all through from the inside</li>
+<li>Seal up holes with exterior-rated silicon caulk</li>
+</ul>
+<h3>4. Hook it all back up</h3>
+<p>Remember to connect the modem to the same Ethernet port on the ONT that it was connected to before.</p>
+<p>Good luck!</p>
+</section>
+  <footer class="post__footer">
+    <img class="post__footer-avatar" src="/assets/images/profile-circle-240-tiny.png" />
+    <p class="post__footer-author">Micah Engle-Eshleman</p>
+    <section class="share">
+  <a class="share__button share__button--twitter" href="https://twitter.com/intent/tweet?text=/2022/move-centurylink-fiber-modem/ -  by @">
+    <svg viewBox="0 0 128 128">
+      <path d="M128 28.3c-4.7 2.1-9.775 3.5-15.075 4.125 5.425-3.25 9.575-8.4 11.55-14.525-5.075 3-10.7 5.2-16.675 6.375-4.8-5.1-11.625-8.275-19.175-8.275-14.5 0-26.25 11.75-26.25 26.25 0 2.050 0.225 4.050 0.675 5.975-21.825-1.1-41.175-11.55-54.125-27.45-2.25 3.875-3.55 8.4-3.55 13.2 0 9.1 4.625 17.15 11.675 21.85-4.3-0.125-8.35-1.325-11.9-3.275 0 0.1 0 0.225 0 0.325 0 12.725 9.050 23.35 21.075 25.75-2.2 0.6-4.525 0.925-6.925 0.925-1.7 0-3.325-0.175-4.95-0.475 3.35 10.425 13.050 18.025 24.525 18.25-9 7.050-20.3 11.25-32.625 11.25-2.125 0-4.2-0.125-6.275-0.375 11.65 7.475 25.45 11.8 40.275 11.8 48.3 0 74.725-40.025 74.725-74.725 0-1.15-0.025-2.275-0.075-3.4 5.125-3.675 9.575-8.3 13.1-13.575z"></path>
+    </svg>
+    Tweet
+  </a>
+  <a class="share__button share__button--facebook" href="#" onclick="
+      window.open(
+        'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+        'facebook-share-dialog',
+        'width=626,height=436');
+      return false;">
+    <svg viewBox="0 0 128 128">
+      <path d="M76 24h20v-24h-20c-15.439 0-28 12.561-28 28v12h-16v24h16v64h24v-64h20l4-24h-24v-12c0-2.168 1.832-4 4-4z"></path>
+    </svg>
+    Facebook
+  </a>
+</section>
+  </footer>
+</article>
+
+<div class="comments">
+	<h3 class="comments__heading">Comments are welcome!</h3>
+	<div id="disqus_thread"></div>
+	<script>
+	var disqus_config = function () {
+		// Page url without query parameters or hashes
+		this.page.url = window.location.href.split('?')[0].split('#')[0];
+		// Id is just slug of post
+		this.page.identifier = '';
+	};
+	(function() { // DON'T EDIT BELOW THIS LINE
+		var d = document, s = d.createElement('script');
+		s.src = '//micahjon.disqus.com/embed.js';
+		s.setAttribute('data-timestamp', +new Date());
+		(d.head || d.body).appendChild(s);
+	})();
+	</script>
+	<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+    </main>
+
+    <footer class="site-footer">
+    <p>© Copyright <span id="currentYear"></span> Micah Engle-Eshleman</p>
+    <script>document.getElementById('currentYear').textContent = new Date().getFullYear()</script>
+    
+</footer>
+
+
+    <script async src="/assets/js/main.js?v=1"></script>
+    <link href="/assets/css/prism-material-oceanic.css" rel="stylesheet">
+
+  <style>
+    
+  </style>
+
+
+  </body>
+</html>
