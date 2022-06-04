@@ -34,6 +34,6 @@ _Based on a recipe served at Rachel's Bread (now [Anna's Bread](https://g.page/a
 
 - 1.5 cup dried cherries
 - 1.25 cup whole milk
-- 1/2 cup chopped walnuts
+- 1/2 cup chopped walnuts or 3/4 cup chopped pecans
 
 Bake at 350 for 48 minutes, or until knife comes out relatively clean
