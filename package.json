@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "postcss assets/css/style.scss --o _tmp/style.css --watch & npx @11ty/eleventy --serve",
+    "start": "postcss assets/css/style.scss --o _tmp/style.css --watch & npx --yes @11ty/eleventy --serve",
     "build": "NODE_ENV=production postcss assets/css/style.scss --o _tmp/style.css & ELEVENTY_PRODUCTION=true npx @11ty/eleventy",
     "testcss": "postcss --config . assets/css/style.scss --o _tmp/style.css"
   },
