@@ -12,20 +12,11 @@
     <link rel="stylesheet" href="/assets/css/style.css?v=1" />
     
 
-    <!-- Google Tag Manager (script) -->
-    <script>
-      // prettier-ignore
-      ;(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MZB37F');
-    </script>
+    
+    <script defer data-domain="micahjon.com" src="https://analytics.adblockpodcast.com/js/plausible.js"></script>
   </head>
 
   <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>
-      <!-- prettier-ignore -->
-      <iframe src="https://www.googletagmanager.com/ns.njk?id=GTM-MZB37F" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    </noscript>
-
     <nav class="top-nav">
 	
 		<a href="/"> <span class="arrow">←</span> Home </a>
@@ -56,7 +47,7 @@
 <p><strong>#2</strong> involves adding the <em>mktNoTrack</em> class the the link. This means it will not be routed through your subdomain (e.g. go.goshen.edu) which tracks link clicks and associates them with leads and email campaigns.</p>
 <p><strong>#3</strong> is tricky, and I couldn't find documentation on it. Add a <code>mkt_tok=##MKT_TOK##</code> url parameter to the link. Without this the form will still work, but Marketo needs the mkt_tok parameter to associate the unsubscribe action to the email.</p>
 <p><strong>#4</strong> is a hack. The global Unsubscribe HTML will be added to the email unless it contains the {{system.unsubscribeLink}} token. Create an tiny invisible link with this token, e.g.</p>
-<pre class="language-handlebars"><code class="language-handlebars"><br><span class="token comment">&lt;!-- Prevent injection of Unsubscribe HTML since we're using a custom link --></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token handlebars language-handlebars"><span class="token delimiter punctuation">{{</span><span class="token variable">system</span><span class="token punctuation">.</span><span class="token variable">unsubscribeLink</span><span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span><span class="token style-attr language-css"><span class="token attr-name"> <span class="token attr-name">style</span></span><span class="token punctuation">="</span><span class="token attr-value"><span class="token property">display</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span> <span class="token property">font-size</span><span class="token punctuation">:</span> 0<span class="token punctuation">;</span> <span class="token property">color</span><span class="token punctuation">:</span> transparent</span><span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span><br></code></pre>
+<pre class="language-handlebars"><code class="language-handlebars"><br><span class="token comment">&lt;!-- Prevent injection of Unsubscribe HTML since we're using a custom link --></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token handlebars language-handlebars"><span class="token delimiter punctuation">{{</span><span class="token variable">system</span><span class="token punctuation">.</span><span class="token variable">unsubscribeLink</span><span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span> <span class="token special-attr"><span class="token attr-name">style</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token value css language-css"><span class="token property">display</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span> <span class="token property">font-size</span><span class="token punctuation">:</span> 0<span class="token punctuation">;</span> <span class="token property">color</span><span class="token punctuation">:</span> transparent</span><span class="token punctuation">"</span></span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span><br></code></pre>
 <p>and be sure to comment it!</p>
 <p><em><strong>Note:</strong> #4 is not necessary if you choose to replace the global Unsubscribe HTML with your new link. It's super handy for testing the new link ahead of time though.</em></p>
 <hr>

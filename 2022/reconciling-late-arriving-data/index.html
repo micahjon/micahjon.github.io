@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>
+      A Better Data Structure for Reconciling Late-Arriving Collections of Data | Micah Engle-Eshleman
+    </title>
+    <link rel="shortcut icon" href="/assets/images/favicon.ico" />
+    <link rel="stylesheet" href="/assets/css/style.css?v=1" />
+    
+
+    
+    <script defer data-domain="micahjon.com" src="https://analytics.adblockpodcast.com/js/plausible.js"></script>
+  </head>
+
+  <body>
+    <nav class="top-nav">
+	
+		<a href="/"> <span class="arrow">←</span> Home </a>
+	
+
+	
+		<a href="/about">About Me </a>
+	
+	<!-- <a class="cta" href="/feed.xml">Subscribe</a> -->
+</nav> 
+    
+
+    <main class="centered-column post-container">
+      
+<article class="post">
+  <header class="post__header">
+    <h1 class="post__title">A Better Data Structure for Reconciling Late-Arriving Collections of Data</h1>
+    <p class="post__date">July 17, 2022</p>  
+  </header>
+  <section class="post__body"><p>I’m a big fan of approaches to web development that take offline support seriously. Air travel and subway commutes aside, offline-friendly patterns dramatically improve UX by enabling optimistic UI updates in the much more common scenario of a flaky network or a slow API.</p>
+<p>While you could roll your own, implementations like <a href="https://replicache.dev/">Replicache's &quot;Realtime Sync&quot;</a> make it easy to implement this pattern across your app: update the UI right away, store all data locally, and then lazily sync changes to your API in the background.</p>
+<p>This last bit—lazily syncing changes to your API—sounds deceptively simple. I've learned the hard way that whenever there's more than one device involved and significant delays in syncing updates (e.g. a device comes back online after a few hours of offline edits), you end up having to reconcile conflicting changes. There's a reason <a href="https://doc.replicache.dev/how-it-works#conflict-resolution">Replicache makes you write your own conflict resolution</a>—it's often domain specific and tricky to get right.</p>
+<p>I've dealt with this problem when syncing user settings to the BeFunky API and more recently when building a <a href="https://www.adblockpodcast.com/">podcast app</a>. In both cases, users can be logged-in even if they're offline (at least for a short while), and when they come back online their updated settings must be reconciled.</p>
+<p>This post is an attempt at finding a common solution for merging simple out-of-sync collections of user data.</p>
+<h2>A high level view of the problem</h2>
+<p>The best mental model I've found for thinking about merging collections of data (think objects or arrays) from various devices is Git branches. Two principles emerge:</p>
+<ol>
+<li>
+<p>Merging branches is trivial when they don't modify the same files. Thus, if two collections' changed keys/indices don't overlap, they'll merge without conflicts.</p>
+</li>
+<li>
+<p>Git keeps track of what changed (additions and removals) and when it changed (timestamps). It's not enough to simply know the final state of two branches to merge them reliably, it's helpful to know how they both changed over time.</p>
+</li>
+</ol>
+<h2>Dealing with Arrays</h2>
+<p><a href="https://www.adblockpodcast.com/">Adblock Podcast</a> has a &quot;Listen Later&quot; feature, stored as an array of episode IDs that get removed once the podcast has been listened to. Imagine this scenario on a subway commute:</p>
+<ul>
+<li>Three episodes are in the &quot;Listen Later&quot; queue: <code>[A1, B2, C3]</code></li>
+<li>User listens to the second episode on their phone: <code>[A1, C3]</code>. They're in the subway so the data doesn't sync.</li>
+<li>At the office, they open the web app in a browser and finish listening to the third episode <code>[A1, B2]</code> and queue up another one: <code>[N0, A1, B2]</code>.</li>
+<li>At lunch, they pull out their phone and it finally syncs up with the API.</li>
+</ul>
+<pre><code>API State: [N0, A1, B2]
+Phone State: [A1, C3]
+Ideal Merge: [N0, A1]
+</code></pre>
+<p>If we just know the state of the API and the phone, it's unclear what to do with items <code>N0</code>, <code>B2</code>, &amp; <code>C3</code>. It's essential to know the diff from the phone:</p>
+<pre><code>API State: [N0, A1, B2]
+Phone Diff: (Remove B2)
+Easy Merge: [N0, A1]
+</code></pre>
+<p>Suddenly, the problem gets much simpler.</p>
+<p>Keep in mind that it's important to diff the array's values, not its indices. From the API's perspective, <code>B2</code> is at index 2 and from the phone's perspective, <code>B2</code> is at index 1. Thus, sending an standard JS Array Diff (e.g. a <a href="https://jsonpatch.com/">JSON Patch</a>) isn't going to cut it.</p>
+<p>Instead, ensure each value has a unique &amp; stable identifier. In the case of episode IDs, the ID itself will do, but in other cases you may want to use a hash or UUID.</p>
+<h2>Store a timestamp with every change</h2>
+<p>In the above example, the conflict was relatively easy to resolve b/c the phone and browser mutated different array items.</p>
+<p>When multiple devices update the same item in a collection, a conflict occurs, much like a Git merge of two branches that modify the same files. Unlike Git, we can't press pause and sort out the conflict manually, so the resolution I usually reach for is &quot;newest change wins&quot;.</p>
+<p>To accurately do this it's important to know when a change was made on the client, not just when that change was synced to the server. This may seem like an edge case, but there's nothing worse than a device coming back online after a couple hours and syncing stale data, overwriting more recent changes!</p>
+<p>Storing a timestamp for each piece of data in a collection could look something like this:</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">// Data structure that's easy to diff &amp; merge</span><br><span class="token keyword">const</span> listenLaterAddedItems <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token constant">N0</span><span class="token operator">:</span> <span class="token operator">&lt;</span>timestamp<span class="token operator">></span><span class="token punctuation">,</span><br>  <span class="token constant">A1</span><span class="token operator">:</span> <span class="token operator">&lt;</span>timestamp<span class="token operator">></span><span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> listenLaterRemovedItems <span class="token operator">=</span> <span class="token punctuation">{</span><br>  <span class="token constant">B2</span><span class="token operator">:</span> <span class="token operator">&lt;</span>timestamp<span class="token operator">></span><span class="token punctuation">,</span><br>  <span class="token constant">C3</span><span class="token operator">:</span> <span class="token operator">&lt;</span>timestamp<span class="token operator">></span><span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br><span class="token comment">// Derived state for other purposes (e.g. rendering)</span><br><span class="token keyword">const</span> listenLaterArray <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span>listenLaterAddedItems<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p><em>Notice we also track removed items to avoid re-adding an item from a stale update when it has been more recently removed. Ugh!</em></p>
+<p>This is just pseudocode and it's already looking more complex than I'd like. All of this just to store a simple array of episode ids?</p>
+<p>Fortunately, this pattern generalizes pretty well to any collection of data where:</p>
+<ul>
+<li>Each piece of data has a unique and stable identifier</li>
+<li>Preserving item order isn't essential</li>
+<li>Old items should be replaced by newer items with the same key</li>
+</ul>
+<p>If you're interested in trying it out, I wrote a small library that implements this pattern, making it easy to sync collections between multiple clients and an API: <br>
+<a href="https://github.com/micahjon/timestamp-collection">github.com/micahjon/timestamp-collection</a></p>
+<ul>
+<li>Stores a collection of unique keys, each with a timestamp and an optional value</li>
+</ul>
+<pre class="language-js"><code class="language-js">listenLaterCollection<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">'A1'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token comment">// Stored as { A1: [&lt;timestamp>] }, representing array ['A1']</span><br><br>podcastProgressCollection<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">'A1'</span><span class="token punctuation">,</span> Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">14.2</span><span class="token punctuation">)</span><br><span class="token comment">// Stored as { A1: [&lt;timestamp>, 14.2] }, representing object { A1: 14.2 }</span></code></pre>
+<ul>
+<li>
+<p><code>add()</code> and <code>remove()</code> methods that only mutate the collection if the timestamp is newer</p>
+</li>
+<li>
+<p><code>get()</code> computed properties with stable references, making it trivial to derive an array (or any other data structure) and use it for rendering with minimal performance impact.</p>
+</li>
+</ul>
+<pre class="language-js"><code class="language-js"><span class="token comment">// store.js</span><br><span class="token comment">// Will return same array reference if IDs have not changed</span><br><span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">getEpisodeIds</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> listenLaterCollection<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>Object<span class="token punctuation">.</span>keys<span class="token punctuation">)</span><span class="token punctuation">;</span> <br><br><span class="token comment">// listen-later.js</span><br><span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">ListenLater</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">const</span> episodeIds <span class="token operator">=</span> <span class="token function">getEpisodeIds</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>  <span class="token function">useEffect</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>    <span class="token comment">// episodeIds reference needs to be stable or this will run every time</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>episodeIds<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token punctuation">}</span></code></pre>
+<ul>
+<li>
+<p>A built-in hash that makes it easy to compare collections (e.g. on client and API) to know if they're identical and avoid syncing data when they are.</p>
+</li>
+<li>
+<p>You can import/export the entire collection or a subtree of recent changes as JSON, making it easy to sync without sending the whole thing over the wire.</p>
+</li>
+</ul>
+<p>I have a hard time believing that someone else hasn't already written this sort of thing, but I haven't been able to find it. If you know of a library that implements this pattern already, or have other suggestions, please let me know!</p>
+</section>
+  <footer class="post__footer">
+    <img class="post__footer-avatar" src="/assets/images/profile-circle-240-tiny.png" />
+    <p class="post__footer-author">Micah Engle-Eshleman</p>
+    <section class="share">
+  <a class="share__button share__button--twitter" href="https://twitter.com/intent/tweet?text=/2022/reconciling-late-arriving-data/ -  by @">
+    <svg viewBox="0 0 128 128">
+      <path d="M128 28.3c-4.7 2.1-9.775 3.5-15.075 4.125 5.425-3.25 9.575-8.4 11.55-14.525-5.075 3-10.7 5.2-16.675 6.375-4.8-5.1-11.625-8.275-19.175-8.275-14.5 0-26.25 11.75-26.25 26.25 0 2.050 0.225 4.050 0.675 5.975-21.825-1.1-41.175-11.55-54.125-27.45-2.25 3.875-3.55 8.4-3.55 13.2 0 9.1 4.625 17.15 11.675 21.85-4.3-0.125-8.35-1.325-11.9-3.275 0 0.1 0 0.225 0 0.325 0 12.725 9.050 23.35 21.075 25.75-2.2 0.6-4.525 0.925-6.925 0.925-1.7 0-3.325-0.175-4.95-0.475 3.35 10.425 13.050 18.025 24.525 18.25-9 7.050-20.3 11.25-32.625 11.25-2.125 0-4.2-0.125-6.275-0.375 11.65 7.475 25.45 11.8 40.275 11.8 48.3 0 74.725-40.025 74.725-74.725 0-1.15-0.025-2.275-0.075-3.4 5.125-3.675 9.575-8.3 13.1-13.575z"></path>
+    </svg>
+    Tweet
+  </a>
+  <a class="share__button share__button--facebook" href="#" onclick="
+      window.open(
+        'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+        'facebook-share-dialog',
+        'width=626,height=436');
+      return false;">
+    <svg viewBox="0 0 128 128">
+      <path d="M76 24h20v-24h-20c-15.439 0-28 12.561-28 28v12h-16v24h16v64h24v-64h20l4-24h-24v-12c0-2.168 1.832-4 4-4z"></path>
+    </svg>
+    Facebook
+  </a>
+</section>
+  </footer>
+</article>
+
+<div class="comments">
+	<h3 class="comments__heading">Comments are welcome!</h3>
+	<div id="disqus_thread"></div>
+	<script>
+	var disqus_config = function () {
+		// Page url without query parameters or hashes
+		this.page.url = window.location.href.split('?')[0].split('#')[0];
+		// Id is just slug of post
+		this.page.identifier = '';
+	};
+	(function() { // DON'T EDIT BELOW THIS LINE
+		var d = document, s = d.createElement('script');
+		s.src = '//micahjon.disqus.com/embed.js';
+		s.setAttribute('data-timestamp', +new Date());
+		(d.head || d.body).appendChild(s);
+	})();
+	</script>
+	<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+    </main>
+
+    <footer class="site-footer">
+    <p>© Copyright <span id="currentYear"></span> Micah Engle-Eshleman</p>
+    <script>document.getElementById('currentYear').textContent = new Date().getFullYear()</script>
+    
+</footer>
+
+
+    <script async src="/assets/js/main.js?v=1"></script>
+    <link href="/assets/css/prism-material-oceanic.css" rel="stylesheet">
+
+  <style>
+    
+  </style>
+
+
+  </body>
+</html>

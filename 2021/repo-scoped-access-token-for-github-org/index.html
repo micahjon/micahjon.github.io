@@ -12,20 +12,11 @@
     <link rel="stylesheet" href="/assets/css/style.css?v=1" />
     
 
-    <!-- Google Tag Manager (script) -->
-    <script>
-      // prettier-ignore
-      ;(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MZB37F');
-    </script>
+    
+    <script defer data-domain="micahjon.com" src="https://analytics.adblockpodcast.com/js/plausible.js"></script>
   </head>
 
   <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>
-      <!-- prettier-ignore -->
-      <iframe src="https://www.googletagmanager.com/ns.njk?id=GTM-MZB37F" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    </noscript>
-
     <nav class="top-nav">
 	
 		<a href="/"> <span class="arrow">←</span> Home </a>
@@ -83,7 +74,7 @@
 </ul>
 <p>There are detailed instructions for using this library in the <a href="https://github.com/gagoar/github-app-installation-token#installation-and-use">README</a>.</p>
 <p>After running the script it should give you an Access Token, e.g.</p>
-<pre class="language-js"><code class="language-js"><span class="token punctuation">{</span> token<span class="token operator">:</span> <span class="token string">'ghs_jksGSQQkmtXSthnGnCsb9AY9yTWU58jhytm6'</span> <span class="token punctuation">}</span></code></pre>
+<pre class="language-js"><code class="language-js"><span class="token punctuation">{</span> <span class="token literal-property property">token</span><span class="token operator">:</span> <span class="token string">'ghs_jksGSQQkmtXSthnGnCsb9AY9yTWU58jhytm6'</span> <span class="token punctuation">}</span></code></pre>
 <h2>Step 5: You're done!</h2>
 <p>You can now use this Access Token to trigger a <code>repository_dispatch</code> event and fire a Github Action in your organization's private repo.</p>
 <pre class="language-shell"><code class="language-shell"><span class="token function">curl</span> <span class="token punctuation">\</span><br>  -X POST <span class="token punctuation">\</span><br>  -H <span class="token string">"Authorization: token ghs_jksGSQQkmtXSthnGnCsb9AY9yTWU58jhytm6"</span><br>  -H <span class="token string">"Accept: application/vnd.github.v3+json"</span> <span class="token punctuation">\</span><br>  https://api.github.com/repos/test-inc/test-repo/dispatches <span class="token punctuation">\</span><br>  -d <span class="token string">'{"event_type":"rebuild_static_site","client_payload":{"post_id":54}}'</span></code></pre>

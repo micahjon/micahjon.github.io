@@ -12,20 +12,11 @@
     <link rel="stylesheet" href="/assets/css/style.css?v=1" />
     
 
-    <!-- Google Tag Manager (script) -->
-    <script>
-      // prettier-ignore
-      ;(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MZB37F');
-    </script>
+    
+    <script defer data-domain="micahjon.com" src="https://analytics.adblockpodcast.com/js/plausible.js"></script>
   </head>
 
   <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>
-      <!-- prettier-ignore -->
-      <iframe src="https://www.googletagmanager.com/ns.njk?id=GTM-MZB37F" height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    </noscript>
-
     <nav class="top-nav">
 	
 		<a href="/"> <span class="arrow">←</span> Home </a>
@@ -51,7 +42,7 @@
 <pre class="language-css"><code class="language-css"><span class="token selector">.anchor-target:before</span> <span class="token punctuation">{</span><br>  <span class="token property">content</span><span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">;</span><br>  <span class="token property">display</span><span class="token punctuation">:</span> block<span class="token punctuation">;</span><br>  <span class="token property">width</span><span class="token punctuation">:</span> 0<span class="token punctuation">;</span><br>  <span class="token property">height</span><span class="token punctuation">:</span> $fixed-header-anchor-offset<span class="token punctuation">;</span> <span class="token comment">/* fixed header height*/</span><br>  <span class="token property">margin</span><span class="token punctuation">:</span> -$fixed-header-anchor-offset 0 0<span class="token punctuation">;</span> <span class="token comment">/* negative fixed header height */</span><br><span class="token punctuation">}</span></code></pre>
 <p>If this <code>&lt;a class=”anchor-target”</code>&gt; tag is before the relevant section, the browser will jump to it, leaving the appropriate amount of buffer so that the sections begins right underneath the fixed header.</p>
 <p>This is also an issue for Gravity Forms confirmation messages. Simply apply the same styles to .gform_anchor:before and make sure to enable the <code>&lt;a class=”gform_anchor”&gt;</code> by using the gform_confirmation_anchor filter:</p>
-<pre class="language-php"><code class="language-php"><span class="token comment">// enable confirmation anchor (scrolls to the right place for the confirmation message)</span><br><span class="token function">add_filter</span><span class="token punctuation">(</span> <span class="token single-quoted-string string">'gform_confirmation_anchor'</span><span class="token punctuation">,</span> <span class="token single-quoted-string string">'__return_true'</span> <span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<pre class="language-php"><code class="language-php"><span class="token comment">// enable confirmation anchor (scrolls to the right place for the confirmation message)</span><br><span class="token function">add_filter</span><span class="token punctuation">(</span> <span class="token string single-quoted-string">'gform_confirmation_anchor'</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'__return_true'</span> <span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 </section>
   <footer class="post__footer">
     <img class="post__footer-avatar" src="/assets/images/profile-circle-240-tiny.png" />
