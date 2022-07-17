@@ -1,11 +1,11 @@
 ---
 title: How to Track Audio/Video File Loading Progress with Workbox
 date: 2022-05-22 23:00:00 -08:00
-description: Sharing the strategy used by my podcast app
+description: Sharing a workbox strategy used by my podcast app
 tags: post
 ---
 
-When working on my [Adblock Podcast side project](https://tally.so/r/3yPXL0), I had to figure out how to download and cache audio files using a service worker, and show the download progress in the UI. You'll run into the same problem for video and other large files that need to be downloaded for offline viewing.
+When working on my [Adblock Podcast side project](https://www.adblockpodcast.com/), I had to figure out how to download and cache audio files using a service worker, and show the download progress in the UI. You'll run into the same problem for video and other large files that need to be downloaded for offline viewing.
 
 Workbox is a fantastic library for this, and has [great documentation](https://developer.chrome.com/docs/workbox/using-plugins/#methods-for-custom-plugins) on how to write a plugin to hook into particular parts of the fetching & caching lifecycle. I'd also recommend their article on the nuances of [serving cached audio & video](https://developer.chrome.com/docs/workbox/serving-cached-audio-and-video/).
 
