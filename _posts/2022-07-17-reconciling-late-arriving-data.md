@@ -1,5 +1,5 @@
 ---
-title: A Better Data Structure for Reconciling Late-Arriving Collections of Data
+title: A Better Data Structure for Reconciling Late-Arriving User Data
 date: 2022-07-17 9:45:00 -08:00
 description: Managing conflict resolution in offline-friendly data stores
 tags: post
