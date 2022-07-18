@@ -1,8 +1,8 @@
 // postcss.config.js
+const postcssImport = require('postcss-import')
+const postcssSass = require('@csstools/postcss-sass')
+
 module.exports = {
-  syntax: 'postcss-scss',
   parser: 'postcss-comment',
-  plugins: {
-    precss: {},
-  },
+  plugins: [postcssImport(), postcssSass()],
 }

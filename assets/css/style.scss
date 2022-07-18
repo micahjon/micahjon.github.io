@@ -1,12 +1,12 @@
-@import 'includes/reset';
-@import 'includes/typography';
-@import 'includes/profile-circle';
-@import 'includes/top-nav';
-@import 'includes/post-list';
-@import 'includes/post-page';
-@import 'includes/normal-page';
-@import 'includes/share';
-@import 'includes/code';
+@import 'includes/reset.scss';
+@import 'includes/typography.scss';
+@import 'includes/profile-circle.scss';
+@import 'includes/top-nav.scss';
+@import 'includes/post-list.scss';
+@import 'includes/post-page.scss';
+@import 'includes/normal-page.scss';
+@import 'includes/share.scss';
+@import 'includes/code.scss';
 
 main {
   background-color: white;
@@ -38,4 +38,18 @@ hr {
   margin: 2rem 0;
   border: none;
   border-bottom: 1px solid var(--grey-100);
+}
+
+table,
+th,
+td {
+  padding: 2px 0.5rem;
+  border: 1px solid var(--grey-200);
+}
+table {
+  margin-bottom: 1rem;
+  border-collapse: collapse;
+}
+th {
+  font-weight: bold;
 }
