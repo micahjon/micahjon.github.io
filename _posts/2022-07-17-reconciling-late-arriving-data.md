@@ -80,15 +80,18 @@ const listenLaterArray = Object.keys(listenLaterAddedItems);
 
 This is just pseudocode and it's already looking more complex than I'd like. All of this just to store a simple array of episode ids?
 
+## Using a Library
+
 Fortunately, this pattern generalizes pretty well to any collection of data where:
 - Each piece of data has a unique and stable identifier
 - Preserving item order isn't essential
 - Old items should be replaced by newer items with the same key
 
-If you're interested in trying it out, I wrote a small library that implements this pattern, making it easy to sync collections between multiple clients and an API: <br>
-[github.com/micahjon/timestamp-collection](https://github.com/micahjon/timestamp-collection)
+If you're interested in trying it out, I wrote a tiny library (1.0KB gzipped) that implements this pattern, making it easy to store any object or array in this format and sync it between multiple clients and an API:
 
-- Stores a collection of unique keys, each with a timestamp and an optional value
+[github.com/micahjon/timestamp-collection](https://github.com/micahjon/timestamp-collection) *(name tbd)*
+
+- Stores a "collection" of unique keys, each with a timestamp and an optional value
 
 ```js
 listenLaterCollection.add('A1');
