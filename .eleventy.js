@@ -1,8 +1,12 @@
 const syntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight')
+const pluginRss = require('@11ty/eleventy-plugin-rss')
 
 module.exports = function (eleventyConfig) {
   // Enable syntax highlighting
   eleventyConfig.addPlugin(syntaxHighlight)
+
+  // Generate RSS feed
+  eleventyConfig.addPlugin(pluginRss)
 
   // Copy `assets/` to `_site/assets`
   eleventyConfig.addPassthroughCopy('assets/fonts')

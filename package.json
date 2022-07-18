@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/micahjon/micahjon.github.io#readme",
   "devDependencies": {
+    "@11ty/eleventy-plugin-rss": "^1.2.0",
     "@11ty/eleventy-plugin-syntaxhighlight": "^3.0.4",
     "@csstools/postcss-sass": "^5.0.1",
     "postcss": "^8.4.14",
