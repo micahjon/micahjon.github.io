@@ -22,9 +22,10 @@ I'm currently leading the front-end team at BeFunky, a popular WebGL-based [Phot
 
 When I'm not taking my cats for a walk, I'm often coding or thinking about one of these things:
 
-- Experimenting with various machine-learning solutions to identifying ads in podcasts
-- Evaluating state machines (e.g. [Robot](https://github.com/matthewp/robot)) and minimalist UI frameworks (e.g. [Preact](https://preactjs.com/), [Haunted](https://github.com/matthewp/haunted)) for use at work and various side projects
-- Speaking at the [PWA Summit](https://pwasummit.org/) on October 7th. It's all online and free to attend!
+- Experimenting with various machine-learning solutions to identifying ads in podcasts<br>**Update:** check out [AdblockPodcast.com](https://www.adblockpodcast.com/)
+
+- Playing around with state machines ([Robot](https://github.com/matthewp/robot)) and minimalist UI frameworks (e.g. [Preact](https://preactjs.com/), [Haunted](https://github.com/matthewp/haunted)) for use at work and various side projects
+- I spoke at the last [PWA Summit](https://pwasummit.org/), and hope to speak again this year. It's all online and free to attend!
 
 Feel free to shoot me an email if you'd like to work on something together!<br>
 [GitHub](https://github.com/micahjon) \| [Email](mailto:micah.millereshleman@gmail.com)
