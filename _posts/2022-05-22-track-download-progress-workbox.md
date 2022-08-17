@@ -84,11 +84,23 @@ export class TrackFileProgressPlugin implements WorkboxPlugin {
     const clonedResponse = await response.clone();
     trackDownloadProgress(clonedResponse, state.reportProgress);
 
-    // Convert response from 206 -> 200 to make it cacheable
-    // ONLY do this if 206 response actually contains entire file
-    return response.status === 200
-      ? response
-      : new Response(response.body, { status: 200, headers: response.headers });
+    // Response is ready to cache
+    if (response.status === 200 && response.headers.has('content-range')) {
+      return response;
+    }
+
+    // Convert status from 206 -> 200 to make it cacheable (needed if response was
+    // requested by fetch instead of by an Audio element)
+    const status = 200;
+
+    // Add content-range header if missing from 200 response (needed for iOS Safari)
+    const headers = new Headers(response.headers);
+    if (!response.headers.has('content-range')) {
+      const contentLength = getFileSize(response);
+      headers.set('content-range', `bytes 0-${contentLength - 1}/${contentLength}`);
+    }
+
+    return new Response(response.body, { status, headers });
   };
 
   /**
@@ -172,7 +184,15 @@ function getFileSize(response: Response) {
  * partial 206 responses  
  */
 function shouldCacheResponse(response: Response) {
-  if (response.status === 200) return true;
+  if (response.status === 200) {
+    // Ensure the file size is known (to derive content-range header)
+    try {
+      getFileSize(response);
+    } catch (err) {
+      return false;
+    }
+    return true;
+  }
 
   if (response.status === 206) {
     try {
