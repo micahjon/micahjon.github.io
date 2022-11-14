@@ -36,9 +36,9 @@ Feel free to shoot me an email if you'd like to work on something together!<br>
 
 ## BeFunky
 
-Before Redwood, I worked at BeFunky for 5 years (2017 - 2022), a popular [Photo Editing](https://www.befunky.com/create/) and [Graphic Design](https://www.befunky.com/create/designer/) platform.
+Before Redwood, I worked at BeFunky for 5 years (2017 - 2022) on their a popular [Photo Editing](https://www.befunky.com/create/) and [Graphic Design](https://www.befunky.com/create/designer/) platform.
 
-I was initially brought on to help the team finish migrating their flagship Flash product to web tech (WebGL canvas + web components). It took many months, but we did launch a desktop-oriented webapp, then did a complete overhaul to make it work well on mobile as well, and finally distributed the webapp across all platforms as an installable PWA. Along the way, I got to work on all sorts of fun stuff:
+I was initially brought on to help the team finish migrating their Flash app to web tech (WebGL canvas + web components). It took many months, but we did launch a desktop-oriented webapp, then did a complete overhaul to make it work well on mobile as well, and finally distributed the webapp across all platforms as an installable PWA. Along the way, I got to work on all sorts of fun stuff:
 
 - Saving assets & user settings in IndexedDB
 - Getting the app to work offline and with low-connectivity (using Workbox)
