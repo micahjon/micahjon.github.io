@@ -9,12 +9,7 @@ isPage: true
 
 Hi, I'm Micah! I'm a full-stack engineer based in Portland, OR.
 
-I'm currently leading the front-end team at BeFunky, a popular WebGL-based [Photo Editing](https://www.befunky.com/create/) and [Graphic Design](https://www.befunky.com/create/designer/) platform that runs in the browser. A lot of my work entails adding new features without sacrificing our core performance metrics.
-
-<caption>
-<img src="/assets/images/befunky-perf.png" alt="BeFunky web vitals"/>
-<small>befunky.com - Desktop - Sept 25, 2021</small>
-</caption>
+I'm currently heading up all things front-end at [Redwood Materials](https://redwoodmaterials.com/). I just started in November 2022 and am very excited to be working in green tech with a lot of talented people!
 
 ## Current Projects
 
@@ -22,10 +17,11 @@ I'm currently leading the front-end team at BeFunky, a popular WebGL-based [Phot
 
 When I'm not taking my cats for a walk, I'm often coding or thinking about one of these things:
 
-- Experimenting with various machine-learning solutions to identifying ads in podcasts<br>**Update:** check out [AdblockPodcast.com](https://www.adblockpodcast.com/)
+- Experimenting with all sorts of solutions to identifying ads in podcasts<br>**Update:** check out [AdblockPodcast.com](https://www.adblockpodcast.com/)
 
-- Playing around with state machines ([Robot](https://github.com/matthewp/robot)) and minimalist UI frameworks (e.g. [Preact](https://preactjs.com/), [Haunted](https://github.com/matthewp/haunted)) for use at work and various side projects
-- I spoke at the last [PWA Summit](https://pwasummit.org/), and hope to speak again this year. It's all online and free to attend!
+- Learning how to be a dad.
+
+- I spoke at the 2021 [PWA Summit](https://pwasummit.org/) and try and stay up-to-date on all things PWAs
 
 Feel free to shoot me an email if you'd like to work on something together!<br>
 [GitHub](https://github.com/micahjon) \| [Email](mailto:micah.millereshleman@gmail.com)
@@ -37,6 +33,23 @@ Feel free to shoot me an email if you'd like to work on something together!<br>
 - Playing around with [object detection using Tensorflow](https://github.com/EdjeElectronics/TensorFlow-Object-Detection-on-the-Raspberry-Pi) on a the Raspberry Pi B+.
 - A Preact-based [WordPress plugin](https://github.com/micahjon/network-database-search) for cleaner database searches.
 - A silly, social webapp called [Any Mammal's Milk](http://anymammalsmilk.com) first written in Svelte then migrated to React + Firebase.
+
+## BeFunky
+
+Before Redwood, I worked at BeFunky for 5 years (2017 - 2022), a popular [Photo Editing](https://www.befunky.com/create/) and [Graphic Design](https://www.befunky.com/create/designer/) platform.
+
+I was initially brought on to help the team finish migrating their flagship Flash product to web tech (WebGL canvas + web components). It took many months, but we did launch a desktop-oriented webapp, then did a complete overhaul to make it work well on mobile as well, and finally distributed the webapp across all platforms as an installable PWA. Along the way, I got to work on all sorts of fun stuff:
+
+- Saving assets & user settings in IndexedDB
+- Getting the app to work offline and with low-connectivity (using Workbox)
+- Building web components using Haunted & Lit-HTML for templating
+- Proxying all our backend services through Fastly so we could serve them from the same origin (avoiding DNS lookups)
+- Trying my darnest to keep the site performant even as we were shipping more and more features!
+
+<caption>
+<img src="/assets/images/befunky-perf.png" alt="BeFunky web vitals"/>
+<small>befunky.com - Desktop - Sept 25, 2021</small>
+</caption>
 
 ## Goshen College
 
