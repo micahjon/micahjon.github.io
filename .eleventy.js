@@ -11,6 +11,7 @@ module.exports = function (eleventyConfig) {
   // Copy `assets/` to `_site/assets`
   eleventyConfig.addPassthroughCopy('assets/fonts')
   eleventyConfig.addPassthroughCopy('assets/images')
+  eleventyConfig.addPassthroughCopy('assets/videos')
   eleventyConfig.addPassthroughCopy('assets/js')
 
   // Copy CNAME
