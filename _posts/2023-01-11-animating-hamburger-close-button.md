@@ -15,6 +15,8 @@ _Note: the blue outline is just a focus style, not part of the icon_
 
 There are MANY examples of this type of animation, but I have yet to find one that allows you to customize line thickness and spacing without skewing the animation. This implementation also ensures the resulting icon animation fits perfectly in a square.
 
+## Emotion CSS in JS
+
 ```ts
 // Emotion styles
 import styled from '@emotion/styled';
@@ -102,3 +104,97 @@ export const Hamburger = styled('span')<ToggleProps>`
   </Hamburger>
 </button>
 ```
+
+---
+
+Here's the version of the code migrated to CSS modules (compiled from SCSS). This should work independent of React or any other framework.
+
+## Pure SCSS
+
+```scss
+// style.scss
+
+.hamburger {
+  // Variables
+  --box-size: 18px;
+  --x-side: calc(var(--box-size) / 1.4142135623730951);
+  --space-between: 4px;
+  --line-thickness: 3px;
+  --space-above: calc(
+    (var(--box-size) - 3 * var(--line-thickness) - 2 * var(--space-between)) / 2
+  );
+
+  position: relative;
+  width: var(--box-size);
+  height: var(--box-size);
+  flex-shrink: 0;
+
+  // All 3 lines
+  > * {
+    display: block;
+    position: absolute;
+    height: var(--line-thickness);
+    width: 100%;
+    background: currentColor;
+    border-radius: var(--line-thickness);
+    opacity: 1;
+    left: 0;
+    transform-origin: left center;
+    transition-duration: 0.25s;
+    transition-timing-function: ease;
+  }
+
+  // Top line
+  > :nth-child(1) {
+    top: var(--space-above);
+    transform: rotate(0deg);
+    transition-property: transform;
+  }
+  &.hamburgerToX {
+    > :nth-child(1) {
+      transform: translateY(
+          calc(-1 * (var(--x-side) / 2 - var(--line-thickness) - var(--space-between)))
+        )
+        translateX(calc((var(--box-size) - var(--x-side)) / 2)) rotate(45deg);
+    }
+  }
+
+  // Middle line
+  > :nth-child(2) {
+    top: calc(var(--space-above) + var(--line-thickness) + var(--space-between));
+    transition-property: width, opacity;
+  }
+  &.hamburgerToX {
+    > :nth-child(2) {
+      width: 0%;
+      opacity: 0;
+    }
+  }
+
+  // Bottom line
+  > :nth-child(3) {
+    top: calc(var(--space-above) + 2 * (var(--line-thickness) + var(--space-between)));
+    transform: rotate(0deg);
+    transition-property: transform;
+  }
+  &.hamburgerToX {
+    > :nth-child(3) {
+      transform: translateY(
+          calc(var(--x-side) / 2 - var(--line-thickness) - var(--space-between))
+        )
+        translateX(calc((var(--box-size) - var(--x-side)) / 2)) rotate(-45deg);
+    }
+  }
+}
+```
+
+```tsx
+// React or any other framework...
+<span class={classNames(style.hamburger, isOpen ? style.hamburgerToX : '')}>
+  <span></span>
+  <span></span>
+  <span></span>
+</span>
+```
+
+Enjoy!
