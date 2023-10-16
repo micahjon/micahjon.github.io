@@ -7,7 +7,7 @@ tags: post
 
 _This post is a work-in-progress._
 
-When I started at Redwood last year, it became clear that a bit part of my job would involve building long and complex forms. Like most software, the easiest to use forms often mask a lot of complexity under the hood, and I knew from experience that schemas and type safety would be my friends. After some research I settled on:
+When I started at Redwood last year, it became clear that a big part of my job would involve building long and complex forms. Like most software, the easiest to use forms often mask a lot of complexity under the hood, and I knew from experience that schemas and type safety would be my friends. After some research I settled on:
 
 - React Hook Form for managing form state changes w/ minimal re-renders
 - Zod for writing form schemas and doing validation
