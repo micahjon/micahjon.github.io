@@ -131,7 +131,7 @@
 </li>
 </ol>
 <p>Ideally we'd have a way of declaratively defining both the conditional logic condition, the fields it depended on, and the fields it impacted, and could then programmatically generate the associated schemas and know what fields needed to be shown / hidden.</p>
-<p><em>this post is a work-in-progress, will share rest of solution soon...</em></p>
+<p><em>This post is a work-in-progress, as I'm still iterating toward and ideal solution. Currently, I just set all branching fields as <code>.optional()</code> in my Zod schema, and create a re-usable function that accepts my form schema and returns the fields names that need to be toggled, whether each one is visible, and also the field names that need to be watched to determine this (depedency array). This works fine and allows me to use some of the same logic in my React components as the <code>resolver</code> method, but I feel like there's probably a better way.</em></p>
 </section>
   <footer class="post__footer">
     <img class="post__footer-avatar" src="/assets/images/profile-circle-240-tiny.png" />
