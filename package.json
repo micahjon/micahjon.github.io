@@ -24,7 +24,7 @@
     "@11ty/eleventy-plugin-rss": "^1.2.0",
     "@11ty/eleventy-plugin-syntaxhighlight": "^3.0.4",
     "@csstools/postcss-sass": "^5.0.1",
-    "postcss": "^8.4.14",
+    "postcss": "^8.4.31",
     "postcss-cli": "^8.2.0",
     "postcss-comment": "^2.0.0",
     "postcss-import": "^14.1.0",
