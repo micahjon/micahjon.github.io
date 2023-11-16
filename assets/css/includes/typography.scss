@@ -159,6 +159,10 @@ ol {
 li {
   margin-bottom: 0.75rem;
 }
+li ul,
+li ol {
+  margin-left: 1rem;
+}
 
 // Links
 a {

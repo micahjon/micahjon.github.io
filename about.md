@@ -17,6 +17,8 @@ I'm currently heading up all things front-end at [Redwood Materials](https://red
 
 When I'm not taking my cats for a walk, I'm often coding or thinking about one of these things:
 
+- Writing a tiny library that enables [declarative conditional logic in React Hook Forms](https://github.com/micahjon/rhf-conditional-logic).
+
 - Experimenting with all sorts of solutions to identifying ads in podcasts<br>**Update:** check out [AdblockPodcast.com](https://www.adblockpodcast.com/)
 
 - Learning how to be a dad.

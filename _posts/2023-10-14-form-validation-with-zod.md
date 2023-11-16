@@ -1,11 +1,9 @@
 ---
-title: "Conditional Logic with Zod + React Hook Form (work in progress...)"
-date: 2023-10-14 13:15:00 -08:00
+title: "Conditional Logic with Zod + React Hook Form"
+date: 2023-11-15 22:54:00 -08:00
 description: Strategies for conditional logic and other lessons learned
 tags: post
 ---
-
-_This post is a work-in-progress._
 
 When I started at Redwood last year, it became clear that a big part of my job would involve building long and complex forms. Like most software, the easiest to use forms often mask a lot of complexity under the hood, and I knew from experience that schemas and type safety would be my friends. After some research I settled on:
 
@@ -286,28 +284,74 @@ For union schemas, Zod will return the first schema that passes (left branch). I
 The solution is to conditionally pass React Hook Form the schema that matches our current branch. Here's how that might look...
 
 ```tsx
-const {
-  register,
-  handleSubmit,
-  formState: { errors },
-} = useForm<BlankFormSchema>({
+const { register } = useForm<BlankFormSchema>({
   resolver: function (values: BlankFormSchema, ...args) {
     // Choose correct schema for current branch
     const currentBranchSchema = isKnownDomain(values.email)
       ? formSchemaLeft
       : formSchemaRight;
+    // Validate form data against chosen schema
     return zodResolver(currentBranchSchema)(values, ...args);
   },
   defaultValues,
 });
 ```
 
-Wow, that actually works. We still have a couple problems though:
+Wow, that actually works! Unfortunately, this solution has some major issues:
 
 1. At a high level, do we really want to have to define a new schema for every conditional logic branch?
 
-2. Our conditional logic now lives in 3 different places: implicity in our choice to create a new schema, explicitly in the React Hook Forms resolver function (above), and explicity in our Form component JSX. Gross!
+2. Our conditional logic now lives in 3 different places
+    - In our various schemas
+    - In our custom resolver function (above)
+    - In our Form component JSX (`useWatch()` to show/hide fields)
 
-Ideally we'd have a way of declaratively defining both the conditional logic condition, the fields it depended on, and the fields it impacted, and could then programmatically generate the associated schemas and know what fields needed to be shown / hidden.
+Gross! 
 
-_This post is a work-in-progress, as I'm still iterating toward and ideal solution. Currently, I just set all branching fields as `.optional()` in my Zod schema, and create a re-usable function that accepts my form schema and returns the fields names that need to be toggled, whether each one is visible, and also the field names that need to be watched to determine this (depedency array). This works fine and allows me to use some of the same logic in my React components as the `resolver` method, but I feel like there's probably a better way._
+**Problem #1** (a new schema for every branch) is inherent to Zod, and will hopefully get better in a future version of Zod. Maybe `z.switch()`, the potential successor to `z.discriminatedUnion()`  will make this possible ([see discussion here](https://github.com/colinhacks/zod/issues/2106)). The TLDR is fixing it requires deep knowledge of Zod and Typescript, something I don't have.
+
+I was able to solve **Problem #2** by giving up on the "multiple Zod schemas" approach and instead creating a single Zod schema where every conditional field is `.optional()`. Then I defined the conditional logic in a separate JavaScript object which could be re-used in both the custom resolver (to prune hidden fields before validating) and in the Form component (to determine if a field is visible). I added some other fancy stuff like dependency tracking and published a [tiny library that makes this pretty easy: rhf-conditional-logic](https://github.com/micahjon/rhf-conditional-logic).
+
+Our above example becomes:
+
+```ts
+// Define a single form schema with conditional fields optional
+const formSchema = z.object({
+  name: z.string().trim().min(3),
+  email: z.string().email(),
+  companyName: z.string().trim().min(2).optional(),
+  companyLocation: z.string().trim().min(5).optional(),
+});
+type FormSchema = z.infer<typeof formSchema>;
+
+// Define conditional logic (and track dependencies)
+const conditions = {
+  companyName: getValues => !isKnownDomain(getValues('email')),
+  companyLocation: getValues => !isKnownDomain(getValues('email')),
+};
+```
+
+While I'd love if there was a way to define conditional logic within the schema, this feels like the next best thing.
+
+Note that using a single schema with optional values results in a less precise Typescript type. The benefit of course is that you no longer need to define a new schema for every branch!
+
+![FormSchema Typescript type](/assets/images/rhf-optional-schema.png)
+
+In the form component we consume this conditional logic with the `useConditionalForm` and `useCondition` hooks, which wire up the custom resolver and track dependencies for us.
+
+```tsx
+export function Form() {
+  const { register, getValues, control } = useConditionalForm<FormSchema>({
+    conditions, // Your conditional logic definition goes here
+    resolver: zodResolver(formSchema), // Required
+    defaultValues, // Required
+  });
+
+  // Should the "Company Name" field be shown?
+  const [showCompanyName] = useCondition(['companyName'], conditions, getValues, control)
+}
+```
+
+You can read the [full README here](https://github.com/micahjon/rhf-conditional-logic#conditional-logic-for-react-hook-forms), but hopefully this gives you the gist.
+
+If you have other ideas for how to improve this, don't hestitate to leave a comment or shoot me an email. Thanks!
