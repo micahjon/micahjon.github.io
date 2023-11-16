@@ -55,6 +55,9 @@
 <li>Zod for writing form schemas and doing validation</li>
 </ul>
 <p>Almost a year later, with quite a few forms in production, I'm still happy with this pairing. BUT, there were definitely some major gotchas along the way, which is why I'm writing this post.</p>
+<aside style="background: var(--grey-100); border: 1px solid var(--grey-200); border-radius: 4px; padding: 1rem 2rem; margin: 2rem 0">
+<p><strong>TLDR:</strong> check out <a href="https://github.com/micahjon/rhf-conditional-logic">rhf-conditional-logic</a></p>
+</aside>
 <h2>A super simple form</h2>
 <p>Let's start with just a single email field. We use Zod to validate the email address and also generate a <code>FormSchema</code> type that React Hook Form uses to infer the field names &amp; values.</p>
 <p><img src="/assets/images/rhf-email-field.png" alt="Email field"></p>
