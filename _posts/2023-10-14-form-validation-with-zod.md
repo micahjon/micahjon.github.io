@@ -12,6 +12,12 @@ When I started at Redwood last year, it became clear that a big part of my job w
 
 Almost a year later, with quite a few forms in production, I'm still happy with this pairing. BUT, there were definitely some major gotchas along the way, which is why I'm writing this post.
 
+<aside style="background: var(--grey-100); border: 1px solid var(--grey-200); border-radius: 4px; padding: 1rem 2rem; margin: 2rem 0">
+
+**TLDR:** check out [rhf-conditional-logic](https://github.com/micahjon/rhf-conditional-logic)
+
+</aside>
+
 ## A super simple form
 
 Let's start with just a single email field. We use Zod to validate the email address and also generate a `FormSchema` type that React Hook Form uses to infer the field names & values.
